@@ -55,6 +55,7 @@ LINK	instbin					usr/bin/less usr/bin/more
 LINK	instbin					usr/bin/sed
 LINK	instbin					usr/bin/disknames
 LINK	instbin					bin/sleep
+LINK	instbin					sbin/bioctl
 
 # firmwares that might need loading
 COPY	${DESTDIR}/etc/firmware/kue		etc/firmware/kue
