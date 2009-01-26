@@ -1054,7 +1054,7 @@ set_ftp_opt() {
 # Note:	_ftp_server_ip, _ftp_server_dir, _ftp_server_login,
 #	and FTPOPTS must be global.
 install_url() {
-	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd
+	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd _url_ip
 
 	ask "HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none')" \
 	    "${ftp_proxy:-none}"
@@ -1144,6 +1144,10 @@ install_url() {
 	_url_base=$_url_type://
 	if [[ $_url_type == ftp && $_ftp_server_login != anonymous ]]; then
 		_url_base=$_url_base$(encode_for_url "$_ftp_server_login"):$(encode_for_url "$_passwd")@
+	fi
+	eval _url_ip=\$_${_url_type}_server_ip
+	if [[ ${_url_ip%:*} != _url_ip ]]; then
+		_url_ip="[$_url_ip]"
 	fi
 	eval _url_base=$_url_base\$_${_url_type}_server_ip/\$_${_url_type}_server_dir
 
