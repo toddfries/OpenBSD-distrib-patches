@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.13 2008/03/04 23:43:11 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.15 2008/12/22 23:54:27 deraadt Exp $
 
 CBIN=		instbin
 ARCHDIR=	${.CURDIR}/..
@@ -30,7 +30,7 @@ MTREE=		${UTILS}/mtree.conf
 
 LIF?=		lif${REV}.fs
 CDROM?=		cd${REV}.iso
-MKBOOT?=	${DESTDIR}/usr/mdec/mkboot
+MKBOOT?=	/usr/mdec/mkboot
 BOOT?=		${DESTDIR}/usr/mdec/boot
 CDBOOT?=	${DESTDIR}/usr/mdec/cdboot
 
@@ -70,7 +70,7 @@ obsd:
 
 bsd.rd:	obsd ${IMAGE} ${RDSETROOT}
 	cp obsd bsd.rd
-	${.OBJDIR}/${RDSETROOT} bsd.rd < ${IMAGE}
+	${.OBJDIR}/${RDSETROOT} bsd.rd ${IMAGE}
 	@${STRIP} bsd.rd
 
 bsd:	bsd.rd

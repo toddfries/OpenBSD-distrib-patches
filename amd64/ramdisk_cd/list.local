@@ -1,4 +1,4 @@
-# $OpenBSD: list.local,v 1.9 2007/02/04 23:30:19 jsg Exp $
+# $OpenBSD: list.local,v 1.11 2009/02/10 19:03:23 damien Exp $
 
 # add local links; use bin/sh since instbin has already been unlinked
 #LINK	instbin					sbin/ccdconfig
@@ -7,6 +7,7 @@ LINK	instbin					sbin/rtsol
 LINK	instbin					sbin/mount_udf
 
 LINK	instbin					sbin/dhclient
+LINK	instbin					sbin/bioctl
 
 COPY	${DESTDIR}/etc/firmware/kue		etc/firmware/kue
 COPY	${DESTDIR}/etc/firmware/bnx		etc/firmware/bnx
@@ -15,6 +16,7 @@ COPY	${DESTDIR}/etc/firmware/ral-rt2561	etc/firmware/ral-rt2561
 COPY	${DESTDIR}/etc/firmware/ral-rt2561s	etc/firmware/ral-rt2561s
 COPY	${DESTDIR}/etc/firmware/ral-rt2661	etc/firmware/ral-rt2661
 COPY	${DESTDIR}/etc/firmware/rum-rt2573	etc/firmware/rum-rt2573
+COPY	${DESTDIR}/etc/firmware/run-rt2870	etc/firmware/run-rt2870
 
 COPY	${DESTDIR}/etc/firmware/zd1211		etc/firmware/zd1211
 COPY	${DESTDIR}/etc/firmware/zd1211b		etc/firmware/zd1211b

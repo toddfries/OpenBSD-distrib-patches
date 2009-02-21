@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.158 2008/06/13 04:41:44 krw Exp $
+#	$OpenBSD: install.sh,v 1.160 2009/02/15 15:56:45 krw Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2004 Todd Miller, Theo de Raadt, Ken Westerback
@@ -39,13 +39,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -78,10 +71,6 @@ MODE=install
 
 # If /etc/fstab already exists, skip disk initialization.
 if [ ! -f /etc/fstab ]; then
-	# Install the shadowed disktab file; lets us write to it for temporary
-	# purposes without mounting the miniroot read-write.
-	[ -f /etc/disktab.shadow ] && cp /etc/disktab.shadow /tmp/disktab.shadow
-
 	DISK=
 	_DKDEVS=$DKDEVS
 

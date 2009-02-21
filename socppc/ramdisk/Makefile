@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.3 2008/05/16 22:55:49 kettenis Exp $
+#	$OpenBSD: Makefile,v 1.5 2008/12/02 03:20:58 deraadt Exp $
 
 REV=	${OSrev}
 
@@ -38,7 +38,7 @@ all:	${BSD_RD} ${BSD_BIN}
 
 ${BSD_RD}: ${CBIN} ${IMAGE} bsd rdsetroot
 	cp bsd ${BSD_RD}
-	${.OBJDIR}/rdsetroot ${BSD_RD} < ${IMAGE}
+	${.OBJDIR}/rdsetroot ${BSD_RD} ${IMAGE}
 
 ${BSD_BIN}: ${BSD_RD}
 	objcopy -O binary ${BSD_RD} ${BSD_BIN}
@@ -67,7 +67,7 @@ rd_teardown:
 	-vnconfig -u ${VND}
 
 rdsetroot:	${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../common/elfrdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

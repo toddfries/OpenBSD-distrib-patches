@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile.inc,v 1.11 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile.inc,v 1.13 2008/12/02 03:20:57 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -60,7 +60,7 @@ bsd.gz: bsd.rd
 
 bsd.rd:	${IMAGE} bsd rdsetroot
 	cp bsd bsd.rd
-	${.OBJDIR}/rdsetroot bsd.rd < ${IMAGE}
+	${.OBJDIR}/rdsetroot bsd.rd ${IMAGE}
 
 
 bsd:
@@ -87,7 +87,7 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../common/elfrdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

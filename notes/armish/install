@@ -1,4 +1,4 @@
-dnl	$OpenBSD: install,v 1.4 2008/03/10 21:38:27 miod Exp $
+dnl	$OpenBSD: install,v 1.7 2008/10/16 00:05:09 krw Exp $
 OpenBSDInstallPrelude
 
 OpenBSDInstallPart2
@@ -29,9 +29,7 @@ OpenBSDInstallPart3
 
 OpenBSDInstallPart4({:- If you have Linux partitions
 	defined on the disk, these will usually show up as partition
-	'h', 'i' and so on.-:})
-
-	Explain more here.
+	'i', 'j' and so on.-:})
 
 OpenBSDInstallPart5(wd0)
 
@@ -48,5 +46,9 @@ OpenBSDDISKInstall({:-"wdN" or -:},,{:-, Linux (ext2) or MS-DOS-:})
 OpenBSDCommonFS
 
 OpenBSDCommonURL
+
+OpenBSDInstallWrapup
+
+OpenBSDInstallWrapupPart2
 
 OpenBSDCongratulations

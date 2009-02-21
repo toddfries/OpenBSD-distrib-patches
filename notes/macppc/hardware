@@ -1,4 +1,4 @@
-dnl	$OpenBSD: hardware,v 1.90 2008/06/13 07:20:17 jmc Exp $
+dnl	$OpenBSD: hardware,v 1.96 2008/09/11 05:28:25 jmc Exp $
 OpenBSD/MACHINE OSREV runs on iMac, G4 Power Macintosh, and G4 Cube, as well
 as PowerBook and iBook machines.
 
@@ -11,8 +11,8 @@ the G4 Cube, B&W G3, LCD iMac, Mac mini, iMac G5, PowerMac G5 and Xserve G5.
 
 For portables, PowerBook G3, PowerBook G4 (12", 15", 17"), iBook, iBook2
 and iBook G4 have been tested.  Note that power saving features on portables
-are very limited, limited power management features are available, suspend/sleep
-is not supported.  However battery level and status charging/AC
+are very limited, limited power management features are available,
+suspend/sleep is not supported.  However battery level and status charging/AC
 connected/AC disconnected is supported via an APM emulation layer.
 
 
@@ -137,8 +137,8 @@ Supported devices {:-include-:}:
 			Farallon PN9000SX
 			Netgear GA620 and GA620T
 			SGI Tigon
-		ASIX Electronics AX88172/AX88178/AX88772 USB Ethernet adapters (axe),
-		including:
+		ASIX Electronics AX88172/AX88178/AX88772 USB Ethernet adapters
+		(axe), including:
 			ATEN UC210T
 			BAFO BF-320
 			Billionton Systems USB2AR
@@ -399,6 +399,8 @@ Supported devices {:-include-:}:
 		Marvell Libertas IEEE 802.11b/g Compact Flash adapters (will be
 		detected as PCMCIA adapters)
 		    Ambicom WL54CF
+		    I-O DATA WN-G54/CF
+		    SparkLAN WCFM-100
 		Ralink Technology IEEE 802.11a/b/g PCI adapters
 		    A-Link WL54H
 		    AirLive WN-5000PCI
@@ -440,6 +442,7 @@ Supported devices {:-include-:}:
 		    KCORP LifeStyle KLS-660
 		    LevelOne WNC-0301 v2
 		    Linksys WMP54G v4
+		    Longshine LCS-8031N
 		    Micronet SP906GK
 		    Minitar MN54GPC-R
 		    MSI MP54G2 Mini PCI
@@ -509,6 +512,7 @@ Supported devices {:-include-:}:
 		    Atlantis Land A02-UP1-W54
 		    Belkin F5D7050 ver 3
 		    Belkin F5D9050 ver 3
+		    Belkin F5D9050C
 		    Buffalo WLI-U2-SG54HP
 		    Buffalo WLI-U2-G54HP
 		    CNet CWD-854 ver F
@@ -516,6 +520,7 @@ Supported devices {:-include-:}:
 		    Corega CG-WLUSB2GL
 		    Corega CG-WLUSB2GO
 		    Corega CG-WLUSB2GPX
+		    D-Link DWA-110
 		    D-Link DWA-111
 		    D-Link DWL-G122 rev C1
 		    D-Link WUA-1340

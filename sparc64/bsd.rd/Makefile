@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.16 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.18 2008/12/02 03:20:58 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -50,7 +50,7 @@ bsd.rd:	bsd.rd_unz
 
 bsd.rd_unz: bsd ${IMAGE} ${RDSETROOT}
 	cp bsd bsd.rd_unz
-	${.OBJDIR}/${RDSETROOT} bsd.rd_unz < ${IMAGE}
+	${.OBJDIR}/${RDSETROOT} bsd.rd_unz ${IMAGE}
 
 bsd:
 	cd ${.CURDIR}/../../../sys/arch/sparc64/conf && config ${RAMDISK}
@@ -100,7 +100,7 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../../common/rdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../../common/rdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../../common/rdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

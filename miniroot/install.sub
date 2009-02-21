@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.431 2008/06/13 04:41:44 krw Exp $
+#	$OpenBSD: install.sub,v 1.445 2009/02/18 00:03:06 krw Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2007 Todd Miller, Theo de Raadt, Ken Westerback
@@ -38,13 +38,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -190,8 +183,8 @@ scan_disknames() {
 
 get_ifdevs() {
 	ifconfig \
-	    | egrep -v '^[[:space:]]|(bridge|enc|gif|gre|lo|pflog|pfsync|ppp|sl|tun|vlan)[[:digit:]]+:' \
-	    | sed -ne 's/^\(.*\):.*/\1/p'
+		| egrep -v '^[[:space:]]|(bridge|enc|gif|gre|lo|pflog|pfsync|ppp|sl|tun|vlan)[[:digit:]]+:' \
+		| sed -ne 's/^\(.*\):.*/\1/p'
 }
 
 get_drive() {
@@ -241,6 +234,7 @@ stdsize ()  {
 		shift
 		_p=${_sz%[0-9][0-9][0-9]}
 		_s=${_sz#$_p}
+		_s=${_s##+(0)}
 		_sz=$_p
 	done
 
@@ -253,10 +247,13 @@ stdsize ()  {
 #    Display $1 as the prompt.
 #    *Don't* allow the '!' options that ask does.
 #    *Don't* echo input.
+#    *Don't* interpret "\" as escape character if not at start of escape
+#            sequence. e.g. "\s" will be left alone and "\<newline>" will
+#            not cause line continuation. "\r", etc. still get interpreted.
 askpass() {
 	set -o noglob
 	stty -echo
-	read resp?"$1 "
+	read -r resp?"$1 "
 	stty echo
 	set +o noglob
 	echo
@@ -562,11 +559,11 @@ configure_ifs() {
 		_name=$resp
 
 		# Get and apply media options.
-		_media=$(ifconfig -m $_ifs | grep "media ")
+		_media=$(ifconfig $_ifs media | grep "media ")
 		if [[ -n $_media ]]; then
 			cat <<__EOT
 The media options for $_ifs are currently
-$(ifconfig -m $_ifs | sed -n '/supported/D;/media:/p')
+$(ifconfig $_ifs media | sed -n '/supported/D;/media:/p')
 __EOT
 			ask_yn "Do you want to change the media options?"
 			case $resp in
@@ -587,7 +584,7 @@ __EOT
 		v4_config "$_ifs" "$_media" "$_name" "$_hn"
 		v6_config "$_ifs" "$_media" "$_name" "$_hn"
 
-		[[ -f $_hn ]] && chmod 600 $_hn && _IFDEVS=$(rmel "$_ifs" $_IFDEVS)
+		[[ -f $_hn ]] && chmod 640 $_hn && _IFDEVS=$(rmel "$_ifs" $_IFDEVS)
 	done
 }
 
@@ -670,7 +667,7 @@ v4_config() {
 		fi
 	fi
 
-	[[ -x /sbin/dhclient ]] && _prompt=" or 'dhcp'"
+	[[ -x /sbin/dhclient ]] && { _prompt=" or 'dhcp'" ; : ${_addr:=dhcp} ; }
 	_prompt="IPv4 address for $_ifs? (or 'none'$_prompt)"
 
 	ask_until "$_prompt" "$_addr"
@@ -681,6 +678,8 @@ v4_config() {
 		elif dhcp_request $_ifs "$_name" || dhcp_request $_ifs ; then
 			addhostent "127.0.0.1" "$_name"
 			echo "dhcp NONE NONE NONE $_media" >>$_hn
+			# Create a new bpf in case we start another dhclient
+			makedev bpf$(ls /dev | grep -c "^bpf[0-9]")
 		fi
 		;;
 	*)	_addr=$resp
@@ -780,12 +779,12 @@ v6_defroute() {
 
 # Much of this is gratuitously stolen from /etc/netstart.
 enable_network() {
-	local _netfile _gw
+	local _f _gw
 
-	# Copy any required or optional files found
-	for _netfile in hosts dhclient.conf resolv.conf resolv.conf.tail protocols services; do
-		if [ -f /mnt/etc/${_netfile} ]; then
-			cp /mnt/etc/${_netfile} /etc/${_netfile}
+	# Copy any network configuration files. N.B.: hosts already copied.
+	for _f in dhclient.conf resolv.conf resolv.conf.tail; do
+		if [ -f /mnt/etc/$_f ]; then
+			cp /mnt/etc/$_f /etc/$_f
 		fi
 	done
 
@@ -829,6 +828,8 @@ enable_network() {
 				dhcpif="$dhcpif $if"
 				cmd="ifconfig $if $name $mask $bcaddr $ext1 $ext2 down"
 				cmd="$cmd; dhclient $if"
+				# Create a new bpf in case we start another dhclient
+				makedev bpf$(ls /dev | grep -c "^bpf[0-9]")
 				;;
 			"rtsol")
 				rtsolif="$rtsolif $if"
@@ -905,7 +906,7 @@ enable_network() {
 
 	# Display results...
 	echo "Network interface configuration:"
-	ifconfig -am
+	ifconfig -a media
 
 	# enable the resolver if resolv.conf is available
 	route -n show
@@ -1057,7 +1058,7 @@ install_url() {
 	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd
 
 	ask "HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none')" \
-	    "${ftp_proxy:-none}"
+		"${ftp_proxy:-none}"
 	unset ftp_proxy http_proxy
 	[[ $resp == none ]] || export ftp_proxy=$resp http_proxy=$resp
 
@@ -1363,7 +1364,8 @@ install_sets() {
 #       1) can't be mounted (no mount_* command is found),
 #	2) have 'xx' in the option field (usually /altroot),
 #	3) have 'noauto' in the option field,
-#	4) are nfs (since name resolution may not be present).
+#	4) are nfs (since name resolution may not be present),
+#	5) are on a svnd device.
 #
 # In addition,
 #
@@ -1379,11 +1381,11 @@ munge_fstab() {
 
 	while read _dev _mp _fstype _opt _rest; do
 		# Drop irrelevant lines and filesystems.
-		[[ $_dev == \#* || \
-		    $_fstype == nfs || \
-		    ! -f /sbin/mount_$_fstype || \
-		    $_opt == *noauto* || \
-		    $_opt == *xx* ]] && continue
+		[[ $_dev == @(/dev/svnd*|\#*) || \
+			$_fstype == nfs || \
+			! -f /sbin/mount_$_fstype || \
+			$_opt == *noauto* || \
+			$_opt == *xx* ]] && continue
 
 		# Remove any softdep options, as soft updates are not
 		# available in the ramdisk kernels.
@@ -1533,13 +1535,14 @@ questions() {
 	ask_yn "Start sshd(8) by default?" yes
 	if [[ $resp == n ]]; then
 		echo "sshd_flags=NO		# disabled during install" \
-		    >>/mnt/etc/rc.conf.local
+			>>/mnt/etc/rc.conf.local
 	fi
 
-	ask "NTP server? (host, 'none' or 'default')" none
-	if [[ $resp != none ]]; then
+	ask_yn "Start ntpd(8) by default?" no
+	if [[ $resp == y ]]; then
 		echo "ntpd_flags=		# enabled during install" \
 			>>/mnt/etc/rc.conf.local
+		ask "NTP server? (hostname or 'default')" default
 		if [[ $resp != default ]]; then
 			# Comment out the default 'servers' line, and add a
 			# 'server' line with the first token in $resp as the
@@ -1555,7 +1558,7 @@ server $1
 		ask_yn "Do you expect to run the X Window System?"
 		if [[ $resp == y ]]; then
 			sed -e "/^#\(machdep\.allowaperture=${MDXAPERTURE}\)/s//\1	/" \
-			    /mnt/etc/sysctl.conf >/tmp/sysctl.conf
+				/mnt/etc/sysctl.conf >/tmp/sysctl.conf
 			cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
 		fi
 	fi
@@ -1588,13 +1591,13 @@ finish_up() {
 		# and will thus not get mounted.
 		while read _dev _mp _fstype _rest; do
 			[[ $_fstype == swap ]] && \
-			    /mnt/sbin/swapctl -a $_dev >/dev/null 2>&1
+				/mnt/sbin/swapctl -a $_dev >/dev/null 2>&1
 		done </mnt/etc/fstab
 	fi
 
 	if grep -qs '^rtsol' /mnt/etc/hostname.*; then
 		sed -e "/^#\(net\.inet6\.ip6\.accept_rtadv\)/s//\1/" \
-		    /mnt/etc/sysctl.conf >/tmp/sysctl.conf
+			/mnt/etc/sysctl.conf >/tmp/sysctl.conf
 		cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
 	fi
 
@@ -1639,7 +1642,7 @@ __EOT
 ROOTDISK=
 ROOTDEV=
 
-VERSION=43
+VERSION=45
 
 VNAME="$(( $VERSION / 10 )).$(( $VERSION % 10 ))"
 SETDIR="$VNAME/$ARCH"
