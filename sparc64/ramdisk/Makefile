@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.20 2008/12/02 01:01:08 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.22 2009/04/17 15:59:48 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -30,7 +30,7 @@ GZIPEXT?=	.gz
 MOUNT_POINT?=	/mnt
 DISKTYPE=	rdroot
 PID!=		echo $$$$
-REALIMAGE!=	echo /tmp/image.${PID}
+REALIMAGE!=	echo /var/tmp/image.${PID}
 IMAGE?=		ramdisk${REV}.fs
 IMAGESIZE?=	8192 # 4MB in 512 byte blocks
 NEWFS_WILL_FAIL?=false
@@ -110,9 +110,6 @@ unconfig:
 
 .PRECIOUS:	${IMAGE}
 
-install:
-	cp ${FLOPPY} ${DESTDIR}/snapshot/
-
 ${CBIN}.conf: ${LISTS}
 	awk -f ${UTILS}/makeconf.awk CBIN=${CBIN} ${LISTS} > ${CBIN}.conf
 
@@ -124,17 +121,19 @@ ${CBIN}: ${CBIN}.mk ${CBIN}.cache ${CBIN}.c
 
 do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
-	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
-	    REV=${REV} ARCHDIR=${.CURDIR}/.. TARGDIR=${MOUNT_POINT} \
-	    UTILS=${UTILS} sh ${UTILS}/runlist.sh ${LISTS}
+	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} REV=${REV} \
+	    ARCHDIR=${.CURDIR}/.. TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:
 	/bin/rm -f core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	    *.o *.lo *.c bsd ${BSD_RD} bsd.gz ${FLOPPY} elfrdsetroot
 
-beforeinstall:
-	cp ${BSD.RD} ${DESTDIR}/snapshot
+.ifdef RELEASEDIR
+install:
+	cp ${FLOPPY} ${BSD.RD} ${RELEASEDIR}
+.endif
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>

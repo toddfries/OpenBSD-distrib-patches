@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.16 2009/04/12 16:12:53 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.18 2009/04/17 15:59:47 deraadt Exp $
 
 CBIN=		instbin
 ARCHDIR=	${.CURDIR}/..
@@ -16,7 +16,7 @@ VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 DISKTYPE=	rdroot
 PID!=		echo $$$$
-REALIMAGE!=	echo /tmp/image.${PID}
+REALIMAGE!=	echo /var/tmp/image.${PID}
 IMAGE?=		ramdisk${REV}.fs
 IMAGESIZE?=	4608 # 2.25MB in 512 byte blocks
 NEWFS_WILL_FAIL?=false
@@ -86,8 +86,9 @@ ${IMAGE}: ${CBIN}
 	newfs ${NEWFSOPTS_RD} ${VND_RDEV} || ${NEWFS_WILL_FAIL}
 	mount ${VND_DEV} ${MOUNT_POINT}
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
-	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} ARCHDIR=${ARCHDIR} \
-	    TARGDIR=${MOUNT_POINT} UTILS=${UTILS} sh ${UTILS}/runlist.sh ${LISTS}
+	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
+	    ARCHDIR=${ARCHDIR} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 	@echo ""
 	@df -i ${MOUNT_POINT}
@@ -111,10 +112,10 @@ clean cleandir:
 	/bin/rm -f *.core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	${CBIN}.conf *.o *.lo *.c obsd bsd bsd.* ${LIF} ${CDROM}
 
+.ifdef RELEASEDIR
 beforeinstall:
-	cp bsd.rd ${DESTDIR}/snapshot
-	cp ${LIF} ${DESTDIR}/snapshot
-	cp ${CDROM} ${DESTDIR}/snapshot
+	cp bsd.rd ${LIF} ${CDROM} ${RELEASEDIR}
+.endif
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
