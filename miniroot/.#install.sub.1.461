@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.466 2009/04/19 21:42:00 krw Exp $
+#	$OpenBSD: install.sub,v 1.461 2009/04/18 01:07:48 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2007 Todd Miller, Theo de Raadt, Ken Westerback
@@ -126,6 +126,12 @@ __EOT
 		;;
 
 	install)
+		cat <<__EOT
+It is often helpful to have the installation notes handy. For complex disk
+configurations, relevant disk hardware manuals and a calculator are useful.
+
+__EOT
+
 		if [ -f /etc/fstab ]; then
 			cat <<__EOT
 You seem to be trying to restart an interrupted installation! You can skip
@@ -171,7 +177,7 @@ scan_dmesg() {
 scan_disknames() {
 	local _n _oifs=$IFS
 	IFS=","
-	bsort $(for _n in $(sysctl -n hw.disknames); do echo "$_n "; done | sed -ne "$1")
+	bsort $(for _n in $(disknames); do echo "$_n "; done | sed -ne "$1")
 	IFS=$_oifs
 }
 
@@ -543,24 +549,23 @@ __EOT
 configure_ifs() {
 	local _IFDEVS=$IFDEVS _ifs _name _hn
 
-	while [[ -n $_IFDEVS ]]; do
-		ask_which "interface" "do you wish to configure" "$_IFDEVS"
+	while :; do
+		ask_which "interface" "do you wish to initialize" "$_IFDEVS" \
+			"" "No more interfaces to initialize"
 		[[ $resp == done ]] && break
 
 		_ifs=$resp
 		_hn=/tmp/hostname.$_ifs
-		rm -f $_hn
 
-		# First interface configured will use the hostname without
-		# asking the user.
-		resp=$(hostname -s)
-		[[ $_IFDEVS != $IFDEVS ]] && ask "Symbolic (host) name for $_ifs?" $resp
+		# Get symbolic name - will be used in DHCP requests.
+		ask "Symbolic (host) name for $_ifs?" "$(hostname -s)"
 		_name=$resp
 
-		v4_config $_ifs $_name $_hn
-		v6_config $_ifs $_name $_hn
+		rm -f $_hn
+		v4_config "$_ifs" "$_name" "$_hn"
+		v6_config "$_ifs" "$_name" "$_hn"
 
-		[[ -f $_hn ]] && chmod 640 $_hn && _IFDEVS=$(rmel $_ifs $_IFDEVS)
+		[[ -f $_hn ]] && chmod 640 $_hn && _IFDEVS=$(rmel "$_ifs" $_IFDEVS)
 	done
 }
 
@@ -643,8 +648,8 @@ v4_config() {
 		fi
 	fi
 
-	[[ -x /sbin/dhclient ]] && { _prompt="or 'dhcp' " ; : ${_addr:=dhcp} ; }
-	_prompt="IPv4 address for $_ifs? (${_prompt}or 'none')"
+	[[ -x /sbin/dhclient ]] && { _prompt=" or 'dhcp'" ; : ${_addr:=dhcp} ; }
+	_prompt="IPv4 address for $_ifs? (or 'none'$_prompt)"
 
 	ask_until "$_prompt" "$_addr"
 	case $resp in
@@ -1668,9 +1673,6 @@ md_consoleinfo
 # the contents of the other sets, not the other way around.
 THESETS="bsd bsd.rd bsd.mp $MDSETS"
 DEFAULTSETS="bsd bsd.rd"
-if [ $(sysctl -n hw.ncpufound) -gt 1 ]; then
-	DEFAULTSETS="$DEFAULTSETS bsd.mp"
-fi
 for _set in base etc misc comp man game xbase xetc xshare xfont xserv site ; do
 	[[ $MODE == upgrade && ( $_set == etc || $_set == xetc ) ]] && continue
 	THESETS="$THESETS ${_set}${VERSION}.tgz"
