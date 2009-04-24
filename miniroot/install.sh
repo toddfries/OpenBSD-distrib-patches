@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.168 2009/04/19 17:56:01 deraadt Exp $
+#	$OpenBSD: install.sh,v 1.171 2009/04/24 01:04:33 krw Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -328,33 +328,12 @@ THESETS="$THESETS site$VERSION-$(hostname -s).tgz"
 # etc, or from resolv.conf.shadow.
 ( cd /tmp; rm -f host* my* resolv.conf resolv.conf.tail dhclient.* )
 
-ask_yn "Configure the network?" yes
-[[ $resp == y ]] && donetconfig
+donetconfig
 
-_oifs=$IFS
-IFS=
-while :; do
-	askpass "Password for root account? (will not echo)"
-	_password=$resp
-
-	askpass "Password for root account? (again)"
-	# N.B.: Need quotes around $resp and $_password to preserve leading
-	#       or trailing spaces.
-	[[ "$resp" == "$_password" ]] && break
-
-	echo "Passwords do not match, try again."
-done
-IFS=$_oifs
+askpassword root
+_rootpass="$_password"
 
 install_sets
-
-if [ -f /mnt/bsd.mp -a -f /mnt/bsd ]; then
-	if [ $(sysctl -n hw.ncpufound) -gt 1 ]; then
-		echo "Multiprocessor machine; using bsd.mp automatically."
-		mv /mnt/bsd /mnt/bsd.sp
-		mv /mnt/bsd.mp /mnt/bsd
-	fi
-fi
 
 # Remount all filesystems in /etc/fstab with the options from /etc/fstab, i.e.
 # without any options such as async which may have been used in the first
@@ -371,6 +350,8 @@ mv /tmp/ttys /mnt/etc/ttys
 
 # Handle questions...
 questions
+
+user_setup
 
 echo -n "Saving configuration files..."
 
@@ -409,17 +390,17 @@ for _f in fstab hostname* kbdtype my* ttys *.conf *.tail; do
 	[[ -f $_f && -s $_f ]] && mv $_f /mnt/etc/.
 done )
 
-_encr=`/mnt/usr/bin/encrypt -b 8 -- "$_password"`
-echo "1,s@^root::@root:${_encr}:@
-w
-q" | /mnt/bin/ed /mnt/etc/master.passwd 2>/dev/null
-/mnt/usr/sbin/pwd_mkdb -p -d /mnt/etc /etc/master.passwd
-
 echo -n "done.\nGenerating initial host.random file..."
 ( cd /mnt/var/db
 /mnt/bin/dd if=/mnt/dev/urandom of=host.random bs=1024 count=64 >/dev/null 2>&1
 chmod 600 host.random >/dev/null 2>&1 )
 echo "done."
+
+_encr=`/mnt/usr/bin/encrypt -b 8 -- "$_rootpass"`
+echo "1,s@^root::@root:${_encr}:@
+w
+q" | /mnt/bin/ed /mnt/etc/master.passwd 2>/dev/null
+/mnt/usr/sbin/pwd_mkdb -p -d /mnt/etc /etc/master.passwd
 
 set_timezone
 

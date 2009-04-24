@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.466 2009/04/19 21:42:00 krw Exp $
+#	$OpenBSD: install.sub,v 1.474 2009/04/24 01:14:01 krw Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2007 Todd Miller, Theo de Raadt, Ken Westerback
@@ -282,6 +282,51 @@ ask() {
 	set +o noglob
 }
 
+# Ask for a password twice, saving the input in $_password
+askpassword() {
+	_oifs=$IFS
+	IFS=
+	while :; do
+		askpass "Password for $1 account? (will not echo)"
+		_password=$resp
+
+		askpass "Password for $1 account? (again)"
+		# N.B.: Need quotes around $resp and $_password to preserve leading
+		#       or trailing spaces.
+		[[ "$resp" == "$_password" ]] && break
+
+		echo "Passwords do not match, try again."
+	done
+	IFS=$_oifs
+}
+
+user_setup() {
+	local _u _n _encr
+
+	ask "Setup a user? (enter a lower-case loginname, or 'no')" no
+
+	case $resp in
+	n|no)	return ;;
+	esac
+
+	_u=$resp
+	ask "Full user name for $_u?" $_u
+	_n=$resp
+
+	askpassword $_u
+	_encr=`/mnt/usr/bin/encrypt -b 8 -- "$_password"`
+	echo "${_u}:${_encr}:1000:10::0:0:${_n}:/home/${_u}:/bin/ksh" \
+	    >> /mnt/etc/master.passwd
+
+	mkdir -p /mnt/home/$_u
+	(cd /mnt/etc/skel; cp -pR . /mnt/home/$_u)
+	cp -p /mnt/var/mail/root /mnt/var/mail/$_u
+	chown -R 1000.10 /mnt/home/$_u /mnt/var/mail/$_u
+	echo "1,s@wheel:.:0:root\$@wheel:\*:0:root,${_u}@
+w
+q" | /mnt/bin/ed /mnt/etc/group 2>/dev/null
+}
+
 # Ask for user input until a non-empty reply is entered.
 #
 #    $1    = the question to ask the user
@@ -416,6 +461,14 @@ edit_tmp_file() {
 
 	ask_yn "Edit $_file with $EDITOR?"
 	[[ $resp == y ]] && $EDITOR /tmp/$_file
+}
+
+# Offer to shell out for manual network configuration, and do so if
+# the user accepts the offer.
+manual_net_cfg() {
+	ask_yn "Do you want to do any manual network configuration?"
+
+	[[ $resp == y ]] && { echo "Type 'exit' to return to $MODE." ; sh ; }
 }
 
 # log in via ftp to host $1 as user $2 with password $3
@@ -883,18 +936,6 @@ enable_network() {
 	# Use loopback, not the wire.
 	route -qn add -host `hostname` 127.0.0.1 >/dev/null
 	route -qn add -net 127 127.0.0.1 -reject >/dev/null
-
-	# Display results...
-	echo "Network interface configuration:"
-	ifconfig -a media
-
-	# enable the resolver if resolv.conf is available
-	route -n show
-	if [ -f /etc/resolv.conf ]; then
-		echo "\nResolver enabled."
-	else
-		echo "\nResolver not enabled."
-	fi
 }
 
 # Install a user-selected subset of the files in $2 from the source
@@ -1031,16 +1072,6 @@ ftp_error() {
 	return 1
 }
 
-set_ftp_opt() {
-	local _q=$1 _opt=$2
-	ask_yn "Use $_q?" $(isin $_opt $FTPOPTS && echo "yes")
-
-	case $resp in
-	y) FTPOPTS=$(addel $_opt $FTPOPTS) ;;
-	n) FTPOPTS=$(rmel $_opt $FTPOPTS) ;;
-	esac
-}
-
 # Get several parameters from the user, and xfer
 # files from the server.
 # $1 = url type (ftp or http)
@@ -1099,13 +1130,6 @@ install_url() {
 			;;
 		esac
 	done
-
-	# Some older servers lie about their support for passive mode ftp, so
-	# ask the user if it worth trying passive mode to the chosen server.
-	# Irrelevant if using a proxy.
-	if [[ $_url_type == ftp && -z $ftp_proxy ]]; then
-		set_ftp_opt "active mode ftp" "-A"
-	fi
 
 	# Get server directory
 	eval resp=\$_${_url_type}_server_dir
@@ -1404,7 +1428,7 @@ munge_fstab() {
 # Must mount filesystems manually, one at a time, so we can make
 # sure the mount points exist.
 mount_fs() {
-	local _async=$1 _dev _mp _fstype _opt _rest
+	local _async=$1 _dev _mp _fstype _opt _rest _err _msg
 
 	while read _dev _mp _fstype _opt _rest; do
 		# If not the root filesystem, make sure the mount
@@ -1412,7 +1436,10 @@ mount_fs() {
 		[ "$_mp" = "/mnt" ] || mkdir -p $_mp
 
 		# Mount the filesystem. If the mount fails, exit.
-		if ! mount -v -t $_fstype $_async -o $_opt $_dev $_mp ; then
+		_msg=$(mount -v -t $_fstype $_async -o $_opt $_dev $_mp)
+		_err=$?
+		echo $_msg | sed -e 's/, ctime=[^,)]*//'
+		if ! $_e ; then
 			# In addition to the error message displayed by mount ...
 			cat <<__EOT
 
@@ -1510,6 +1537,7 @@ donetconfig() {
 	# Get/Confirm an IPv4 default route if an IPv4 address was configured.
 	[[ -n $(ifconfig -a | sed -ne '/[ 	]inet .* broadcast /p') ]] && v4_defroute
 
+	manual_net_cfg
 }
 
 populateusrlocal() {
@@ -1602,6 +1630,7 @@ finish_up() {
 	cd /
 
 	md_installboot $ROOTDISK
+	cd /
 
 	populateusrlocal
 
@@ -1667,10 +1696,7 @@ md_consoleinfo
 # Ensure that siteXX.tgz is the *last* set listed so its contents overwrite
 # the contents of the other sets, not the other way around.
 THESETS="bsd bsd.rd bsd.mp $MDSETS"
-DEFAULTSETS="bsd bsd.rd"
-if [ $(sysctl -n hw.ncpufound) -gt 1 ]; then
-	DEFAULTSETS="$DEFAULTSETS bsd.mp"
-fi
+: ${DEFAULTSETS:="bsd bsd.rd"}
 for _set in base etc misc comp man game xbase xetc xshare xfont xserv site ; do
 	[[ $MODE == upgrade && ( $_set == etc || $_set == xetc ) ]] && continue
 	THESETS="$THESETS ${_set}${VERSION}.tgz"
@@ -1679,7 +1705,7 @@ for _set in base etc misc comp man game xbase xetc xshare xfont xserv site ; do
 done
 # Since etc${VERSION}.tgz is not in DEFAULTSETS for upgrades, it can always be
 # in SANESETS.
-SANESETS="bsd base${VERSION}.tgz etc${VERSION}.tgz"
+SANESETS="${SANESETS:-bsd} base${VERSION}.tgz etc${VERSION}.tgz"
 
 # decide upon an editor
 : ${EDITOR:=ed}
