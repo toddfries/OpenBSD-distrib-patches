@@ -1,7 +1,7 @@
-#	$OpenBSD: install.sub,v 1.485 2009/04/25 20:56:39 miod Exp $
+#	$OpenBSD: install.sub,v 1.489 2009/04/26 21:21:12 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
-# Copyright (c) 1997-2007 Todd Miller, Theo de Raadt, Ken Westerback
+# Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -760,7 +760,7 @@ v6_config() {
 
 v4_defroute() {
 	local _dr _prompt=" or 'none'"
-	
+
 	# Get/Confirm an IPv4 default route if an IPv4 address was configured.
 	[[ -n $(ifconfig | sed -ne '/[ 	]inet .* broadcast /p') ]] || return
 
@@ -988,10 +988,10 @@ __EOT
 		echo -n "Getting $_f ..."
 		rm -f /tmp/h
 		case $_f in
-		*.tgz)	ftp -T "$_f" $FTPOPTS -o - -m "$_src/$_f" | \
+		*.tgz)	ftp $FTPOPTS -o - -m "$_src/$_f" | \
 			    $shacmd | tar zxphf - -C /mnt
 			;;
-		*)	ftp -T "$_f" $FTPOPTS -o - -m "$_src/$_f" | \
+		*)	ftp $FTPOPTS -o - -m "$_src/$_f" | \
 			    $shacmd > "/mnt/$_f"
 			;;
 		esac
@@ -1322,9 +1322,7 @@ set_timezone() {
 
 		if [[ -f $_zonepath ]]; then
 			TZ=${_zonepath#$_zoneroot}
-			echo -n "Setting local timezone to '$TZ'..."
 			ln -sf /usr/share/zoneinfo/$TZ /mnt/etc/localtime
-			echo "done."
 			return
 		fi
 
@@ -1554,7 +1552,7 @@ xquestions() {
 			return
 		fi
 	done
-			
+
 	# XXX if any of the X sets are not installed, we should
 	# not ask these questions
 	if [[ -n $MDXAPERTURE ]]; then
