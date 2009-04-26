@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.474 2009/04/24 01:14:01 krw Exp $
+#	$OpenBSD: install.sub,v 1.485 2009/04/25 20:56:39 miod Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2007 Todd Miller, Theo de Raadt, Ken Westerback
@@ -81,9 +81,9 @@ set_term() {
 	[[ -x /sbin/kbd ]] || return
 	_tables=$(bsort $(kbd -l | egrep -v "^(user|tables|encoding)"))
 	while :; do
-		ask "kbd(8) mapping? ('L' for list)" "none"
+		ask "kbd(8) mapping? ('?' for list)" "none"
 		case $resp in
-		[Ll?])	echo "Major tables: $_tables" ;;
+		?)	echo "Major tables: $_tables" ;;
 		none)	return ;;
 		*)	kbd $resp && { echo $resp >/tmp/kbdtype ; return ; } ;;
 		esac
@@ -224,7 +224,7 @@ stdsize ()  {
 
 	set -- " " K M G T P E Z Y
 
-	while (( ${#_sz} > 3 )); do
+	while (( ${#_sz} > 4 )); do
 		shift
 		_p=${_sz%[0-9][0-9][0-9]}
 		_s=${_sz#$_p}
@@ -232,9 +232,16 @@ stdsize ()  {
 		_sz=$_p
 	done
 
-	(( _s > 500 )) && : $(( _sz = _sz + 1 ))
+	_sz=$(( _sz * 512))
+	if (( ${#_sz} > 3 )); then
+		shift
+		_p=${_sz%[0-9][0-9][0-9]}
+		_s=${_sz#$_p}
+		_s=${_s##+(0)}
+		_sz=$_p
+	fi
 
-	echo "$(( _sz * 512 )) ${1}Bytes"
+	echo "${_sz} ${1}Bytes"
 }
 
 # Ask for a password, saving the input in $resp.
@@ -452,17 +459,6 @@ bsort() {
 	bsort $_l
 }
 
-# Offer to edit a file in /tmp and execute ${EDITOR} to do so if the user
-# accepts the offer.
-#
-# $1 == file in /tmp to edit
-edit_tmp_file() {
-	local _file=$1
-
-	ask_yn "Edit $_file with $EDITOR?"
-	[[ $resp == y ]] && $EDITOR /tmp/$_file
-}
-
 # Offer to shell out for manual network configuration, and do so if
 # the user accepts the offer.
 manual_net_cfg() {
@@ -597,7 +593,7 @@ configure_ifs() {
 	local _IFDEVS=$IFDEVS _ifs _name _hn
 
 	while [[ -n $_IFDEVS ]]; do
-		ask_which "interface" "do you wish to configure" "$_IFDEVS"
+		ask_which "network interface" "do you wish to configure" "$_IFDEVS"
 		[[ $resp == done ]] && break
 
 		_ifs=$resp
@@ -764,6 +760,9 @@ v6_config() {
 
 v4_defroute() {
 	local _dr _prompt=" or 'none'"
+	
+	# Get/Confirm an IPv4 default route if an IPv4 address was configured.
+	[[ -n $(ifconfig | sed -ne '/[ 	]inet .* broadcast /p') ]] || return
 
 	[[ -x /sbin/dhclient ]] && _prompt=", 'dhcp'$_prompt"
 	_prompt="Default IPv4 route? (IPv4 address$_prompt)"
@@ -1005,8 +1004,10 @@ __EOT
 				# XXX should mark failure somehow
 			fi
 			DEFAULTSETS=$(rmel $_f $DEFAULTSETS)
+			GOTSETS="$GOTSETS $_f"
 		else
 			DEFAULTSETS=$(rmel $_f $DEFAULTSETS)
+			GOTSETS="$GOTSETS $_f"
 		fi
 	done
 }
@@ -1497,6 +1498,7 @@ donetconfig() {
 	local _dn _ns _n
 
 	configure_ifs
+	v4_defroute
 
 	# As dhclient will populate /etc/resolv.conf, a symbolic link to
 	# /tmp/resolv.conf.shadow, mv any such file to /tmp/resolv.conf
@@ -1525,7 +1527,7 @@ donetconfig() {
 	hostname "$(hostname -s).$resp"
 
 	# Get/Confirm nameservers, and construct appropriate resolv.conf.
-	ask "DNS nameserver? (IP address or 'none')" "${_ns:=none}"
+	ask "DNS nameservers? (IP address list or 'none')" "${_ns:=none}"
 	if [[ $resp != none ]]; then
 		echo "lookup file bind" >/tmp/resolv.conf
 		for _ns in $resp; do
@@ -1534,15 +1536,43 @@ donetconfig() {
 		cp /tmp/resolv.conf /tmp/resolv.conf.shadow
 	fi
 
-	# Get/Confirm an IPv4 default route if an IPv4 address was configured.
-	[[ -n $(ifconfig -a | sed -ne '/[ 	]inet .* broadcast /p') ]] && v4_defroute
-
 	manual_net_cfg
 }
 
 populateusrlocal() {
 	if [ -f /mnt/etc/mtree/BSD.local.dist ]; then
 		/mnt/usr/sbin/chroot /mnt /usr/sbin/mtree -Uedqn -p /usr/local -f /etc/mtree/BSD.local.dist >/dev/null
+	fi
+}
+
+xquestions() {
+	local _xdmask=y
+
+	# If any of the X11 sets are missing, then no need to enable X
+	for i in xbase xetc xshare xfont xserv; do
+		if ! isin $i${VERSION}.tgz $GOTSETS; then
+			return
+		fi
+	done
+			
+	# XXX if any of the X sets are not installed, we should
+	# not ask these questions
+	if [[ -n $MDXAPERTURE ]]; then
+		ask_yn "Do you expect to run the X Window System?"
+		if [[ $resp == y ]]; then
+			sed -e "/^#\(machdep\.allowaperture=${MDXAPERTURE}\)/s//\1	/" \
+				/mnt/etc/sysctl.conf >/tmp/sysctl.conf
+			cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
+		fi
+		_xdmask=$resp	# if aperture was n, do not ask for xdm
+	fi
+
+	if [[ -n $MDXDM && $_xdmask == y ]]; then
+		ask_yn "Do you want the X Window System to be started by xdm(1)?"
+		if [[ $resp == y ]]; then
+			echo "xdm_flags=		# enabled during install" \
+				>>/mnt/etc/rc.conf.local
+		fi
 	fi
 }
 
@@ -1571,14 +1601,7 @@ server $1
 		fi
 	fi
 
-	if [[ -n $MDXAPERTURE ]]; then
-		ask_yn "Do you expect to run the X Window System?"
-		if [[ $resp == y ]]; then
-			sed -e "/^#\(machdep\.allowaperture=${MDXAPERTURE}\)/s//\1	/" \
-				/mnt/etc/sysctl.conf >/tmp/sysctl.conf
-			cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
-		fi
-	fi
+	xquestions
 
 	[[ -n $CDEV ]] || return
 	_d=${CPROM:-$CDEV}
@@ -1640,8 +1663,9 @@ finish_up() {
 	cat <<__EOT
 
 CONGRATULATIONS! Your OpenBSD $MODE has been successfully completed!
-To boot the new system, enter halt at the command prompt. Once the
-system has halted, reset the machine and boot from the disk.
+To boot the new system, enter "reboot" or "halt" at the command prompt.
+When you login to your new system the first time, please read your mail
+using the "mail" command.
 __EOT
 
 	md_congrats
