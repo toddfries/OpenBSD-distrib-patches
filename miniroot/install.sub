@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.493 2009/04/28 21:40:12 deraadt Exp $
+#	$OpenBSD: install.sub,v 1.508 2009/05/01 16:36:07 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -81,10 +81,10 @@ set_term() {
 	[[ -x /sbin/kbd ]] || return
 	_tables=$(bsort $(kbd -l | egrep -v "^(user|tables|encoding)"))
 	while :; do
-		ask "kbd(8) mapping? ('?' for list)" "none"
+		ask "Choose your keyboard type if it is nationalized? ('?' for list)" "default"
 		case $resp in
-		?)	echo "Major tables: $_tables" ;;
-		none)	return ;;
+		"?")	echo "Major tables: $_tables" ;;
+		default) return ;;
 		*)	kbd $resp && { echo $resp >/tmp/kbdtype ; return ; } ;;
 		esac
 	done
@@ -97,29 +97,23 @@ welcome() {
 
 Welcome to the $OBSD $MODE program.
 
-This program will help you $MODE OpenBSD. At any prompt except password
-prompts you can escape to a shell by typing '!'. Default answers are shown
-in []'s and are selected by pressing RETURN.  At any time you can exit this
-program by pressing Control-C, but exiting during an $MODE can leave your
-system in an inconsistent state.
-
-__EOT
-
-	# Configure the terminal and keyboard.
-	set_term
-
-	cat <<__EOT
-
-IS YOUR DATA BACKED UP? As with anything that modifies disk contents, this
-program can cause SIGNIFICANT data loss.
+This program will $MODE OpenBSD. At any prompt except password prompts you
+can escape to a shell by typing '!'. Default answers are shown in []'s and
+are selected by pressing RETURN.  At any time you can exit this program by
+pressing Control-C, but exiting during an $MODE can leave your system in an
+inconsistent state.
 
 __EOT
 
 	case $MODE in
 	upgrade)
 		cat <<__EOT
-NOTE: once your system has been upgraded, you must manually merge any changes
-to files in the 'etc' set into the files already on your system.
+IS YOUR DATA BACKED UP?  Upgrades are never as simple as they seem.  While
+carefully designed, this process could lead to SIGNIFICANT data loss.
+
+NOTE: Once your system has been upgraded, you must manually merge any
+changes to files in the 'etc' set into the files already on your system,
+perhaps using the sysmerge(8) command.
 
 __EOT
 		_q="Proceed with upgrade?"
@@ -134,22 +128,28 @@ the disk preparation steps and continue, or you can reboot and start over.
 __EOT
 			_q="Skip disk initialization?"
 		else
-			_q="Proceed with install?"
+		cat <<__EOT
+If you change your mind and do not want to install, type Control-C now
+and then type 'reboot' or 'halt' at the command prompt.
+
+__EOT
+			return
 		fi
 		;;
 	esac
 
-	ask_yn "$_q"
+	[[ -n $_q ]] && ask_yn "$_q"
 	if [[ $resp == n ]]; then
 		cat <<__EOT
 
-Enter 'halt' at the prompt to gracefully exit OpenBSD. You can then
-power cycle the machine and boot your original OS.
+Remove your install media (if any), and enter 'reboot' at the command
+prompt to return to your original OS.
 __EOT
 		exit
 	fi
 
 	echo "Cool! Let's get to it."
+	echo
 }
 
 # Echo the file $1 to standard output, skipping any lines that begin with a
@@ -321,9 +321,10 @@ user_setup() {
 	_n=$resp
 
 	askpassword $_u
-	_encr=`/mnt/usr/bin/encrypt -b 8 -- "$_password"`
+	_encr="*"
+	[[ -n "$_password" ]] && _encr=`/mnt/usr/bin/encrypt -b 8 -- "$_password"`
 	echo "${_u}:${_encr}:1000:10::0:0:${_n}:/home/${_u}:/bin/ksh" \
-	    >> /mnt/etc/master.passwd
+		>> /mnt/etc/master.passwd
 
 	mkdir -p /mnt/home/$_u
 	(cd /mnt/etc/skel; cp -pR . /mnt/home/$_u)
@@ -515,7 +516,7 @@ addhostent() {
 #
 # Set $resp to list of selected sets.
 select_sets() {
-	local _avail=$1 _selected=$2 _next _f _action _col _p
+	local _avail=$1 _selected=$2 _f _action _col _p
 	typeset -L18 _l
 
 	cat <<__EOT
@@ -526,14 +527,12 @@ sets are labelled '[X]'.
 __EOT
 	while :; do
 		_action=
-		_next=
 		_col=0
 		for _f in $_avail; do
 			if isin $_f $_selected; then
 				_p="[X] $_f"
 			else
 				_p="[ ] $_f"
-				: ${_next:=$_f}
 			fi
 			if (( _col == 0 )); then
 				echo -n '    '
@@ -558,9 +557,8 @@ __EOT
 			# complete a partial column
 			echo
 		fi
-		: ${_next:=done}
 
-		ask "Set name? (or 'abort' or 'done')" "$_next"
+		ask "Set name? (or 'abort' or 'done')" done
 		case $resp in
 		abort)	_selected=
 			break ;;
@@ -600,9 +598,13 @@ configure_ifs() {
 		_vl="vlan$_vli"
 	fi
 
-	# First time, default value is first interface
-	set -- $IFDEVS
-	_p=$1
+	# Select the default interface
+	if ifconfig netboot >/dev/null 2>&1; then
+		_p=$(ifconfig netboot | sed -ne '1s/:.*//p')
+	else
+		set -- $IFDEVS
+		_p=$1
+	fi
 
 	while [[ -n $_IFDEVS ]]; do
 		ask_which "network interface" "do you wish to configure" \
@@ -949,7 +951,7 @@ enable_network() {
 					cmd2="$dt $dtaddr"
 					;;
 				esac
-				if [ ! -n "$name" ]; then
+				if [ -z "$name" ]; then
 					echo "/mnt/etc/hostname.$if: invalid network configuration file"
 					return
 				fi
@@ -1136,7 +1138,7 @@ ftp_error() {
 # Note:	_ftp_server_ip, _ftp_server_dir, _ftp_server_login,
 #	and FTPOPTS must be global.
 install_url() {
-	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd
+	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd _setdir
 
 	ask "HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none')" \
 		"${ftp_proxy:-none}"
@@ -1190,8 +1192,10 @@ install_url() {
 	done
 
 	# Get server directory
+	_setdir=$SETDIR
+	[[ $_url_type == ftp || $_url_type == http ]] && _setdir=$FTPSETDIR
 	eval resp=\$_${_url_type}_server_dir
-	ask_until "Server directory?" "${resp:-pub/OpenBSD/$SETDIR}"
+	ask_until "Server directory?" "${resp:-pub/OpenBSD/$_setdir}"
 	eval _${_url_type}_server_dir=$resp
 
 	if [[ $_url_type == ftp ]]; then
@@ -1361,7 +1365,7 @@ set_timezone() {
 
 		ask "What timezone are you in? ('?' for list)" "$TZ"
 
-		if [[ $resp == ? ]]; then
+		if [[ $resp == "?" ]]; then
 			ls -F ${_zonepath}
 			continue;
 		fi
@@ -1372,7 +1376,7 @@ set_timezone() {
 			ask "What sub-timezone of '${_zonepath#$_zoneroot}' are you in? ('?' for list)"
 			case $resp in
 			"")	;;
-			?)	ls -F $_zonepath ;;
+			"?")	ls -F $_zonepath ;;
 			*)	_zonepath=$_zonepath/$resp ;;
 			esac
 		done
@@ -1409,7 +1413,7 @@ install_sets() {
 	local _d=disk _locs="disk ftp http"
 
 	[[ -n $CDDEVS ]] && { _locs="cd $_locs" ; _d=cd ; }
-	ifconfig -g netboot > /dev/null 2>&1 && _d=ftp
+	ifconfig netboot > /dev/null 2>&1 && _d=ftp
 	[[ -x /sbin/mount_nfs ]] && _locs="$_locs nfs"
 	[[ -n $MTDEVS && -x /bin/mt ]] && _locs="$_locs tape"
 
@@ -1463,6 +1467,10 @@ munge_fstab() {
 		# Remove any softdep options, as soft updates are not
 		# available in the ramdisk kernels.
 		_opt=$(echo $_opt | sed -e 's/softdep//')
+
+		# Change read-only ffs to read-write since we'll potentially
+		# write to these filesystems.
+		[[ $_fstype == ffs ]] && _opt=$(echo $_opt | sed -e 's/ro/rw/')
 
 		# Mount non-ffs filesystems read only.
 		[[ $_fstype == ffs ]] || _opt=$(echo $_opt | sed -e 's/rw/ro/')
@@ -1720,6 +1728,8 @@ finish_up() {
 
 CONGRATULATIONS! Your OpenBSD $MODE has been successfully completed!
 To boot the new system, enter "reboot" or "halt" at the command prompt.
+__EOT
+	[[ $MODE == install ]] && cat <<__EOT
 When you login to your new system the first time, please read your mail
 using the "mail" command.
 __EOT
@@ -1757,11 +1767,18 @@ done
 # Extract and save one boot's worth of dmesg
 dmesg | sed -ne '/^OpenBSD /h;/^OpenBSD /!H;${g;p;}' >/var/run/dmesg.boot
 
+# Are we in a real release, or a snapshot?  If this is a snapshot
+# install media, default us to a snapshot directory.
+FTPSETDIR=$SETDIR
+CURRENT=$(scan_dmesg '/^OpenBSD 4.5\([^ ]*\).*$/s//\1/p')
+[[ -n $CURRENT ]] && FTPSETDIR=snapshots/$ARCH
+
 # Scan /var/run/dmesg.boot for interesting devices.
 DKDEVS=$(scan_disknames "${MDDKDEVS:-/^[sw]d[0-9][0-9]* /s/ .*//p}")
 CDDEVS=$(scan_disknames "${MDCDDEVS:-/^cd[0-9][0-9]* /s/ .*//p}")
 MTDEVS=$(scan_dmesg "${MDMTDEVS:-/^[cms]t[0-9][0-9]* /s/ .*//p}")
 IFDEVS=$(get_ifdevs)
+DISPLAY=$(scan_dmesg '/^wsdisplay[0-9]* /s/ .*//p')
 
 CONSOLE=$(scan_dmesg '/^\([^ ]*\).*: console$/s//\1/p')
 CONSOLE=${CONSOLE% }
@@ -1780,7 +1797,11 @@ THESETS="bsd bsd.rd bsd.mp $MDSETS"
 for _set in base etc misc comp man game xbase xetc xshare xfont xserv site ; do
 	[[ $MODE == upgrade && ( $_set == etc || $_set == xetc ) ]] && continue
 	THESETS="$THESETS ${_set}${VERSION}.tgz"
-	isin $_set xbase xetc xshare xfont xserv site && continue
+	if [[ -z $DISPLAY ]]; then
+		# If we have no displays, skip the X sets
+		isin $_set xbase xetc xshare xfont xserv site && continue
+	fi
+	isin $_set site && continue
 	DEFAULTSETS="$DEFAULTSETS ${_set}${VERSION}.tgz"
 done
 # Since etc${VERSION}.tgz is not in DEFAULTSETS for upgrades, it can always be
@@ -1798,6 +1819,9 @@ umount -v /mnt 1>/dev/null 2>&1
 
 # Introduce ourselves.
 welcome
+
+# Configure the terminal and keyboard.
+set_term
 
 # Get ROOTDISK, ROOTDEV and SWAPDEV.
 if [[ $MODE == install && ! -f /etc/fstab ]]; then
