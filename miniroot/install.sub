@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.508 2009/05/01 16:36:07 deraadt Exp $
+#	$OpenBSD: install.sub,v 1.521 2009/05/05 00:37:09 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -74,20 +74,24 @@
 set_term() {
 	local _tables
 
-	TERM=${TERM:-${MDTERM:-vt220}}
-	ask "Terminal type?" $TERM
-	export TERM=$resp
-
-	[[ -x /sbin/kbd ]] || return
-	_tables=$(bsort $(kbd -l | egrep -v "^(user|tables|encoding)"))
-	while :; do
-		ask "Choose your keyboard type if it is nationalized? ('?' for list)" "default"
-		case $resp in
-		"?")	echo "Major tables: $_tables" ;;
-		default) return ;;
-		*)	kbd $resp && { echo $resp >/tmp/kbdtype ; return ; } ;;
-		esac
-	done
+	export TERM=${TERM:-${MDTERM:-vt220}}
+	if [[ -n $CONSOLE ]]; then
+		echo
+		ask "Terminal type?" $TERM
+		export TERM=$resp
+	else
+		[[ -x /sbin/kbd ]] || return
+		_tables=$(bsort $(kbd -l | egrep -v "^(user|tables|encoding)"))
+		echo
+		while :; do
+			ask "Choose your keyboard type if it is nationalized? ('?' for list)" "default"
+			case $resp in
+			"?")	echo "Major tables: $_tables" ;;
+			default) return ;;
+			*)	kbd $resp && { echo $resp >/tmp/kbdtype ; return ; } ;;
+			esac
+		done
+	fi
 }
 
 welcome() {
@@ -131,7 +135,6 @@ __EOT
 		cat <<__EOT
 If you change your mind and do not want to install, type Control-C now
 and then type 'reboot' or 'halt' at the command prompt.
-
 __EOT
 			return
 		fi
@@ -149,7 +152,6 @@ __EOT
 	fi
 
 	echo "Cool! Let's get to it."
-	echo
 }
 
 # Echo the file $1 to standard output, skipping any lines that begin with a
@@ -291,7 +293,7 @@ ask() {
 
 # Ask for a password twice, saving the input in $_password
 askpassword() {
-	_oifs=$IFS
+	local _oifs=$IFS
 	IFS=
 	while :; do
 		askpass "Password for $1 account? (will not echo)"
@@ -588,7 +590,7 @@ __EOT
 }
 
 configure_ifs() {
-	local _IFDEVS=$IFDEVS _ifs _name _hn _vl _vli _vd _vi _p
+	local _IFDEVS=$IFDEVS _oifs _ifs _name _hn _vl _vli _vd _vi _p
 
 	# Check if the kernel supports vlans, and if so, offer it up
 	ifconfig $vlan99 destroy >/dev/null 2>&1
@@ -1048,17 +1050,17 @@ __EOT
 		rm -f /tmp/h
 		case $_f in
 		*.tgz)	ftp $FTPOPTS -o - -m "$_src/$_f" | \
-			    $shacmd | tar zxphf - -C /mnt
+				$shacmd | tar zxphf - -C /mnt
 			;;
 		*)	ftp $FTPOPTS -o - -m "$_src/$_f" | \
-			    $shacmd > "/mnt/$_f"
+				$shacmd > "/mnt/$_f"
 			;;
 		esac
 		if [ $? -ne 0 ]; then
 			echo "'$_f' did not install correctly."
 		elif [ -f /tmp/h -a -f "/var/hash/$_f" ]; then
 			if [ "$(</tmp/h)" != "$(</var/hash/$_f)" ]; then
-				echo "The SHA256 hash for $_f did not match what bsd.rd expected:"
+				echo "The SHA256 hash for $_f did not match what this bsd.rd expected:"
 				cat /tmp/h
 				# XXX should mark failure somehow
 			fi
@@ -1132,40 +1134,59 @@ ftp_error() {
 	return 1
 }
 
+startftplist() {
+	# If no networks are configured, we do not need the ftplist file
+	ls /tmp/hostname.* /mnt/etc/hostname.* >/dev/null 2>&1 && return
+
+	# ftp.openbsd.org == 129.128.5.191 and will remain at
+	# that address for the foreseeable future.
+	ftp $FTPOPTS -a -o - "http://129.128.5.191/cgi-bin/ftplist.cgi?path=$FTPSETDIR" \
+		2>/tmp/ftplisterr > $SERVERLISTALL & ftppid=$!
+
+	# If the ftp process takes more than 9 seconds, kill it
+	# XXX We are relying on the pid space not randomly biting us --
+	# XXX ftp could terminate early, and the pid could be reused
+	(sleep 9; kill -INT $ftppid >/dev/null 2>&1) &
+}
+
+# Wait for the ftp process to finish, or be killed after the timeout
+# XXX contains a bit of debug code for now
+waitftplist() {
+	local _dot						# XXX
+
+	while [[ -n $(jobs $ftppid 2>/dev/null) ]]; do
+		echo -n .					# XXX
+		_dot=.						# XXX
+		sleep 0.2					# XXX
+	done
+	[[ -n $_dot ]] && echo					# XXX
+}
+
 # Get several parameters from the user, and xfer
 # files from the server.
 # $1 = url type (ftp or http)
 # Note:	_ftp_server_ip, _ftp_server_dir, _ftp_server_login,
 #	and FTPOPTS must be global.
 install_url() {
-	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd _setdir
+	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd
 
+	waitftplist
 	ask "HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none')" \
 		"${ftp_proxy:-none}"
 	unset ftp_proxy http_proxy
 	[[ $resp == none ]] || export ftp_proxy=$resp http_proxy=$resp
 
-	rm -f $SERVERLIST
-	ask_yn "Display the list of known $_url_type servers?"
-	if [[ $resp == y ]]; then
-		# ftp.openbsd.org == 129.128.5.191 and will remain at
-		# that address for the foreseeable future.
-		echo -n "Getting the list from 129.128.5.191 (ftp.openbsd.org)..."
-		ftp $FTPOPTS -a -o - \
-			ftp://129.128.5.191/$FTPDIR/ftplist 2>/tmp/ftplisterr \
-			| sed -ne "/^${_url_type}:\/\//s///p" >$SERVERLIST
-		if [[ -s $SERVERLIST ]]; then
-			echo "done."
-			_prompt="Server? (IP address, hostname, list#, 'done' or '?')"
-			cat -n $SERVERLIST | less -XE
-		else
-			echo "FAILED."
-			cat /tmp/ftplisterr
-		fi
+	if [[ -s $SERVERLISTALL ]]; then
+		_prompt="Server? (IP address, hostname, list#, 'done' or '?')"
+		sed -ne "/^${_url_type}:\/\//s///p" < $SERVERLISTALL > $SERVERLIST
+		set -- $(sed -ne "1p" $SERVERLIST)
+		eval _${_url_type}_server_ip=${1%%/*}
+	else
+		echo "(Was not able to get ftplist from ftp.openbsd.org, but that is OK)"
+		_prompt="Server? (IP address, hostname or 'done')"
 	fi
 
 	# Get server IP address or hostname
-	: ${_prompt:="Server? (IP address, hostname or 'done')"}
 	while :; do
 		eval resp=\$_${_url_type}_server_ip
 		ask_until "$_prompt" "$resp"
@@ -1192,10 +1213,8 @@ install_url() {
 	done
 
 	# Get server directory
-	_setdir=$SETDIR
-	[[ $_url_type == ftp || $_url_type == http ]] && _setdir=$FTPSETDIR
 	eval resp=\$_${_url_type}_server_dir
-	ask_until "Server directory?" "${resp:-pub/OpenBSD/$_setdir}"
+	ask_until "Server directory?" "${resp:-pub/OpenBSD/$FTPSETDIR}"
 	eval _${_url_type}_server_dir=$resp
 
 	if [[ $_url_type == ftp ]]; then
@@ -1237,10 +1256,19 @@ install_url() {
 	else
 		# Assumes index file is "index.txt" for http (or proxy)
 		# We can't use index.html since the format is server-dependent
-		_file_list=$(ftp $FTPOPTS -o - "$_url_base/index.txt" | sed 's///')
+		_file_list=$(ftp $FTPOPTS -o - "$_url_base/index.txt" | \
+			sed -e 's/^.* //' | sed -e 's///')
 	fi
 
 	install_files "$_url_base" "$_file_list"
+
+	# Tell the FTP server what location we used... so it can perform magic
+	if [[ -s $SERVERLIST ]]; then
+		eval _url_base=$_url_type://\$_${_url_type}_server_ip/\$_${_url_type}_server_dir
+		ftp $FTPOPTS -a -o - \
+			"http://129.128.5.191/cgi-bin/ftpinstall.cgi?install=$_url_base" \
+			>/dev/null 2>&1 &
+	fi
 }
 
 install_mounted_fs() {
@@ -1412,6 +1440,8 @@ sane_install() {
 install_sets() {
 	local _d=disk _locs="disk ftp http"
 
+	startftplist
+
 	[[ -n $CDDEVS ]] && { _locs="cd $_locs" ; _d=cd ; }
 	ifconfig netboot > /dev/null 2>&1 && _d=ftp
 	[[ -x /sbin/mount_nfs ]] && _locs="$_locs nfs"
@@ -1438,7 +1468,7 @@ install_sets() {
 # Create a skeletal but useful /etc/fstab from /tmp/fstab by stripping all
 # comment lines and dropping all filesystems which
 #
-#       1) can't be mounted (no mount_* command is found),
+#	1) can't be mounted (no mount_* command is found),
 #	2) have 'xx' in the option field (usually /altroot),
 #	3) have 'noauto' in the option field,
 #	4) are nfs (since name resolution may not be present),
@@ -1619,8 +1649,6 @@ xquestions() {
 		fi
 	done
 
-	# XXX if any of the X sets are not installed, we should
-	# not ask these questions
 	if [[ -n $MDXAPERTURE ]]; then
 		ask_yn "Do you expect to run the X Window System?"
 		if [[ $resp == y ]]; then
@@ -1757,6 +1785,7 @@ SETDIR="$VNAME/$ARCH"
 FTPDIR="pub/OpenBSD/$VNAME"
 FTPOPTS="-V"
 OBSD="OpenBSD/$ARCH $VNAME"
+SERVERLISTALL=/tmp/serverlistall
 SERVERLIST=/tmp/serverlist
 
 # Do not limit ourselves during installs or upgrades.

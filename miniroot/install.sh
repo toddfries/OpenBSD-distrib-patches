@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.177 2009/04/30 01:03:19 deraadt Exp $
+#	$OpenBSD: install.sh,v 1.182 2009/05/05 00:38:02 deraadt Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -60,9 +60,6 @@
 # The name of the file holding the list of configured filesystems.
 FILESYSTEMS=/tmp/filesystems
 
-# The name of the file holding the list of non-default configured swap devices.
-SWAPLIST=/tmp/swaplist
-
 # install.sub needs to know the MODE
 MODE=install
 
@@ -70,22 +67,20 @@ MODE=install
 . install.sub
 
 # If /etc/fstab already exists, skip disk initialization.
-if [ ! -f /etc/fstab ]; then
+if [[ ! -f /etc/fstab ]]; then
 	DISK=
 	_DKDEVS=$DKDEVS
 
 	while :; do
-		_DKDEVS=`rmel "$DISK" $_DKDEVS`
+		_DKDEVS=$(rmel "$DISK" $_DKDEVS)
 
-		# Always do ROOTDISK first, and repeat until
-		# it is configured acceptably.
+		# Always do ROOTDISK first, and repeat until it is configured.
 		if isin $ROOTDISK $_DKDEVS; then
 			resp=$ROOTDISK
 			rm -f /tmp/fstab
 			# Make sure empty files exist so we don't have to
 			# keep checking for their existence before grep'ing.
 			cat /dev/null >$FILESYSTEMS
-			cat /dev/null >$SWAPLIST
 		else
 			# Force the user to think and type in a disk name by
 			# making 'done' the default choice.
@@ -109,13 +104,15 @@ if [ ! -f /etc/fstab ]; then
 		_i=0
 		disklabel $DISK 2>&1 | sed -ne '/^ *[a-p]: /p' >/tmp/disklabel.$DISK
 		while read _dev _size _offset _type _rest; do
-			_pp=${DISK}${_dev%:}
+			_pp=$DISK${_dev%:}
 
 			if [[ $_pp == $ROOTDEV ]]; then
 				echo "$ROOTDEV /" >$FILESYSTEMS
 				continue
-			elif [[ $_pp == $SWAPDEV || $_type == swap ]]; then
-				echo "$_pp" >>$SWAPLIST
+			elif [[ $_pp == $SWAPDEV ]]; then
+				continue
+			elif [[ $_type == swap ]]; then
+				echo "/dev/$_pp none swap sw 0 0" >>/tmp/fstab
 				continue
 			elif [[ $_type != *BSD ]]; then
 				continue
@@ -148,7 +145,7 @@ if [ ! -f /etc/fstab ]; then
 		fi
 
 		# If there are no BSD partitions go on to next disk.
-		[[ ${#_partitions[*]} -gt 0 ]] || continue
+		(( ${#_partitions[*]} > 0 )) || continue
 
 		# Now prompt the user for the mount points.
 		_i=0
@@ -236,73 +233,55 @@ __EOT
 		_OPT=
 		[[ $_mp == / ]] && _OPT=$MDROOTFSOPT
 		newfs -q $_OPT /dev/r$_pp
-
-		_partitions[$_i]=$_pp
-		_mount_points[$_i]=$_mp
+		# N.B.: '!' is lexically < '/'. That is required for correct
+		#	sorting of mount points.
+		_mount_points[$_i]="$_mp!$_pp"
 		: $(( _i += 1 ))
 	done <$FILESYSTEMS
 
-	# Write fstab entries to /tmp/fstab in mount point alphabetic
-	# order to enforce a rational mount order.
-	for _mp in `bsort ${_mount_points[*]}`; do
-		_i=0
-		for _pp in ${_partitions[*]}; do
-			if [ "$_mp" = "${_mount_points[$_i]}" ]; then
-				echo -n "/dev/$_pp $_mp ffs rw"
-				# Only '/' is neither nodev nor nosuid. i.e.
-				# it can obviously *always* contain devices or
-				# setuid programs.
-				#
-				# Every other mounted filesystem is nodev. If
-				# the user chooses to mount /dev as a separate
-				# filesystem, then on the user's head be it.
-				#
-				# The only directories that install puts suid
-				# binaries into (as of 3.2) are:
-				#
-				# /sbin
-				# /usr/bin
-				# /usr/sbin
-				# /usr/libexec
-				# /usr/libexec/auth
-				# /usr/X11R6/bin
-				#
-				# and ports and users can do who knows what
-				# to /usr/local and sub directories thereof.
-				#
-				# So try to ensure that only filesystems that
-				# are mounted at or above these directories
-				# can contain suid programs. In the case of
-				# /usr/libexec, give blanket permission for
-				# subdirectories.
-				if [[ $_mp == / ]]; then
-					# / can hold devices and suid programs.
-					echo " 1 1"
-				else
-					# No devices anywhere but /.
-					echo -n ",nodev"
-					case $_mp in
-					# A few directories are allowed suid.
-					/sbin|/usr)			;;
-					/usr/bin|/usr/sbin)		;;
-					/usr/libexec|/usr/libexec/*)	;;
-					/usr/local|/usr/local/*)	;;
-					/usr/X11R6|/usr/X11R6/bin)	;;
-					# But all others are not.
-					*)	echo -n ",nosuid"	;;
-					esac
-					echo " 1 2"
-				fi
-			fi
-			: $(( _i += 1 ))
-		done
-	done >>/tmp/fstab
+	# Write fstab entries to /tmp/fstab in mount point alphabetic  order
+	# to enforce a rational mount order.
+	for _mp in $(bsort ${_mount_points[*]}); do
+		_pp=${_mp##*!}
+		_mp=${_mp%!*}
+		echo -n "/dev/$_pp $_mp ffs rw"
 
-	# Append all non-default swap devices to fstab.
-	while read _dev; do
-		[[ $_dev == $SWAPDEV ]] || \
-			echo "/dev/$_dev none swap sw 0 0" >>/tmp/fstab
-	done <$SWAPLIST
+		# Only '/' is neither nodev nor nosuid. i.e. it can obviously
+		# *always* contain devices or setuid programs.
+		[[ $_mp == / ]] && { echo " 1 1" ; continue ; }
+
+		# Every other mounted filesystem is nodev. If the user chooses
+		# to mount /dev as a separate filesystem, then on the user's
+		# head be it.
+		echo -n ",nodev"
+
+		# The only directories that the install puts suid binaries into
+		# (as of 3.2) are:
+		#
+		# /sbin
+		# /usr/bin
+		# /usr/sbin
+		# /usr/libexec
+		# /usr/libexec/auth
+		# /usr/X11R6/bin
+		#
+		# and ports and users can do who knows what to /usr/local and
+		# sub directories thereof.
+		#
+		# So try to ensure that only filesystems that are mounted at
+		# or above these directories can contain suid programs. In the
+		# case of /usr/libexec, give blanket permission for
+		# subdirectories.
+		case $_mp in
+		/sbin|/usr)			;;
+		/usr/bin|/usr/sbin)		;;
+		/usr/libexec|/usr/libexec/*)	;;
+		/usr/local|/usr/local/*)	;;
+		/usr/X11R6|/usr/X11R6/bin)	;;
+		*)	echo -n ",nosuid"	;;
+		esac
+		echo " 1 2"
+	done >>/tmp/fstab
 
 	munge_fstab
 fi
@@ -346,10 +325,10 @@ sed -e "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed)/" \
 mv /tmp/ttys /mnt/etc/ttys
 
 while :; do
-    askpassword root
-    _rootpass="$_password"
-    [[ -n "$_password" ]] && break
-    echo "The root password must be set."
+	askpassword root
+	_rootpass="$_password"
+	[[ -n "$_password" ]] && break
+	echo "The root password must be set."
 done
 
 questions
@@ -402,8 +381,8 @@ chmod 600 host.random >/dev/null 2>&1 )
 echo "done."
 
 if [[ -n "$_rootpass" ]]; then
-    _encr=`/mnt/usr/bin/encrypt -b 8 -- "$_rootpass"`
-    echo "1,s@^root::@root:${_encr}:@
+	_encr=`/mnt/usr/bin/encrypt -b 8 -- "$_rootpass"`
+	echo "1,s@^root::@root:${_encr}:@
 w
 q" | /mnt/bin/ed /mnt/etc/master.passwd 2>/dev/null
 fi
