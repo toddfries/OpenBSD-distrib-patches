@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.27 2009/04/24 01:43:27 krw Exp $
+#	$OpenBSD: install.md,v 1.29 2009/05/11 17:13:07 deraadt Exp $
 #	$NetBSD: install.md,v 1.3.2.5 1996/08/26 15:45:28 gwr Exp $
 #
 #
@@ -60,9 +60,8 @@ md_installboot() {
 		return
 	fi
 
-	echo Installing boot block...
 	${_prefix}/installboot -v ${_prefix}/bootblk ${_rawdev}
-	sync; sync; sync
+	sync
 
 	if [ -e /mnt/usr/mdec/ofwboot ]; then
 		_prefix=/mnt/usr/mdec
@@ -72,7 +71,6 @@ md_installboot() {
 		echo No ofwboot found!
 		return
 	fi
-	echo Copying ofwboot...
 	cp ${_prefix}/ofwboot /mnt/ofwboot
 }
 
@@ -96,6 +94,15 @@ md_prep_disklabel() {
 			return
 		done
 	fi
+	cat <<__EOT
+
+You will now create a Sun-style disklabel on the disk.  The disklabel defines
+how OpenBSD splits up the disk into OpenBSD partitions in which filesystems
+and swap space are created.  You must provide each filesystem's mountpoint
+in this program.
+
+__EOT
+
 	disklabel -f $_f -E $_disk
 }
 

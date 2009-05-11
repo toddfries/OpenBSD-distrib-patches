@@ -1,4 +1,4 @@
-#       $OpenBSD: install.md,v 1.34 2009/04/12 12:56:02 krw Exp $
+#       $OpenBSD: install.md,v 1.36 2009/05/11 17:13:07 deraadt Exp $
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
 # All rights reserved.
 #
@@ -35,7 +35,6 @@ MDTERM=vt100
 ARCH=ARCH
 
 md_installboot() {
-	echo "Installing boot block..."
 	cp /mnt/usr/mdec/bootsd /mnt/boot
 	/mnt/usr/mdec/installboot -v /mnt/boot /mnt/usr/mdec/bootxx /dev/r${1}a
 }
@@ -60,6 +59,14 @@ md_prep_disklabel() {
 			return
 		done
 	fi
+	cat <<__EOT
+You will now create a OpenBSD disklabel on the disk.  The disklabel defines
+how OpenBSD splits up the disk into OpenBSD partitions in which filesystems
+and swap space are created.  You must provide each filesystem's mountpoint
+in this program.
+
+__EOT
+
 	disklabel -f $_f -E $_disk
 }
 

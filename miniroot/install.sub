@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.536 2009/05/07 03:43:02 todd Exp $
+#	$OpenBSD: install.sub,v 1.544 2009/05/09 22:41:01 martynas Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -282,21 +282,32 @@ askpassword() {
 }
 
 user_setup() {
-	ask "Setup a user? (enter a lower-case loginname, or 'no')" no
-	case $resp in
-	n|no)	return ;;
-	y|yes)	ask "No really, what is the lower-case loginname, or 'no'?"
+	local _q="Setup a user? (enter a lower-case loginname, or 'no')"
+
+	while :; do
+		ask "$_q" no
 		case $resp in
 		n|no)	return ;;
-		esac ;;
-	esac
-
+		y|yes)	_q="No really, what is the lower-case loginname, or 'no'?"
+			continue ;;
+		root|daemon|operator|bin|smmsp|popa3d) ;;
+		sshd|uucp|www|named|proxy|nobody|ftp) ;;
+		[a-z]*([a-z0-9])) break ;;
+		esac
+		echo "$resp is not a useable loginname."
+	done
 	user=$resp
 	ask "Full user name for $user?" $user
 	username=$resp
 
 	askpassword $user
 	userpass=$_password
+
+	if [[ $sshd == y ]]; then
+		ask_yn "Since you setup a user, disable sshd(8) logins to root?" yes
+		sshd_disableroot=$resp
+	fi
+
 }
 
 # Ask for user input until a non-empty reply is entered.
@@ -679,6 +690,16 @@ __EOT
 	return 1
 }
 
+# Convert a hex value to dotted decimal format
+hextodec() {
+	local _d _b
+
+	for _b in $(echo $1 | sed -e 's/0x\(..\)\(..\)\(..\)\(..\)/\1 \2 \3 \4/'); do
+		_d=${_d}.$((16#$_b))
+	done
+	echo $_d | sed -e 's/^\.//'
+}
+
 v4_config() {
 	local _ifs=$1 _name=$2 _hn=$3 _prompt _addr _mask
 
@@ -687,7 +708,7 @@ v4_config() {
 	else
 		set -- $(v4_info $_ifs)
 		if [[ -n $2 ]]; then
-			_addr=$2; _mask=$3
+			_addr=$2; _mask=$(hextodec $3)
 			ifconfig $_ifs inet $_addr delete
 		fi
 	fi
@@ -944,7 +965,7 @@ enable_network() {
 # named in $1. Display an error message for failed installs so the
 # user will know to try again.
 install_files() {
-	local _src=$1 _files=$2 _f _sets _get_sets
+	local _src=$1 _files=$2 _f _sets _get_sets _n
 
 	# Initialize _sets to the list of sets found in _src, and initialize
 	# _get_sets to the intersection of _sets and DEFAULTSETS.
@@ -961,13 +982,11 @@ install_files() {
 
 	if [[ -z $_sets ]]; then
 		# Show $_src, but delete any ftp password.
-		cat <<__EOT
-No $OBSD sets were found at
-
-	$(echo $_src | sed -e 's/\(^ftp:\/\/[^/]*\)\(:[^/]*\)\(@.*\)/\1\3/')
-
-Set names are: $THESETS
-__EOT
+		echo -n "Looked at "
+		echo $_src | sed -e 's/\(^ftp:\/\/[^/]*\)\(:[^/]*\)\(@.*\)/\1\3/'
+		echo "and found no $OBSD sets.  The set names looked for were:"
+		for _n in $THESETS; do echo $_n; done | showcols
+		echo
 		return
 	fi
 
@@ -1078,17 +1097,17 @@ ftp_error() {
 
 startftplist() {
 	# If no networks are configured, we do not need the ftplist file
-	ls /tmp/hostname.* /mnt/etc/hostname.* >/dev/null 2>&1 && return
+	(( nifs < 1 )) && return
 
 	# ftp.openbsd.org == 129.128.5.191 and will remain at
 	# that address for the foreseeable future.
 	ftp $FTPOPTS -a -o - "http://129.128.5.191/cgi-bin/ftplist.cgi?path=$FTPSETDIR" \
 		2>/tmp/ftplisterr > $SERVERLISTALL & ftppid=$!
 
-	# If the ftp process takes more than 9 seconds, kill it
+	# If the ftp process takes more than 12 seconds, kill it
 	# XXX We are relying on the pid space not randomly biting us --
 	# XXX ftp could terminate early, and the pid could be reused
-	(sleep 9; kill -INT $ftppid >/dev/null 2>&1) &
+	(sleep 12; kill -INT $ftppid >/dev/null 2>&1) &
 }
 
 # Wait for the ftp process to finish, or be killed after the timeout
@@ -1361,7 +1380,7 @@ set_timezone() {
 			*)	_zonepath=$_zonepath/$resp ;;
 			esac
 		done
-		
+
 		if isin $_zonepath $(cat $_zonefile); then
 			TZ=${_zonepath#$_zoneroot}
 			return
@@ -1609,6 +1628,11 @@ apply()
 		echo "sshd_flags=NO		# disabled during install" \
 			>>/mnt/etc/rc.conf.local
 	fi
+	if [[ $sshd_disableroot == y ]]; then
+		sed -e "/^#\(PermitRootLogin\) yes/s//\1 no/" \
+			< /mnt/etc/ssh/sshd_config > /tmp/sshd_config
+		cp /tmp/sshd_config /mnt/etc/ssh/sshd_config
+	fi
 	if [[ $ntpd == y ]]; then
 		echo "ntpd_flags=		# enabled during install" \
 			>>/mnt/etc/rc.conf.local
@@ -1652,7 +1676,7 @@ questions() {
 	ask_yn "Start sshd(8) by default?" yes
 	sshd=$resp
 
-	ask_yn "Start ntpd(8) by default?" no
+	ask_yn "Start ntpd(8) by default?"
 	ntpd=$resp
 	if [[ $resp == y ]]; then
 		ask "NTP server? (hostname or 'default')" default

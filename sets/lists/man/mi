@@ -1174,8 +1174,8 @@
 ./usr/share/man/cat4/alpha/tga.0
 ./usr/share/man/cat4/alpha/tsc.0
 ./usr/share/man/cat4/alpha/tsp.0
+./usr/share/man/cat4/amas.0
 ./usr/share/man/cat4/amd64
-./usr/share/man/cat4/amd64/amas.0
 ./usr/share/man/cat4/amd64/amdpcib.0
 ./usr/share/man/cat4/amd64/apm.0
 ./usr/share/man/cat4/amd64/autoconf.0
@@ -1289,6 +1289,7 @@
 ./usr/share/man/cat4/em.0
 ./usr/share/man/cat4/emu.0
 ./usr/share/man/cat4/enc.0
+./usr/share/man/cat4/endrun.0
 ./usr/share/man/cat4/envy.0
 ./usr/share/man/cat4/ep.0
 ./usr/share/man/cat4/epic.0
@@ -1908,6 +1909,7 @@
 ./usr/share/man/cat4/udav.0
 ./usr/share/man/cat4/udcf.0
 ./usr/share/man/cat4/udfu.0
+./usr/share/man/cat4/udl.0
 ./usr/share/man/cat4/udp.0
 ./usr/share/man/cat4/udsbr.0
 ./usr/share/man/cat4/ueagle.0
