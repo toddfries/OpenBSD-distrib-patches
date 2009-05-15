@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.544 2009/05/09 22:41:01 martynas Exp $
+#	$OpenBSD: install.sub,v 1.548 2009/05/15 02:00:36 krw Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -694,10 +694,10 @@ __EOT
 hextodec() {
 	local _d _b
 
-	for _b in $(echo $1 | sed -e 's/0x\(..\)\(..\)\(..\)\(..\)/\1 \2 \3 \4/'); do
-		_d=${_d}.$((16#$_b))
+	for _b in $(echo ${1#0x} | sed 's/\(..\)/\1 /g'); do
+		_d=$_d.$((0x$_b))
 	done
-	echo $_d | sed -e 's/^\.//'
+	echo ${_d#.}
 }
 
 v4_config() {
@@ -1884,21 +1884,10 @@ if [[ $MODE == install ]]; then
 fi
 
 # Get ROOTDISK, ROOTDEV and SWAPDEV.
-if [[ $MODE == install && ! -f /etc/fstab ]]; then
-	cat <<__EOT
-
-You will now initialize the disk(s) that OpenBSD will use. To enable all
-available security features you should configure the disk(s) to allow the
-creation of separate filesystems for /, /tmp, /var, /usr, and /home.
-
-__EOT
-fi
-
 set -- $DKDEVS
 (( $# == 0 )) && { echo "No disks found." ; exit ; }
-(( $# > 1 )) && _defdsk=done
 
-ask_which "disk" "is the root disk" "$DKDEVS" "$_defdsk"
+ask_which "disk" "is the root disk" "$DKDEVS"
 [[ $resp == done ]] && exit
 makedev $resp || exit
 
