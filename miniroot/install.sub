@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.549 2009/05/16 08:51:57 halex Exp $
+#	$OpenBSD: install.sub,v 1.554 2009/05/19 07:46:03 halex Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -134,7 +134,7 @@ __EOT
 		else
 		cat <<__EOT
 If you change your mind and do not want to install, type Control-C now
-and then type 'reboot' or 'halt' at the command prompt.
+and then type 'reboot' at the command prompt.
 __EOT
 			return
 		fi
@@ -198,7 +198,7 @@ mount_mnt2() {
 
 	_parts=$(sed -e 's/^  \(.\): .*/\1/' $_file)
 	set -- $_parts
-	[[ $# == 0 ]] && { echo "No filesystems found on $_dev" ; return 1 ; }
+	[[ $# == 0 ]] && { echo "No filesystems found on $_dev." ; return 1 ; }
 
 	if isin "c" $_parts; then
 		# Don't ask questions if 'c' contains a filesystem.
@@ -292,12 +292,22 @@ user_setup() {
 			continue ;;
 		root|daemon|operator|bin|smmsp|popa3d) ;;
 		sshd|uucp|www|named|proxy|nobody|ftp) ;;
-		[a-z]*([a-z0-9])) break ;;
+		[a-z]*([a-z0-9_]))
+			(( ${#resp} <= 31 )) && break ;;
 		esac
 		echo "$resp is not a useable loginname."
 	done
 	user=$resp
-	ask "Full user name for $user?" $user
+	while :; do
+		ask "Full user name for $user?" $user
+		case $resp in
+		*[:\&,]*)
+			echo "':', '&' or ',' are not allowed." ;;
+		*)
+			(( ${#resp} <= 100 )) && break
+			echo "Too long." ;;
+		esac
+	done
 	username=$resp
 
 	askpassword $user
@@ -1139,13 +1149,13 @@ install_url() {
 	[[ $resp == none ]] || export ftp_proxy=$resp http_proxy=$resp
 
 	if [[ -s $SERVERLISTALL ]]; then
-		_prompt="Server? (IP address, hostname, list#, 'done' or '?')"
+		_prompt="Server? (hostname, list#, 'done' or '?')"
 		sed -ne "/^${_url_type}:\/\//s///p" < $SERVERLISTALL > $SERVERLIST
 		set -- $(sed -ne "1p" $SERVERLIST)
 		eval _${_url_type}_server_ip=${1%%/*}
 	else
 		echo "(Was not able to get ftplist from ftp.openbsd.org, but that is OK)"
-		_prompt="Server? (IP address, hostname or 'done')"
+		_prompt="Server? (hostname or 'done')"
 	fi
 
 	# Get server IP address or hostname
@@ -1756,11 +1766,11 @@ finish_up() {
 	cat <<__EOT
 
 CONGRATULATIONS! Your OpenBSD $MODE has been successfully completed!
-To boot the new system, enter "reboot" or "halt" at the command prompt.
+To boot the new system, enter 'reboot' at the command prompt.
 __EOT
 	[[ $MODE == install ]] && cat <<__EOT
 When you login to your new system the first time, please read your mail
-using the "mail" command.
+using the 'mail' command.
 __EOT
 
 	md_congrats
@@ -1800,7 +1810,7 @@ dmesg | sed -ne '/^OpenBSD /h;/^OpenBSD /!H;${g;p;}' >/var/run/dmesg.boot
 # Are we in a real release, or a snapshot?  If this is a snapshot
 # install media, default us to a snapshot directory.
 FTPSETDIR=$SETDIR
-CURRENT=$(scan_dmesg '/^OpenBSD 4.5\([^ ]*\).*$/s//\1/p')
+CURRENT=$(scan_dmesg "/^OpenBSD $VNAME\([^ ]*\).*$/s//\1/p")
 [[ -n $CURRENT ]] && FTPSETDIR=snapshots/$ARCH
 
 # Scan /var/run/dmesg.boot for interesting devices.
