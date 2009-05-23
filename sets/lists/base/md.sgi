@@ -1444,6 +1444,7 @@
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/sun/disklabel.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/sun/sunkbdreg.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/sun/sunkbdvar.ph
+./usr/libdata/perl5/site_perl/mips64-openbsd/dev/sun/sunmsvar.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/sun/uperfio.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/systrace.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/dev/tc
@@ -2169,7 +2170,6 @@
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/pmap.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/proc.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/profile.ph
-./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/psl.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/pte.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/ptrace.ph
 ./usr/libdata/perl5/site_perl/mips64-openbsd/sgi/reg.ph
