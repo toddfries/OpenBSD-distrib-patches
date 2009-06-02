@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.189 2009/05/17 15:00:51 krw Exp $
+#	$OpenBSD: install.sh,v 1.198 2009/06/01 02:57:40 krw Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -67,7 +67,7 @@ MODE=install
 cd /tmp
 if [[ ! -f /etc/fstab ]]; then
 	DISK=
-	_DKDEVS=$DKDEVS
+	_DKDEVS=$(get_dkdevs)
 
 	while :; do
 		_DKDEVS=$(rmel "$DISK" $_DKDEVS)
@@ -94,7 +94,7 @@ if [[ ! -f /etc/fstab ]]; then
 		# fstab.$DISK is created here with 'disklabel -f'.
 		rm -f *.$DISK
 		AUTOROOT=n
-		md_prep_disklabel $DISK
+		md_prep_disklabel $DISK || { DISK= ; continue ; }
 
 		# Make sure there is a '/' mount point.
 		grep -qs " / ffs " fstab.$ROOTDISK || \
@@ -131,8 +131,8 @@ if [[ ! -f /etc/fstab ]]; then
 
 		# New swap partitions?
 		disklabel $DISK 2>&1 | sed -ne \
-		    "/^ *\([a-p]\): .* swap /s,,/dev/$DISK\1 none swap sw 0 0,p" | \
-		    grep -v "^/dev/$SWAPDEV " >>fstab
+			"/^ *\([a-p]\): .* swap /s,,/dev/$DISK\1 none swap sw 0 0,p" | \
+			grep -v "^/dev/$SWAPDEV " >>fstab
 	done
 
 	# Write fstab entries to fstab in mount point alphabetic order
@@ -185,18 +185,32 @@ cd /
 
 mount_fs "-o async"
 
-[[ $MODE == install ]] && set_timezone /var/tzlist
-
 install_sets
 
-[[ $MODE == install && ! -n $TZ ]] &&
-	(cd /mnt/usr/share/zoneinfo&&ls -1dF `tar cvf /dev/null [A-Za-y]*`)>/tmp/tzlist && \
+# If we did not succeed at setting TZ yet, we try again
+# using the timezone names extracted from the base set
+if [[ -z $TZ ]]; then
+	( cd /mnt/usr/share/zoneinfo
+	ls -1dF `tar cvf /dev/null [A-Za-y]*` >/tmp/tzlist )
+	echo
 	set_timezone /tmp/tzlist
+fi
+
+# If we managed to talk to the ftplist server before, tell it what
+# location we used... so it can perform magic next time
+if [[ -s $SERVERLIST ]]; then
+	_i=
+	[[ -n $installedfrom ]] && _i="install=$installedfrom"
+	[[ -n $TZ ]] && _i="$_i&TZ=$TZ"
+	[[ -n $method ]] && _i="$_i&method=$method"
+
+	[[ -n $_i ]] && ftp $FTPOPTS -a -o - \
+		"http://129.128.5.191/cgi-bin/ftpinstall.cgi?$_i" >/dev/null 2>&1 &
+fi
 
 # Ensure an enabled console has the correct speed in /etc/ttys.
 sed -e "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed)/" \
 	/mnt/etc/ttys >/tmp/ttys
-# Move ttys back in case questions() needs to massage it more.
 mv /tmp/ttys /mnt/etc/ttys
 
 echo -n "Saving configuration files..."
@@ -236,10 +250,14 @@ for _f in fstab hostname* kbdtype my* ttys *.conf *.tail; do
 	[[ -f $_f && -s $_f ]] && mv $_f /mnt/etc/.
 done )
 
+# Feed the random pool some junk before we read from it
+dmesg >/dev/urandom
+cat $SERVERLIST >/dev/urandom 2>/dev/null
+
 echo -n "done.\nGenerating initial host.random file..."
-( cd /mnt/var/db
-/mnt/bin/dd if=/mnt/dev/urandom of=host.random bs=1024 count=64 >/dev/null 2>&1
-chmod 600 host.random >/dev/null 2>&1 )
+/mnt/bin/dd if=/mnt/dev/urandom of=/mnt/var/db/host.random \
+	bs=1024 count=64 >/dev/null 2>&1
+chmod 600 /mnt/var/db/host.random >/dev/null 2>&1
 echo "done."
 
 apply

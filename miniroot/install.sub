@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.554 2009/05/19 07:46:03 halex Exp $
+#	$OpenBSD: install.sub,v 1.565 2009/06/02 03:21:31 halex Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -177,6 +177,14 @@ scan_disknames() {
 	IFS=$_oifs
 }
 
+get_dkdevs () {
+	echo $(scan_disknames "${MDDKDEVS:-/^[sw]d[0-9][0-9]* /s/ .*//p}")
+}
+
+get_cddevs () {
+	echo $(scan_disknames "${MDCDDEVS:-/^cd[0-9][0-9]* /s/ .*//p}")
+}
+
 get_ifdevs() {
 	ifconfig \
 		| egrep -v '^[[:space:]]|(bridge|enc|gif|gre|lo|pflog|pfsync|ppp|sl|tun|vlan)[[:digit:]]+:' \
@@ -253,7 +261,7 @@ ask() {
 		!)	echo "Type 'exit' to return to install."
 			sh
 			;;
-		!*)	eval ${resp#?}
+		!*)	eval "${resp#?}"
 			;;
 		*)	: ${resp:=$_default}
 			break
@@ -514,35 +522,29 @@ sets by prepending a '-' to the set name, file name pattern or 'all'. Selected
 sets are labelled '[X]'.
 __EOT
 	while :; do
-		_action=
 		for _f in $_avail; do
 			isin $_f $_selected && echo "[X] $_f" || echo "[ ] $_f"
 		done|showcols|sed 's/^/    /'
-		ask "Set name? (or 'abort' or 'done')" done
-		case $resp in
-		abort)	_selected=
-			break ;;
-		done)	break ;;
-		-*)	_action=rmel ;;
-		esac
+		ask "Set name(s)? (or 'abort' or 'done')" done
 
-		: ${_action:=addel}
-		resp=${resp#+|-}
+		set -o noglob
+		for resp in $resp; do
+			case $resp in
+			abort)	_selected=; break 2 ;;
+			done)	break 2 ;;
+			-*)	_action=rmel ;;
+			*)	_action=addel ;;
+			esac
+			resp=${resp#[+-]}
+			[[ $resp = all ]] && resp=*
 
-		case $resp in
-		"")	continue ;;
-		all)	resp=* ;;
-		esac
-
-		# Use @($resp) rather than just $resp to protect
-		# against silly user input that might cause syntax
-		# errors.
-		for _f in $_avail; do
-			eval "case $_f in
-			@($resp)) _selected=\`$_action $_f \$_selected\` ;;
-			esac"
+			for _f in $_avail; do
+				[[ $_f = $resp ]] && _selected=$($_action $_f $_selected)
+			done
 		done
 	done
+
+	set +o noglob
 	COLUMNS=$_col
 
 	resp=$_selected
@@ -1141,6 +1143,8 @@ waitftplist() {
 #	and FTPOPTS must be global.
 install_url() {
 	local _url_type=$1 _file_list _url_base _oifs _prompt _passwd
+	local _server_ip_var=_${_url_type}_server_ip \
+		_server_dir_var=_${_url_type}_server_dir
 
 	waitftplist
 	ask "HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none')" \
@@ -1152,7 +1156,7 @@ install_url() {
 		_prompt="Server? (hostname, list#, 'done' or '?')"
 		sed -ne "/^${_url_type}:\/\//s///p" < $SERVERLISTALL > $SERVERLIST
 		set -- $(sed -ne "1p" $SERVERLIST)
-		eval _${_url_type}_server_ip=${1%%/*}
+		eval $_server_ip_var=\${1%%/*}
 	else
 		echo "(Was not able to get ftplist from ftp.openbsd.org, but that is OK)"
 		_prompt="Server? (hostname or 'done')"
@@ -1160,7 +1164,7 @@ install_url() {
 
 	# Get server IP address or hostname
 	while :; do
-		eval resp=\$_${_url_type}_server_ip
+		eval resp=\$$_server_ip_var
 		ask_until "$_prompt" "$resp"
 		case $resp in
 		done)	return ;;
@@ -1174,20 +1178,20 @@ install_url() {
 			set -- $(sed -ne "${resp}p" $SERVERLIST)
 			[[ $# -lt 1 ]] && { echo "There is no line $resp." ; continue ; }
 			echo "Using	$*"
-			eval _${_url_type}_server_ip=${1%%/*}
-			eval _${_url_type}_server_dir=${1#*/}/$FTPSETDIR
+			eval $_server_ip_var=\${1%%/*}
+			eval $_server_dir_var=\${1#*/}/\$FTPSETDIR
 			# Repeat loop to get user to confirm server address.
 			;;
-		*)	eval _${_url_type}_server_ip=$resp
+		*)	eval $_server_ip_var=\$resp
 			break
 			;;
 		esac
 	done
 
 	# Get server directory
-	eval resp=\$_${_url_type}_server_dir
+	eval resp=\$$_server_dir_var
 	ask_until "Server directory?" "${resp:-pub/OpenBSD/$FTPSETDIR}"
-	eval _${_url_type}_server_dir=$resp
+	eval $_server_dir_var=\$resp
 
 	if [[ $_url_type == ftp ]]; then
 		# Get login name, setting IFS to nothing so trailing or
@@ -1215,7 +1219,7 @@ install_url() {
 	if [[ $_url_type == ftp && $_ftp_server_login != anonymous ]]; then
 		_url_base=$_url_base$(encode_for_url "$_ftp_server_login"):$(encode_for_url "$_passwd")@
 	fi
-	eval _url_base=$_url_base\$_${_url_type}_server_ip/\$_${_url_type}_server_dir
+	eval _url_base=\$_url_base\$$_server_ip_var/\$$_server_dir_var
 
 	# XXX Workaround for problems ftp'ing out from a v6 only host.
 	ifconfig lo0 127.0.0.1
@@ -1234,13 +1238,8 @@ install_url() {
 
 	install_files "$_url_base" "$_file_list"
 
-	# Tell the FTP server what location we used... so it can perform magic
-	if [[ -s $SERVERLIST ]]; then
-		eval _url_base=$_url_type://\$_${_url_type}_server_ip/\$_${_url_type}_server_dir
-		ftp $FTPOPTS -a -o - \
-			"http://129.128.5.191/cgi-bin/ftpinstall.cgi?install=$_url_base" \
-			>/dev/null 2>&1 &
-	fi
+	# Remember where we installed from
+	eval installedfrom=$_url_type://\$$_server_ip_var/\$$_server_dir_var
 }
 
 install_mounted_fs() {
@@ -1261,7 +1260,7 @@ install_mounted_fs() {
 }
 
 install_cdrom() {
-	get_drive "CD-ROM" "$CDDEVS" || return
+	get_drive "CD-ROM" "$(get_cddevs)" || return
 	mount_mnt2 $resp || return
 
 	install_mounted_fs
@@ -1270,7 +1269,7 @@ install_cdrom() {
 install_disk() {
 	ask_yn "Is the disk partition already mounted?"
 	if [[ $resp == n ]]; then
-		get_drive "disk" "$DKDEVS" || return
+		get_drive "disk" "$(get_dkdevs)" || return
 		mount_mnt2 $resp || return
 	fi
 
@@ -1356,11 +1355,6 @@ set_timezone() {
 	# If configured in a previous call, return immediately
 	[[ -n $TZ ]] && return
 
-	if [[ -L /mnt/etc/localtime ]]; then
-		TZ=$(ls -l /mnt/etc/localtime 2>/dev/null)
-		TZ=${TZ#*${_zoneroot#/mnt}}
-	fi
-
 	waitftplist
 	if [[ -s $SERVERLISTALL ]]; then
 		_tz=$(sed -ne '/^TZ=/s/TZ=//p' <$SERVERLISTALL)
@@ -1369,7 +1363,6 @@ set_timezone() {
 
 	: ${TZ:=GMT}
 
-	echo
 	while :; do
 		_zonepath=""
 
@@ -1401,13 +1394,15 @@ set_timezone() {
 	done
 }
 
-# Check with the user that missing required sets were deliberately skipped.
+# Check that missing required sets were deliberately skipped.
 sane_install() {
-	local _s _m
+	local _q=$1 _s _m
 
 	for _s in $SANESETS; do
 		isin $_s $DEFAULTSETS || continue
-		ask_yn "'$_s' was not installed.\nAre you *SURE* your $MODE is complete without '$_s'?"
+		# If sane_install has no argument, harass the user.
+		resp=n
+		[[ -z $_q ]] && ask_yn "Are you *SURE* your $MODE is complete without '$_s'?"
 		[[ $resp == n ]] && _m="$_m $_s"
 	done
 
@@ -1419,29 +1414,34 @@ sane_install() {
 # user selects from that location. Repeat as many times as the user
 # needs to get all desired sets.
 install_sets() {
-	local _d=disk _locs="disk ftp http"
+	local _d _locs="disk ftp http"
 
 	echo
 
-	[[ -n $CDDEVS ]] && { _locs="cd $_locs" ; _d=cd ; }
-	ifconfig netboot > /dev/null 2>&1 && _d=ftp
+	[[ -s $SERVERLISTALL ]] && \
+		_d=$(sed -ne '/^method=/s/method=//p' $SERVERLISTALL)
+
+	ifconfig netboot >/dev/null 2>&1 && : ${_d:=ftp}
+	[[ -n $(get_cddevs) ]] && { _locs="cd $_locs" ; : ${_d:=cd} ; }
 	[[ -x /sbin/mount_nfs ]] && _locs="$_locs nfs"
 	[[ -n $MTDEVS && -x /bin/mt ]] && _locs="$_locs tape"
+	: ${_d:=disk}
 
 	echo "Let's $MODE the sets!"
 	while :; do
 		umount -f /mnt2 >/dev/null 2>&1
-		[[ -z $DEFAULTSETS ]] && _d=done
+		[[ -n $method ]] && _d=$method
+		sane_install quiet && _d=done
 
 		ask "Location of sets? ($_locs or 'done')" "$_d"
 		case $resp in
 		done)	sane_install && return ;;
-		c*|C*)	isin "cd" $_locs && install_cdrom ;;
-		d*|D*)	install_disk ;;
-		f*|F*)	isin "ftp" $_locs && install_url ftp ;;
-		h*|H*)	isin "http" $_locs && install_url http ;;
-		n*|N*)	isin "nfs" $_locs && install_nfs ;;
-		t*|T*)	isin "tape" $_locs && install_tape ;;
+		c*|C*)	isin cd $_locs && install_cdrom && method=cdrom ;;
+		d*|D*)	install_disk && method=disk ;;
+		f*|F*)	isin ftp $_locs && install_url ftp && method=ftp ;;
+		h*|H*)	isin http $_locs && install_url http && method=http ;;
+		n*|N*)	isin nfs $_locs && install_nfs && method=nfs ;;
+		t*|T*)	isin tape $_locs && install_tape && method=tape ;;
 		esac
 	done
 }
@@ -1654,6 +1654,7 @@ apply()
 			sed -e "s/^servers /#&/;/#server /a\\
 server $1
 " /mnt/etc/ntpd.conf >/tmp/ntpd.conf
+			cp /tmp/ntpd.conf /mnt/etc/ntpd.conf
 		fi
 	fi
 
@@ -1663,7 +1664,7 @@ server $1
 		cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
 	fi
 
-	if [[ $xdm == y ]]; then
+	if [[ $xdm == y && -x /mnt/usr/X11R6/bin/xdm ]]; then
 		echo "xdm_flags=		# enabled during install" \
 			>>/mnt/etc/rc.conf.local
 	fi
@@ -1712,7 +1713,7 @@ questions() {
 		defcons=$resp
 		if [[ $resp == y ]]; then
 			ask_which "speed" "should $_d use" \
-			    "9600 19200 38400 57600 115200" $CSPEED
+				"9600 19200 38400 57600 115200" $CSPEED
 			case $resp in
 			done)	defcons=n ;;
 			*)	CSPEED=$resp ;;
@@ -1749,7 +1750,7 @@ finish_up() {
 	sh MAKEDEV all
 	# Make sure any devices we found during probe are created in the
 	# installed system.
-	for _dev in $DKDEVS $CDDEVS $MTDEVS; do
+	for _dev in $(get_dkdevs) $(get_cddevs) $MTDEVS ; do
 		sh MAKEDEV $_dev
 	done
 	)
@@ -1814,8 +1815,6 @@ CURRENT=$(scan_dmesg "/^OpenBSD $VNAME\([^ ]*\).*$/s//\1/p")
 [[ -n $CURRENT ]] && FTPSETDIR=snapshots/$ARCH
 
 # Scan /var/run/dmesg.boot for interesting devices.
-DKDEVS=$(scan_disknames "${MDDKDEVS:-/^[sw]d[0-9][0-9]* /s/ .*//p}")
-CDDEVS=$(scan_disknames "${MDCDDEVS:-/^cd[0-9][0-9]* /s/ .*//p}")
 MTDEVS=$(scan_dmesg "${MDMTDEVS:-/^[cms]t[0-9][0-9]* /s/ .*//p}")
 IFDEVS=$(get_ifdevs)
 nifs=0
@@ -1873,6 +1872,14 @@ if [[ $MODE == install ]]; then
 	[[ ${resp%%.*} != $(hostname -s) ]] && hostname $resp
 	THESETS="$THESETS site$VERSION-$(hostname -s).tgz"
 
+	echo
+	donetconfig
+
+	if [[ $nifs != 0 ]]; then
+		startftplist
+	fi
+
+	echo
 	while :; do
 		askpassword root
 		_rootpass="$_password"
@@ -1883,21 +1890,14 @@ if [[ $MODE == install ]]; then
 	questions
 	user_setup
 
+	set_timezone /var/tzlist
 	echo
-	donetconfig
-
-	if [[ $nifs == 0 ]]; then
-		set_timezone /var/tzlist
-	else
-		startftplist
-	fi
 fi
 
 # Get ROOTDISK, ROOTDEV and SWAPDEV.
-set -- $DKDEVS
-(( $# == 0 )) && { echo "No disks found." ; exit ; }
+[[ -n $(get_dkdevs) ]] || { echo "No disks found." ; exit ; }
 
-ask_which "disk" "is the root disk" "$DKDEVS"
+ask_which "disk" "is the root disk" "$(get_dkdevs)"
 [[ $resp == done ]] && exit
 makedev $resp || exit
 

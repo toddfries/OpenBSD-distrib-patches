@@ -1810,7 +1810,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/nfsmount.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/nfsnode.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/nfsproto.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/nfsrtt.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/nfsrvcache.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/rpcv2.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/nfs/xdr_subs.ph
@@ -2247,6 +2246,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_pdaemon.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_pglist.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_pmap.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_pmemrange.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_stat.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_swap.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/uvm/uvm_swap_encrypt.ph
