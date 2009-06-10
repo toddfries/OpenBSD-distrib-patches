@@ -910,6 +910,9 @@
 ./usr/include/dev/wsfont/vt220l8x10.h
 ./usr/include/dev/wsfont/vt220l8x8.h
 ./usr/include/dev/wsfont/wsfont.h
+./usr/include/dev/x86emu
+./usr/include/dev/x86emu/x86emu.h
+./usr/include/dev/x86emu/x86emu_regs.h
 ./usr/include/dirent.h
 ./usr/include/disktab.h
 ./usr/include/dlfcn.h
@@ -4781,6 +4784,7 @@
 ./usr/share/man/cat3/kvm_getenvv.0
 ./usr/share/man/cat3/kvm_getenvv2.0
 ./usr/share/man/cat3/kvm_geterr.0
+./usr/share/man/cat3/kvm_getfile2.0
 ./usr/share/man/cat3/kvm_getfiles.0
 ./usr/share/man/cat3/kvm_getloadavg.0
 ./usr/share/man/cat3/kvm_getproc2.0
