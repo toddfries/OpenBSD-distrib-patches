@@ -4116,8 +4116,6 @@
 ./usr/share/man/cat3/i2d_X509_fp.0
 ./usr/share/man/cat3/idcok.0
 ./usr/share/man/cat3/idlok.0
-./usr/share/man/cat3/ieee.0
-./usr/share/man/cat3/ieeef.0
 ./usr/share/man/cat3/if_freenameindex.0
 ./usr/share/man/cat3/if_indextoname.0
 ./usr/share/man/cat3/if_nameindex.0
@@ -4933,6 +4931,14 @@
 ./usr/share/man/cat3/menu_win.0
 ./usr/share/man/cat3/mergesort.0
 ./usr/share/man/cat3/meta.0
+./usr/share/man/cat3/mio_close.0
+./usr/share/man/cat3/mio_eof.0
+./usr/share/man/cat3/mio_nfds.0
+./usr/share/man/cat3/mio_open.0
+./usr/share/man/cat3/mio_pollfd.0
+./usr/share/man/cat3/mio_read.0
+./usr/share/man/cat3/mio_revents.0
+./usr/share/man/cat3/mio_write.0
 ./usr/share/man/cat3/mitem_current.0
 ./usr/share/man/cat3/mitem_name.0
 ./usr/share/man/cat3/mitem_new.0
@@ -5354,6 +5360,9 @@
 ./usr/share/man/cat3/savetty.0
 ./usr/share/man/cat3/scalb.0
 ./usr/share/man/cat3/scalbf.0
+./usr/share/man/cat3/scalbln.0
+./usr/share/man/cat3/scalblnf.0
+./usr/share/man/cat3/scalblnl.0
 ./usr/share/man/cat3/scalbn.0
 ./usr/share/man/cat3/scalbnf.0
 ./usr/share/man/cat3/scalbnl.0
@@ -6179,6 +6188,7 @@
 ./usr/share/man/cat9/crypto_done.0
 ./usr/share/man/cat9/crypto_freereq.0
 ./usr/share/man/cat9/crypto_freesession.0
+./usr/share/man/cat9/crypto_get_driverid.0
 ./usr/share/man/cat9/crypto_getreq.0
 ./usr/share/man/cat9/crypto_kdispatch.0
 ./usr/share/man/cat9/crypto_kdone.0
@@ -6192,7 +6202,7 @@
 ./usr/share/man/cat9/disk.0
 ./usr/share/man/cat9/disk_attach.0
 ./usr/share/man/cat9/disk_busy.0
-./usr/share/man/cat9/disk_detatch.0
+./usr/share/man/cat9/disk_detach.0
 ./usr/share/man/cat9/disk_init.0
 ./usr/share/man/cat9/disk_unbusy.0
 ./usr/share/man/cat9/disklabel.0
