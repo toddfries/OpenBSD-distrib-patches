@@ -1,18 +1,27 @@
-Host key fingerprint is 3f:44:14:35:1b:65:cc:cb:da:17:6d:1d:e1:b4:a6:36
-+--[ RSA 1024]----+
-|          oo++oo.|
-|         .   ==..|
-|          . .. =+|
-|         .    =.+|
-|        S .  E ..|
-|         o  o o .|
-|          o    . |
-|           .     |
-|                 |
-+-----------------+
-
 ? .git
 ? .gitignore
 ? status.log
 ? up.log
-P notes/sgi/prep
+P sets/lists/base/md.alpha
+P sets/lists/base/md.amd64
+P sets/lists/base/md.armish
+P sets/lists/base/md.aviion
+P sets/lists/base/md.hp300
+P sets/lists/base/md.hppa
+P sets/lists/base/md.hppa64
+P sets/lists/base/md.i386
+P sets/lists/base/md.landisk
+P sets/lists/base/md.luna88k
+P sets/lists/base/md.mac68k
+P sets/lists/base/md.macppc
+P sets/lists/base/md.mvme68k
+P sets/lists/base/md.mvme88k
+P sets/lists/base/md.mvmeppc
+P sets/lists/base/md.sgi
+P sets/lists/base/md.socppc
+P sets/lists/base/md.sparc
+P sets/lists/base/md.sparc64
+P sets/lists/base/md.vax
+P sets/lists/base/md.zaurus
+P sets/lists/comp/mi
+P sets/lists/man/mi
