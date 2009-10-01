@@ -603,6 +603,7 @@
 ./usr/share/man/cat3/mvmeppc
 ./usr/share/man/cat3/palm
 ./usr/share/man/cat3/sgi
+./usr/share/man/cat3/sgi/cacheflush.0
 ./usr/share/man/cat3/socppc
 ./usr/share/man/cat3/sparc
 ./usr/share/man/cat3/sparc64
@@ -1844,6 +1845,7 @@
 ./usr/share/man/cat4/sparc64/lebuffer.0
 ./usr/share/man/cat4/sparc64/led.0
 ./usr/share/man/cat4/sparc64/ledma.0
+./usr/share/man/cat4/sparc64/lom.0
 ./usr/share/man/cat4/sparc64/machfb.0
 ./usr/share/man/cat4/sparc64/magma.0
 ./usr/share/man/cat4/sparc64/mem.0
@@ -2564,6 +2566,7 @@
 ./usr/share/man/cat8/ospfd.0
 ./usr/share/man/cat8/pac.0
 ./usr/share/man/cat8/palm
+./usr/share/man/cat8/palm/MAKEDEV.0
 ./usr/share/man/cat8/pcidump.0
 ./usr/share/man/cat8/pfctl.0
 ./usr/share/man/cat8/pflogd.0

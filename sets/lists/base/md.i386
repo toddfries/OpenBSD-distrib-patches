@@ -96,7 +96,7 @@
 ./usr/lib/gcc-lib/i386-unknown-openbsd4.6/3.3.5/include
 ./usr/lib/gcc-lib/i386-unknown-openbsd4.6/3.3.5/specs
 ./usr/lib/libasn1.so.17.0
-./usr/lib/libc.so.51.0
+./usr/lib/libc.so.51.1
 ./usr/lib/libcom_err.so.17.0
 ./usr/lib/libcrypto.so.18.0
 ./usr/lib/libcurses.so.10.0
@@ -1501,6 +1501,7 @@
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/uaudioreg.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/ucomvar.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/udl.ph
+./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/udlio.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/ueaglereg.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/ueaglevar.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/dev/usb/uftdireg.ph
