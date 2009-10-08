@@ -887,6 +887,9 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/uhavar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/vgareg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/vgavar.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/w83l518d_sdmmc.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/w83l518dreg.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/w83l518dvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/wdcevent.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/wdcreg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ic/wdcvar.ph
@@ -1764,6 +1767,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip6.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_ah.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_carp.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_divert.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_ecn.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_esp.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/netinet/ip_ether.ph
