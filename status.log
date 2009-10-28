@@ -3,8 +3,57 @@
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
 #
+#	modified:   notes/hppa/install
+#	modified:   notes/m4.common
+#	modified:   notes/sgi/hardware
+#	modified:   sets/lists/base/md.alpha
+#	modified:   sets/lists/base/md.amd64
+#	modified:   sets/lists/base/md.armish
+#	modified:   sets/lists/base/md.hp300
+#	modified:   sets/lists/base/md.hppa
+#	modified:   sets/lists/base/md.hppa64
+#	modified:   sets/lists/base/md.i386
+#	modified:   sets/lists/base/md.landisk
+#	modified:   sets/lists/base/md.mac68k
+#	modified:   sets/lists/base/md.macppc
+#	modified:   sets/lists/base/md.mvme68k
+#	modified:   sets/lists/base/md.mvmeppc
+#	modified:   sets/lists/base/md.palm
+#	modified:   sets/lists/base/md.sgi
+#	modified:   sets/lists/base/md.socppc
+#	modified:   sets/lists/base/md.sparc
+#	modified:   sets/lists/base/md.sparc64
+#	modified:   sets/lists/base/md.zaurus
+#	modified:   sets/lists/comp/mi
 #	modified:   sets/lists/man/mi
+#	modified:   special/Makefile
+#	modified:   special/ccdconfig/Makefile
+#	modified:   special/dd/Makefile
+#	modified:   special/dhclient/Makefile
+#	modified:   special/dmesg/Makefile
+#	modified:   special/ftp/Makefile
+#	modified:   special/grep/Makefile
+#	modified:   special/gzip/Makefile
+#	modified:   special/ifconfig/Makefile
+#	modified:   special/init/Makefile
+#	modified:   special/kbd/Makefile
+#	modified:   special/less/Makefile
+#	modified:   special/libstubs/Makefile
+#	modified:   special/more/Makefile
+#	modified:   special/more/more.c
+#	modified:   special/newfs/Makefile
+#	modified:   special/pppd/Makefile
+#	modified:   special/rsh/Makefile
+#	modified:   special/sha256/Makefile
+#	modified:   special/sysctl/Makefile
 #	modified:   status.log
 #	modified:   up.log
 #
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	special/Makefile.inc
+#	special/ed/
+#	special/mt/
+#	special/restore/
 no changes added to commit (use "git add" and/or "git commit -a")
