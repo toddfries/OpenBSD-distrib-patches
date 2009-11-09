@@ -3,6 +3,30 @@
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
 #
+#	modified:   sets/lists/base/md.alpha
+#	modified:   sets/lists/base/md.amd64
+#	modified:   sets/lists/base/md.armish
+#	modified:   sets/lists/base/md.aviion
+#	modified:   sets/lists/base/md.hp300
+#	modified:   sets/lists/base/md.hppa
+#	modified:   sets/lists/base/md.hppa64
+#	modified:   sets/lists/base/md.i386
+#	modified:   sets/lists/base/md.landisk
+#	modified:   sets/lists/base/md.luna88k
+#	modified:   sets/lists/base/md.mac68k
+#	modified:   sets/lists/base/md.macppc
+#	modified:   sets/lists/base/md.mvme68k
+#	modified:   sets/lists/base/md.mvme88k
+#	modified:   sets/lists/base/md.mvmeppc
+#	modified:   sets/lists/base/md.palm
+#	modified:   sets/lists/base/md.sgi
+#	modified:   sets/lists/base/md.socppc
+#	modified:   sets/lists/base/md.sparc
+#	modified:   sets/lists/base/md.sparc64
+#	modified:   sets/lists/base/md.vax
+#	modified:   sets/lists/base/md.zaurus
+#	modified:   sets/lists/comp/mi
+#	modified:   sets/lists/man/mi
 #	modified:   status.log
 #	modified:   up.log
 #
