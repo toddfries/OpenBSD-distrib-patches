@@ -1,11 +1,10 @@
-dnl	$OpenBSD: install,v 1.1 2010/02/03 17:10:44 miod Exp $
+dnl	$OpenBSD: install,v 1.3 2010/02/04 21:32:11 jasper Exp $
 OpenBSDInstallPrelude
 
-dnl Describe netboot?
 Booting the installation media:
 
 The easiest way to boot into the OpenBSD installer is to copy the bsd.rd
-installation kernel to the main linux partition, and boot from it.
+installation kernel to the main Linux partition, and boot from it.
 
 Assuming the installation kernel has been copied to /boot/bsd.rd on the
 Linux system, at the PMON prompt, enter:
@@ -19,6 +18,10 @@ you can boot the kernel from an usb key with:
 
 dnl check syntax
     PMON> boot /dev/fs/msdos@usb0:/bsd.rd
+
+Netbooting the installation kernel can be done as well:
+    PMON> ifaddr rtl0 <your ip>
+    PMON> boot tftp://<server ip>/bsd.rd
 
 OpenBSDInstallPart2
 
@@ -89,5 +92,16 @@ OpenBSDInstallWrapup
 
 	The timeout until the default choice is selected, in seconds, can be
 	modified on the ``timeout'' line.
+
+	Note that using the boot menu currently disables root device
+	discovery and kernel symbol loading. Therefore it may be
+	more convenient to switch to the PMON prompt using 'c' and
+	boot with the command
+
+	PMON> boot -k $bsd
+
+	after having set the bsd variable to your boot path
+
+	PMON> set bsd /dev/fs/ext2@wd0/boot/bsd
 
 OpenBSDCongratulations
