@@ -301,6 +301,7 @@
 ./usr/include/dev/ic/lptvar.h
 ./usr/include/dev/ic/lsi64854reg.h
 ./usr/include/dev/ic/lsi64854var.h
+./usr/include/dev/ic/m41t8xreg.h
 ./usr/include/dev/ic/malo.h
 ./usr/include/dev/ic/max2820reg.h
 ./usr/include/dev/ic/mc146818reg.h
@@ -5131,6 +5132,7 @@
 ./usr/share/man/cat3/ntohl.0
 ./usr/share/man/cat3/ntohs.0
 ./usr/share/man/cat3/ocurses.0
+./usr/share/man/cat3/offsetof.0
 ./usr/share/man/cat3/ohash_create_entry.0
 ./usr/share/man/cat3/ohash_delete.0
 ./usr/share/man/cat3/ohash_entries.0
