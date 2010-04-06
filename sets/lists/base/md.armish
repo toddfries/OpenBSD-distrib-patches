@@ -1144,7 +1144,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/ad1848var.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/ahareg.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/ariareg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/cs4231var.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/egavar.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/isa/elink.ph
@@ -1277,6 +1276,8 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r128_drm.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r128_drv.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r300_reg.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r600_blit_shaders.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r600_microcode.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/radeon_drm.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/radeon_drv.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/radeon_microcode.ph
@@ -1343,6 +1344,7 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_san_te1.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_san_xilinx.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_sandrv.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_sereg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_sisreg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_skreg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/if_skvar.ph
@@ -2471,7 +2473,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_pdaemon.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_pglist.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_pmap.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_pmemrange.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_stat.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_swap.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/uvm/uvm_swap_encrypt.ph

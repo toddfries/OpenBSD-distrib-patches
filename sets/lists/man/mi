@@ -486,6 +486,7 @@
 ./usr/share/man/cat1/mailx.0
 ./usr/share/man/cat1/make.0
 ./usr/share/man/cat1/makeinfo.0
+./usr/share/man/cat1/mandoc.0
 ./usr/share/man/cat1/md5.0
 ./usr/share/man/cat1/merge.0
 ./usr/share/man/cat1/mesg.0
@@ -1526,7 +1527,6 @@
 ./usr/share/man/cat4/aps.0
 ./usr/share/man/cat4/arandom.0
 ./usr/share/man/cat4/arc.0
-./usr/share/man/cat4/aria.0
 ./usr/share/man/cat4/armish
 ./usr/share/man/cat4/armish/autoconf.0
 ./usr/share/man/cat4/armish/intro.0
@@ -2043,6 +2043,7 @@
 ./usr/share/man/cat4/sdhc.0
 ./usr/share/man/cat4/sdmmc.0
 ./usr/share/man/cat4/sdtemp.0
+./usr/share/man/cat4/se.0
 ./usr/share/man/cat4/sequencer.0
 ./usr/share/man/cat4/ses.0
 ./usr/share/man/cat4/sf.0
@@ -2290,6 +2291,7 @@
 ./usr/share/man/cat4/ueagle.0
 ./usr/share/man/cat4/uftdi.0
 ./usr/share/man/cat4/ugen.0
+./usr/share/man/cat4/uguru.0
 ./usr/share/man/cat4/uhci.0
 ./usr/share/man/cat4/uhid.0
 ./usr/share/man/cat4/uhidev.0

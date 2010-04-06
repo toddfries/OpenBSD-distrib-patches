@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.600 2010/03/09 23:34:09 deraadt Exp $
+#	$OpenBSD: install.sub,v 1.602 2010/04/05 01:09:45 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -159,7 +159,6 @@ mount_mnt2() {
 			'$(disklabel '$_dev' 2>/dev/null | grep "^  [a-p]: " |
 			egrep -v "swap|unused" |
 			sed '\''s/^  \(.\): .*/\1/'\'')'
-			
 		[[ $resp == done ]] && return 1
 	fi
 
@@ -600,7 +599,7 @@ configure_ifs() {
 			if [[ -z $_vi ]]; then
 				_vi=0
 				while (( (_vi += 1) < 4096 )); do
-					! isin "$_vi" $_tags && break	
+					! isin "$_vi" $_tags && break
 				done
 			fi
 			_ifdevs=$(get_ifdevs)
@@ -1148,15 +1147,23 @@ startftplist() {
 	# If no networks are configured, we do not need the ftplist file
 	(( nifs < 1 )) && return
 
-	# ftp.openbsd.org == 129.128.5.191 and will remain at
-	# that address for the foreseeable future.
-	ftp $FTPOPTS -a -o - "http://129.128.5.191/cgi-bin/ftplist.cgi?path=$FTPSETDIR" \
-		2>/tmp/ftplisterr > $SERVERLISTALL & ftppid=$!
+	# Make sure the ftp subshell gets its own process group
+	set -m
+	(
+		# ftp.openbsd.org == 129.128.5.191 and will remain at
+		# that address for the foreseeable future.
+		ftp $FTPOPTS -a -o - "http://129.128.5.191/cgi-bin/ftplist.cgi?path=$FTPSETDIR" \
+			2>/tmp/ftplisterr > $SERVERLISTALL
+
+		# Remember finish time for adjusting the received timestamp
+		echo -n $SECONDS >$SERVERLISTSEC
+	) & ftppid=$!
+	set +m
 
 	# If the ftp process takes more than 12 seconds, kill it
 	# XXX We are relying on the pid space not randomly biting us --
 	# XXX ftp could terminate early, and the pid could be reused
-	(sleep 12; kill -INT $ftppid >/dev/null 2>&1) &
+	(sleep 12; kill -INT -$ftppid >/dev/null 2>&1) &
 }
 
 # Wait for the ftp process to finish, or be killed after the timeout
@@ -1171,6 +1178,15 @@ waitftplist() {
 		sleep 0.2					# XXX
 	done
 	[[ -n $_dot ]] && echo					# XXX
+}
+
+# If possible, print the timestamp received from the ftplist.cgi output,
+# adjusted with the time elapsed since it was received
+ftp_time() {
+	local _ftplist_sec=$(cat $SERVERLISTSEC 2>&-)
+	local _time=$(sed '/^TIME=\([0-9]*\)$/!d;s//\1/;q' $SERVERLISTALL 2>&-)
+	[[ -n $_ftplist_sec && -n $_time ]] &&
+		echo $((_time + SECONDS - _ftplist_sec))
 }
 
 # Get several parameters from the user, and xfer
@@ -1231,7 +1247,7 @@ install_url() {
 	# name. This means the last install from a mirror will not keep
 	# the specific directory info. But an install from a local
 	# server *will* remember the specific directory info.
-	set -- $(eval grep -s "^\$$_server_ip_var" $SERVERLIST | sed '$!d') 
+	set -- $(eval grep -s "^\$$_server_ip_var" $SERVERLIST | sed '$!d')
 	resp=${1#*/}
 	# If there is no directory specified, don't use the server name!
 	[[ $resp == "$1" ]] && resp=
@@ -1485,7 +1501,7 @@ install_sets() {
 	: ${_d:=ftp}
 
 	if ! isin "$_d" $_locs; then
-		for a in ftp http cd nfs tape disk; do 
+		for a in ftp http cd nfs tape disk; do
 			isin $a $_locs && _d=$a && break
 		done
 	fi
@@ -1857,6 +1873,7 @@ SETDIR="$VNAME/$ARCH"
 FTPDIR="pub/OpenBSD/$VNAME"
 FTPOPTS="-V"
 SERVERLISTALL=/tmp/serverlistall
+SERVERLISTSEC=/tmp/serverlistsec
 SERVERLIST=/tmp/serverlist
 
 # Do not limit ourselves during installs or upgrades.
