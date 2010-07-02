@@ -1,4 +1,4 @@
-#	$OpenBSD: dot.profile,v 1.14 2010/01/10 13:32:56 deraadt Exp $
+#	$OpenBSD: dot.profile,v 1.16 2010/06/30 20:22:01 halex Exp $
 #	$NetBSD: dot.profile,v 1.1 1995/12/18 22:54:43 pk Exp $
 #
 # Copyright (c) 2009 Kenneth R. Westerback

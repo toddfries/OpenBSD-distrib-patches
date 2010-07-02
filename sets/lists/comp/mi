@@ -1981,7 +1981,6 @@
 ./usr/share/man/cat2/getitimer.0
 ./usr/share/man/cat2/getlogin.0
 ./usr/share/man/cat2/getlogin_r.0
-./usr/share/man/cat2/getpeereid.0
 ./usr/share/man/cat2/getpeername.0
 ./usr/share/man/cat2/getpgid.0
 ./usr/share/man/cat2/getpgrp.0
@@ -3960,6 +3959,7 @@
 ./usr/share/man/cat3/getpary.0
 ./usr/share/man/cat3/getparyx.0
 ./usr/share/man/cat3/getpass.0
+./usr/share/man/cat3/getpeereid.0
 ./usr/share/man/cat3/getprotobyname.0
 ./usr/share/man/cat3/getprotobyname_r.0
 ./usr/share/man/cat3/getprotobynumber.0
@@ -5821,6 +5821,11 @@
 ./usr/share/man/cat3/tmpfile.0
 ./usr/share/man/cat3/tmpnam.0
 ./usr/share/man/cat3/toascii.0
+./usr/share/man/cat3/tok_end.0
+./usr/share/man/cat3/tok_init.0
+./usr/share/man/cat3/tok_line.0
+./usr/share/man/cat3/tok_reset.0
+./usr/share/man/cat3/tok_str.0
 ./usr/share/man/cat3/tolower.0
 ./usr/share/man/cat3/top_panel.0
 ./usr/share/man/cat3/top_row.0
