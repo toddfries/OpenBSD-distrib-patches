@@ -1533,7 +1533,6 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/scsi/scsiconf.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/scsi/sdvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/scsi/ses.ph
-./usr/libdata/perl5/site_perl/sparc-openbsd/scsi/ss_mustek.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/scsi/ssvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/search.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sectok.ph
@@ -1580,6 +1579,7 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/ioctl_fd.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/kcore.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/limits.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/loadfile_machdep.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/lock.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/mutex.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sparc/oldmon.ph
