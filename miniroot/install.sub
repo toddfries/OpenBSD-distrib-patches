@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.615 2010/08/05 10:45:32 halex Exp $
+#	$OpenBSD: install.sub,v 1.617 2010/08/08 21:06:06 krw Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback

@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.47 2009/06/11 17:05:06 deraadt Exp $
+#	$OpenBSD: install.md,v 1.49 2010/08/08 21:06:06 krw Exp $
 #
 #
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
