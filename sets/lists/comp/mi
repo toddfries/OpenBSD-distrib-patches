@@ -66,6 +66,7 @@
 ./usr/include/crypto/deflate.h
 ./usr/include/crypto/des.h
 ./usr/include/crypto/des_locl.h
+./usr/include/crypto/gmac.h
 ./usr/include/crypto/hmac.h
 ./usr/include/crypto/idgen.h
 ./usr/include/crypto/key_wrap.h
@@ -6751,6 +6752,7 @@
 ./usr/share/man/cat9/timeout_pending.0
 ./usr/share/man/cat9/timeout_set.0
 ./usr/share/man/cat9/timeout_triggered.0
+./usr/share/man/cat9/timingsafe_bcmp.0
 ./usr/share/man/cat9/tsleep.0
 ./usr/share/man/cat9/ttyprintf.0
 ./usr/share/man/cat9/tvtohz.0
