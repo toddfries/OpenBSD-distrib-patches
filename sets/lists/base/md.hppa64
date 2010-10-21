@@ -120,7 +120,6 @@
 ./usr/lib/libpthread.so.12.1
 ./usr/lib/libreadline.so.3.0
 ./usr/lib/librpcsvc.so.1.2
-./usr/lib/libsectok.so.6.0
 ./usr/lib/libskey.so.5.1
 ./usr/lib/libsndio.so.3.3
 ./usr/lib/libssl.so.16.0
@@ -766,7 +765,6 @@
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/sha1.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/sha2.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/sk.ph
-./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/skipjack.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/spr.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/crypto/xform.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/ctype.ph
@@ -1228,6 +1226,8 @@
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/fmsvar.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/gcu.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/gcu_reg.ph
+./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/glxreg.ph
+./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/glxvar.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/hifn7751reg.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/hifn7751var.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/dev/pci/i82365_pcivar.ph
@@ -2105,6 +2105,7 @@
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/dsa.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/dso.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/dtls1.ph
+./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/e_os.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/e_os2.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/ebcdic.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/openssl/ec.ph
@@ -2239,7 +2240,6 @@
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/scsi/ses.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/scsi/ssvar.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/search.ph
-./usr/libdata/perl5/site_perl/hppa64-openbsd/sectok.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/semaphore.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/setjmp.ph
 ./usr/libdata/perl5/site_perl/hppa64-openbsd/sgtty.ph

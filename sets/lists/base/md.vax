@@ -8,10 +8,6 @@
 ./usr/lib/gcc-lib/vax-unknown-openbsd4.8/2.95.3/cpp0
 ./usr/lib/gcc-lib/vax-unknown-openbsd4.8/2.95.3/include
 ./usr/lib/gcc-lib/vax-unknown-openbsd4.8/2.95.3/specs
-./usr/lib/libformw.so.5.0
-./usr/lib/libmenuw.so.5.0
-./usr/lib/libncursesw.so.12.0
-./usr/lib/libpanelw.so.5.0
 ./usr/libdata/perl5/site_perl/vax-openbsd
 ./usr/libdata/perl5/site_perl/vax-openbsd/_h2ph_pre.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/a.out.ph
@@ -67,7 +63,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/sha1.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/sha2.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/sk.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/crypto/skipjack.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/spr.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/xform.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/ctype.ph
@@ -529,6 +524,8 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/fmsvar.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/gcu.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/gcu_reg.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/glxreg.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/glxvar.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/hifn7751reg.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/hifn7751var.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/i82365_pcivar.ph
@@ -1339,6 +1336,7 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/dsa.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/dso.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/dtls1.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/openssl/e_os.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/e_os2.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/ebcdic.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/openssl/ec.ph
@@ -1473,7 +1471,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/scsi/ses.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/scsi/ssvar.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/search.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/sectok.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/semaphore.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/setjmp.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sgtty.ph
@@ -2368,9 +2365,8 @@
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/Unicode/Normalize/Normalize.a
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/Unicode/Normalize/extralibs.ld
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attributes
-./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attributes/attributes.so
-./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attrs/attrs.a
-./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attrs/extralibs.ld
+./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attributes/attributes.a
+./usr/libdata/perl5/vax-openbsd/5.12.2/auto/attributes/extralibs.ld
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/mro
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/mro/extralibs.ld
 ./usr/libdata/perl5/vax-openbsd/5.12.2/auto/mro/mro.a
