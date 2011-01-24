@@ -1,11 +1,11 @@
 ./sbin/wsconsctl
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3/cc1
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3/collect2
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3/cpp0
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3/include
-./usr/lib/gcc-lib/m88k-unknown-openbsd4.8/2.95.3/specs
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3/cc1
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3/collect2
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3/cpp0
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3/include
+./usr/lib/gcc-lib/m88k-unknown-openbsd4.9/2.95.3/specs
 ./usr/libdata/perl5/m88k-openbsd
 ./usr/libdata/perl5/m88k-openbsd/5.12.2/.packlist
 ./usr/libdata/perl5/m88k-openbsd/5.12.2/B
@@ -592,6 +592,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/atareg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/atascsi.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/atavar.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/pmreg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/satareg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/ata/wdvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/auconv.ph
@@ -1073,6 +1074,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_vgereg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_vgevar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_vrreg.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_vtereg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_wbreg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_wpireg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/pci/if_wpivar.ph
@@ -1233,7 +1235,6 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/rasops/rasops.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/rasops/rasops_bitops.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/rasops/rasops_masks.ph
-./usr/libdata/perl5/site_perl/m88k-openbsd/dev/rndioctl.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/rndvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/sbus
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/sbus/asioreg.ph
@@ -1293,6 +1294,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/hidkbdsc.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/hidkbdvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/hidmsvar.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_athn_usb.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_atureg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_auereg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_axereg.ph
@@ -1733,7 +1735,6 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/if_types.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/if_vlan_var.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/netisr.ph
-./usr/libdata/perl5/site_perl/m88k-openbsd/net/netisr_dispatch.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/pfkeyv2.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/pfvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/pipex.ph

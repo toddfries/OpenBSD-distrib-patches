@@ -2015,6 +2015,7 @@
 ./usr/share/man/cat4/random.0
 ./usr/share/man/cat4/ray.0
 ./usr/share/man/cat4/rd.0
+./usr/share/man/cat4/rdcphy.0
 ./usr/share/man/cat4/re.0
 ./usr/share/man/cat4/rgephy.0
 ./usr/share/man/cat4/ricohrtc.0
@@ -2384,6 +2385,7 @@
 ./usr/share/man/cat4/vnd.0
 ./usr/share/man/cat4/vr.0
 ./usr/share/man/cat4/vscsi.0
+./usr/share/man/cat4/vte.0
 ./usr/share/man/cat4/watchdog.0
 ./usr/share/man/cat4/wb.0
 ./usr/share/man/cat4/wbenv.0
@@ -2623,6 +2625,7 @@
 ./usr/share/man/cat7/securelevel.0
 ./usr/share/man/cat7/sndio.0
 ./usr/share/man/cat7/symlink.0
+./usr/share/man/cat7/tbl.0
 ./usr/share/man/cat7/term.0
 ./usr/share/man/cat8/Makefile.yp.0
 ./usr/share/man/cat8/UKC.0
@@ -2951,9 +2954,11 @@
 ./usr/share/man/cat8/rc.0
 ./usr/share/man/cat8/rc.conf.0
 ./usr/share/man/cat8/rc.conf.local.0
+./usr/share/man/cat8/rc.d.0
 ./usr/share/man/cat8/rc.local.0
 ./usr/share/man/cat8/rc.securelevel.0
 ./usr/share/man/cat8/rc.shutdown.0
+./usr/share/man/cat8/rc.subr.0
 ./usr/share/man/cat8/rdate.0
 ./usr/share/man/cat8/rdconfig.0
 ./usr/share/man/cat8/rdump.0

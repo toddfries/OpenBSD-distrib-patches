@@ -116,6 +116,7 @@
 ./usr/include/dev/ata/atareg.h
 ./usr/include/dev/ata/atascsi.h
 ./usr/include/dev/ata/atavar.h
+./usr/include/dev/ata/pmreg.h
 ./usr/include/dev/ata/satareg.h
 ./usr/include/dev/ata/wdvar.h
 ./usr/include/dev/auconv.h
@@ -597,6 +598,7 @@
 ./usr/include/dev/pci/if_vgereg.h
 ./usr/include/dev/pci/if_vgevar.h
 ./usr/include/dev/pci/if_vrreg.h
+./usr/include/dev/pci/if_vtereg.h
 ./usr/include/dev/pci/if_wbreg.h
 ./usr/include/dev/pci/if_wpireg.h
 ./usr/include/dev/pci/if_wpivar.h
@@ -757,7 +759,6 @@
 ./usr/include/dev/rasops/rasops.h
 ./usr/include/dev/rasops/rasops_bitops.h
 ./usr/include/dev/rasops/rasops_masks.h
-./usr/include/dev/rndioctl.h
 ./usr/include/dev/rndvar.h
 ./usr/include/dev/sbus
 ./usr/include/dev/sbus/asioreg.h
@@ -817,6 +818,7 @@
 ./usr/include/dev/usb/hidkbdsc.h
 ./usr/include/dev/usb/hidkbdvar.h
 ./usr/include/dev/usb/hidmsvar.h
+./usr/include/dev/usb/if_athn_usb.h
 ./usr/include/dev/usb/if_atureg.h
 ./usr/include/dev/usb/if_auereg.h
 ./usr/include/dev/usb/if_axereg.h
@@ -1110,7 +1112,6 @@
 ./usr/include/net/if_types.h
 ./usr/include/net/if_vlan_var.h
 ./usr/include/net/netisr.h
-./usr/include/net/netisr_dispatch.h
 ./usr/include/net/pfkeyv2.h
 ./usr/include/net/pfvar.h
 ./usr/include/net/pipex.h
@@ -6374,7 +6375,6 @@
 ./usr/share/man/cat9/file.0
 ./usr/share/man/cat9/fork1.0
 ./usr/share/man/cat9/free.0
-./usr/share/man/cat9/get_random_bytes.0
 ./usr/share/man/cat9/getblk.0
 ./usr/share/man/cat9/getdevvp.0
 ./usr/share/man/cat9/geteblk.0
@@ -6600,7 +6600,6 @@
 ./usr/share/man/cat9/profhz.0
 ./usr/share/man/cat9/psignal.0
 ./usr/share/man/cat9/radio.0
-./usr/share/man/cat9/random.0
 ./usr/share/man/cat9/rasops.0
 ./usr/share/man/cat9/rasops_init.0
 ./usr/share/man/cat9/rasops_reconfig.0
@@ -6665,7 +6664,6 @@
 ./usr/share/man/cat9/spltty.0
 ./usr/share/man/cat9/splvm.0
 ./usr/share/man/cat9/splx.0
-./usr/share/man/cat9/srandom.0
 ./usr/share/man/cat9/startuphook_disestablish.0
 ./usr/share/man/cat9/startuphook_establish.0
 ./usr/share/man/cat9/stathz.0

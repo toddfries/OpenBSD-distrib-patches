@@ -52,13 +52,13 @@
 ./usr/lib/apache/modules/mod_unique_id.so
 ./usr/lib/apache/modules/mod_usertrack.so
 ./usr/lib/apache/modules/mod_vhost_alias.so
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3/cc1
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3/collect2
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3/cpp0
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3/include
-./usr/lib/gcc-lib/powerpc-unknown-openbsd4.8/2.95.3/specs
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3/cc1
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3/collect2
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3/cpp0
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3/include
+./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/2.95.3/specs
 ./usr/lib/libasn1.so.18.0
 ./usr/lib/libc.so.58.0
 ./usr/lib/libcom_err.so.18.0
@@ -692,6 +692,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/atareg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/atascsi.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/atavar.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/pmreg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/satareg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/ata/wdvar.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/auconv.ph
@@ -1171,6 +1172,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_vgereg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_vgevar.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_vrreg.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_vtereg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_wbreg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_wpireg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/pci/if_wpivar.ph
@@ -1329,7 +1331,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/rasops/rasops.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/rasops/rasops_bitops.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/rasops/rasops_masks.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/rndioctl.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/rndvar.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/sbus
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/sbus/asioreg.ph
@@ -1389,6 +1390,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/hidkbdsc.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/hidkbdvar.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/hidmsvar.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/if_athn_usb.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/if_atureg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/if_auereg.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/dev/usb/if_axereg.ph
@@ -1739,7 +1741,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/if_types.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/if_vlan_var.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/netisr.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/net/netisr_dispatch.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/pfkeyv2.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/pfvar.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/pipex.ph
