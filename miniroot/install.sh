@@ -268,13 +268,8 @@ _f=dhclient.conf
 done)
 
 # Feed the random pool some junk before we read from it
-<<<<<<< install.sh
-{ dmesg ; cat $SERVERLISTALL ; sysctl ; route -n show ; df ; ifconfig -A ; hostname
-} >/mnt/dev/arandom 2>&1
-=======
 (dmesg; cat $SERVERLISTALL; sysctl; route -n show; df;
     ifconfig -A; hostname) >/mnt/dev/arandom 2>&1
->>>>>>> 1.216
 
 echo -n "done.\nGenerating initial host.random file..."
 /mnt/bin/dd if=/mnt/dev/arandom of=/mnt/var/db/host.random \
