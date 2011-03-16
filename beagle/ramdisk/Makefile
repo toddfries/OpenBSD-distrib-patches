@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.24 2011/03/14 19:07:46 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.1 2011/03/14 16:40:23 drahn Exp $
 
 REV=	${OSrev}
 
@@ -21,9 +21,15 @@ VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
 PID!=		echo $$$$
 
+OBJARG=
+# XXX - the following for cross builds. shouldn't be here for native
+.if ${HOST} != ${TARGET}
+OBJARG=-O obj.${HOST}.${TARGET}
+.endif
 
-DISKTYPE=       rdroot
-NBLKS=          8192
+DISKTYPE=       rdroot2.5M
+#NBLKS=		8192
+NBLKS=		5120
 # minfree, opt, b/i  trks, sects, cpg
 NEWFSARGS= -m 0 -o space -i 4096
 
@@ -34,44 +40,27 @@ all ${IMAGE}:
 .else
 
 # mix config is not needed.
-all:	${BSD_RD} cd
+all:	${BSD_RD}
 
 ${BSD_RD}: ${CBIN} ${IMAGE} bsd rdsetroot
 	cp bsd ${BSD_RD}
+	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=95 conv=notrunc 2>/dev/null;
+	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=127 conv=notrunc 2>/dev/null;
+	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=159 conv=notrunc 2>/dev/null;
 	${.OBJDIR}/rdsetroot ${BSD_RD} ${IMAGE}
-
-cd: ${BSD_RD}
-	-rm -rf ${.OBJDIR}/cd-dir/
-	-@mkdir -p ${.OBJDIR}/cd-dir/${OSREV}/macppc/
-	cp bsd.rd ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd
-	strip ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd
-	gzip -9n ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd
-	mv ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd.gz ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd
-	# On HFS, doing the following means COPIES of the files.. therefore
-	# we skip doing so.
-	# ln ${.OBJDIR}/cd-dir/${OSREV}/macppc/bsd.rd ${.OBJDIR}/cd-dir/bsd.rd
-	# ln ${.OBJDIR}/cd-dir/bsd.rd ${.OBJDIR}/cd-dir/bsd
-	cp ${.CURDIR}/../../../sys/arch/macppc/stand/tbxidata/bsd.tbxi \
-	    ${.OBJDIR}/cd-dir/${OSREV}/macppc
-	cp ${DESTDIR}/usr/mdec/ofwboot ${.OBJDIR}/cd-dir/
-	mkhybrid -v -v -r -part -hfs \
-	    -hfs-bless ${.OBJDIR}/cd-dir/${OSREV}/macppc \
-	    -map ${.CURDIR}/../../../gnu/usr.sbin/mkhybrid/src/more.mapping \
-	    -A "OpenBSD ${OSREV} macppc bootonly CD" \
-	    -P "Copyright (c) `date +%Y` Theo de Raadt, The OpenBSD project" \
-	    -p "Theo de Raadt <deraadt@openbsd.org>" \
-	    -V "OpenBSD/macppc  ${OSREV} boot-only CD" \
-	    -o ${.OBJDIR}/cd${OSrev}.iso ${.OBJDIR}/cd-dir
+	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=95 conv=notrunc 2>/dev/null;
+	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=127 conv=notrunc 2>/dev/null;
+	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=159 conv=notrunc 2>/dev/null;
 
 ${IMAGE}: rd_setup do_files rd_teardown
 
 .endif
 
 bsd:
-	cd ${TOP}/../../sys/arch/macppc/conf && config RAMDISK
-	cd ${TOP}/../../sys/arch/macppc/compile/RAMDISK && \
+	cd ${TOP}/../../sys/arch/beagle/conf && config RAMDISK
+	cd ${TOP}/../../sys/arch/beagle/compile/RAMDISK && \
 	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
-	cp ${TOP}/../../sys/arch/macppc/compile/RAMDISK/bsd bsd
+	cp ${TOP}/../../sys/arch/beagle/compile/RAMDISK/bsd bsd
 
 rd_setup:
 	dd if=/dev/zero of=${IMAGE} bs=512 count=${NBLKS}
@@ -96,7 +85,7 @@ unconfig:
 .PRECIOUS:	${IMAGE}
 
 ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CRUNCHCONF}
-	crunchgen -E -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${.ALLSRC}
+	crunchgen -E ${OBJARG} -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${.ALLSRC}
 
 ${CBIN}: ${CBIN}.mk ${CBIN}.cache ${CBIN}.c
 	${MAKE} -f ${CBIN}.mk all
@@ -105,7 +94,7 @@ ${CRUNCHCONF}: ${LISTS}
 	awk -f ${UTILS}/makeconf.awk CBIN=${CBIN} ${LISTS} > ${CBIN}.conf
 
 do_files:
-	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
+	cat ${MTREE} | mtree -de -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
 	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
@@ -113,12 +102,13 @@ do_files:
 
 clean cleandir:
 	/bin/rm -f core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
-	    *.o *.lo *.c bsd ${BSD_RD} cd${REV}.iso rdsetroot
+	    *.o *.lo *.c bsd ${BSD_RD} rdsetroot
+	rm -f instbin.conf
 	rm -rf cd-dir
 
 .ifdef RELEASEDIR
 install:
-	cp ${BSD_RD} cd${REV}.iso ${RELEASEDIR}
+	cp ${BSD_RD} ${RELEASEDIR}
 .endif
 
 .include <bsd.obj.mk>
