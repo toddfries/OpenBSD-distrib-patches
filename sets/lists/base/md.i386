@@ -94,7 +94,7 @@
 ./usr/lib/gcc-lib/i386-unknown-openbsd4.9/4.2.1/collect2
 ./usr/lib/gcc-lib/i386-unknown-openbsd4.9/4.2.1/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.58.0
+./usr/lib/libc.so.58.1
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.19.0
 ./usr/lib/libcurses.so.12.0
@@ -1976,8 +1976,6 @@
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/fifofs
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/fifofs/fifo.ph
-./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/portal
-./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/portal/portal.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/procfs
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/procfs/procfs.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/miscfs/specfs
@@ -2332,6 +2330,7 @@
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi/cd.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi/iscsi.ph
+./usr/libdata/perl5/site_perl/i386-openbsd/scsi/mpathvar.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi/safte.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi/scsi_all.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/scsi/scsi_changer.ph
@@ -2497,7 +2496,6 @@
 ./usr/libdata/perl5/site_perl/i386-openbsd/sys/videoio.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/sys/vmmeter.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/sys/vnode.ph
-./usr/libdata/perl5/site_perl/i386-openbsd/sys/vnode_if.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/sys/wait.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/sys/workq.ph
 ./usr/libdata/perl5/site_perl/i386-openbsd/sysexits.ph
