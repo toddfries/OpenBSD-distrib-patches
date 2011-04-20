@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.8 2011/03/14 19:07:46 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.10 2011/04/18 16:52:10 thib Exp $
 
 REV=	${OSrev}
 
@@ -16,7 +16,7 @@ UTILS?=		${.CURDIR}/../../miniroot
 MOUNT_POINT=	/mnt
 MTREE=		${UTILS}/mtree.conf
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -50,7 +50,7 @@ ${IMAGE}: rd_setup do_files rd_teardown
 bsd:
 	cd ${TOP}/../../sys/arch/socppc/conf && config RAMDISK
 	cd ${TOP}/../../sys/arch/socppc/compile/RAMDISK && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 	cp ${TOP}/../../sys/arch/socppc/compile/RAMDISK/bsd bsd
 
 rd_setup:

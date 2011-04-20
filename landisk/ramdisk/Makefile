@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.12 2009/04/17 03:58:54 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.14 2011/04/18 16:52:09 thib Exp $
 
 REV=	${OSrev}
 
@@ -15,7 +15,7 @@ UTILS?=		${.CURDIR}/../../miniroot
 MOUNT_POINT=	/mnt
 MTREE=		${UTILS}/mtree.conf
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -47,7 +47,7 @@ ${IMAGE}: rd_setup do_files rd_teardown
 bsd:
 	cd ${TOP}/../../sys/arch/landisk/conf && config RAMDISK
 	cd ${TOP}/../../sys/arch/landisk/compile/RAMDISK && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 	cp ${TOP}/../../sys/arch/landisk/compile/RAMDISK/bsd bsd
 
 rd_setup:

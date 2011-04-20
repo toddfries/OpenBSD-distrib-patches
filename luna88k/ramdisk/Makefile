@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.10 2011/03/14 19:07:46 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.12 2011/04/18 16:52:09 thib Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -12,7 +12,7 @@ UTILS?=		${.CURDIR}/../../miniroot
 MOUNT_POINT=	/mnt
 MTREE=		${UTILS}/mtree.conf
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -36,7 +36,7 @@ bsd:
 .ifndef(NOBUILD)
 	cd ${.CURDIR}/../../../sys/arch/luna88k/conf && config RAMDISK
 	cd ${.CURDIR}/../../../sys/arch/luna88k/compile/RAMDISK && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 .endif
 	cp ${.CURDIR}/../../../sys/arch/luna88k/compile/RAMDISK/bsd bsd
 

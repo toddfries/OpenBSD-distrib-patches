@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.21 2011/03/14 19:07:46 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.23 2011/04/18 16:52:09 thib Exp $
 
 CBIN=		instbin
 ARCHDIR=	${.CURDIR}/..
@@ -11,7 +11,7 @@ SRCDIR=		${.CURDIR}/../../..
 .endif
 
 MOUNT_POINT?=	/mnt
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 DISKTYPE=	rdroot
@@ -62,7 +62,7 @@ ${CDROM}: bsd ${CDBOOT}
 obsd:
 	cd ${SRCDIR}/sys/arch/${MACHINE}/conf && config ${KERNEL}
 	cd ${SRCDIR}/sys/arch/${MACHINE}/compile/${KERNEL} && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 	cp ${SRCDIR}/sys/arch/${MACHINE}/compile/${KERNEL}/bsd obsd
 
 bsd.rd:	obsd ${IMAGE} ${RDSETROOT}

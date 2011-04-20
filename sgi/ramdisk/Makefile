@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.12 2010/03/31 19:44:35 miod Exp $
+#	$OpenBSD: Makefile,v 1.14 2011/04/18 16:52:10 thib Exp $
 
 REV=		${OSrev}
 
@@ -15,7 +15,7 @@ UTILS?=		${.CURDIR}/../../miniroot
 MOUNT_POINT=	/mnt
 MTREE=		${UTILS}/mtree.conf
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -55,7 +55,7 @@ bsd.IP27:
 .ifndef NOBUILD
 	cd ${.TOP}/../../sys/arch/sgi/conf && config RAMDISK-IP27
 	cd ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP27 && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 .endif
 	cp ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP27/bsd bsd.IP27
 
@@ -63,7 +63,7 @@ bsd.IP30:
 .ifndef NOBUILD
 	cd ${.TOP}/../../sys/arch/sgi/conf && config RAMDISK-IP30
 	cd ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP30 && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && ${MAKE}
 .endif
 	cp ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP30/bsd bsd.IP30
 
@@ -71,7 +71,7 @@ bsd.IP32:
 .ifndef NOBUILD
 	cd ${.TOP}/../../sys/arch/sgi/conf && config RAMDISK-IP32
 	cd ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP32 && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && ${MAKE}
 .endif
 	cp ${.TOP}/../../sys/arch/sgi/compile/RAMDISK-IP32/bsd bsd.IP32
 

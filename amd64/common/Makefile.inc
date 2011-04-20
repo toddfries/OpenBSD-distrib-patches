@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile.inc,v 1.14 2009/04/17 03:58:54 deraadt Exp $
+#	$OpenBSD: Makefile.inc,v 1.16 2011/04/18 16:52:09 thib Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -14,7 +14,7 @@ MTREE=		${UTILS}/mtree.conf
 
 XNAME?=		floppy
 FS?=		${XNAME}${REV}.fs
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -66,7 +66,7 @@ bsd.rd:	${IMAGE} bsd rdsetroot
 bsd:
 	cd ${.CURDIR}/../../../sys/arch/amd64/conf && config ${RAMDISK}
 	cd ${.CURDIR}/../../../sys/arch/amd64/compile/${RAMDISK} && \
-	    ${MAKE} clean && ${MAKE} depend && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 	cp ${.CURDIR}/../../../sys/arch/amd64/compile/${RAMDISK}/bsd bsd
 
 ${IMAGE}: ${CBIN} rd_setup do_files rd_teardown
