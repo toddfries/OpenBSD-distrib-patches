@@ -28,7 +28,7 @@
 ./usr/lib/gcc-lib/m68k-unknown-openbsd4.9/2.95.3/include
 ./usr/lib/gcc-lib/m68k-unknown-openbsd4.9/2.95.3/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.58.1
+./usr/lib/libc.so.58.2
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.19.0
 ./usr/lib/libcurses.so.12.0
@@ -42,7 +42,7 @@
 ./usr/lib/libkafs.so.18.0
 ./usr/lib/libkrb5.so.18.0
 ./usr/lib/libkvm.so.10.0
-./usr/lib/libm.so.5.2
+./usr/lib/libm.so.5.3
 ./usr/lib/libmenu.so.5.0
 ./usr/lib/libmenuw.so.5.0
 ./usr/lib/libmilter.so.2.1
@@ -62,7 +62,7 @@
 ./usr/lib/libskey.so.5.1
 ./usr/lib/libsndio.so.4.0
 ./usr/lib/libssl.so.16.0
-./usr/lib/libstdc++.so.43.0
+./usr/lib/libstdc++.so.44.0
 ./usr/lib/libtermcap.so.12.0
 ./usr/lib/libtermlib.so.12.0
 ./usr/lib/libusbhid.so.3.0
@@ -1568,6 +1568,7 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/expat.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/expat_external.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/fcntl.ph
+./usr/libdata/perl5/site_perl/m68k-openbsd/fenv.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/float.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/fnmatch.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/form.ph
@@ -1695,6 +1696,7 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/disklabel.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/endian.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/exec.ph
+./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/fenv.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/float.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/frame.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/hp300/hil_machdep.ph
@@ -2190,7 +2192,6 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/scsi/scsiconf.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/scsi/sdvar.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/scsi/ses.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/scsi/ssvar.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/search.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/semaphore.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/setjmp.ph

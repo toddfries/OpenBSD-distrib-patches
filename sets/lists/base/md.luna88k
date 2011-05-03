@@ -1418,6 +1418,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/expat.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/expat_external.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/fcntl.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/fenv.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/float.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/fnmatch.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/form.ph
@@ -1606,6 +1607,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/disklabel.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/endian.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/exec.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/fenv.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/float.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/fpu.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/luna88k/frame.ph
@@ -1648,6 +1650,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/db_machdep.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/endian.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/exec.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/fenv.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/float.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/fpu.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/m88k/frame.ph
@@ -2051,7 +2054,6 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/scsi/scsiconf.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/scsi/sdvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/scsi/ses.ph
-./usr/libdata/perl5/site_perl/m88k-openbsd/scsi/ssvar.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/search.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/semaphore.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/setjmp.ph
