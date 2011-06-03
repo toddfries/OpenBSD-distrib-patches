@@ -3770,9 +3770,23 @@
 ./usr/share/man/cat3/fdimf.0
 ./usr/share/man/cat3/fdiml.0
 ./usr/share/man/cat3/fdopen.0
+./usr/share/man/cat3/feclearexcept.0
+./usr/share/man/cat3/fedisableexcept.0
+./usr/share/man/cat3/feenableexcept.0
+./usr/share/man/cat3/fegetenv.0
+./usr/share/man/cat3/fegetexcept.0
+./usr/share/man/cat3/fegetexceptflag.0
+./usr/share/man/cat3/fegetround.0
+./usr/share/man/cat3/feholdexcept.0
 ./usr/share/man/cat3/feof.0
+./usr/share/man/cat3/feraiseexcept.0
 ./usr/share/man/cat3/ferror.0
+./usr/share/man/cat3/fesetenv.0
+./usr/share/man/cat3/fesetexceptflag.0
+./usr/share/man/cat3/fesetround.0
 ./usr/share/man/cat3/fetch.0
+./usr/share/man/cat3/fetestexcept.0
+./usr/share/man/cat3/feupdateenv.0
 ./usr/share/man/cat3/fflagstostr.0
 ./usr/share/man/cat3/fflush.0
 ./usr/share/man/cat3/ffs.0
@@ -3902,6 +3916,7 @@
 ./usr/share/man/cat3/funopen.0
 ./usr/share/man/cat3/fwide.0
 ./usr/share/man/cat3/fwopen.0
+./usr/share/man/cat3/fwprintf.0
 ./usr/share/man/cat3/fwrite.0
 ./usr/share/man/cat3/gai_strerror.0
 ./usr/share/man/cat3/gamma.0
@@ -5150,6 +5165,9 @@
 ./usr/share/man/cat3/napms.0
 ./usr/share/man/cat3/ncurses.0
 ./usr/share/man/cat3/ndbm.0
+./usr/share/man/cat3/nearbyint.0
+./usr/share/man/cat3/nearbyintf.0
+./usr/share/man/cat3/nearbyintl.0
 ./usr/share/man/cat3/net_addrcmp.0
 ./usr/share/man/cat3/network.0
 ./usr/share/man/cat3/new_field.0
@@ -5802,6 +5820,7 @@
 ./usr/share/man/cat3/swap16.0
 ./usr/share/man/cat3/swap32.0
 ./usr/share/man/cat3/swap64.0
+./usr/share/man/cat3/swprintf.0
 ./usr/share/man/cat3/syncok.0
 ./usr/share/man/cat3/sys_siglist.0
 ./usr/share/man/cat3/sys_signame.0
@@ -5927,6 +5946,7 @@
 ./usr/share/man/cat3/verrx.0
 ./usr/share/man/cat3/vfprintf.0
 ./usr/share/man/cat3/vfscanf.0
+./usr/share/man/cat3/vfwprintf.0
 ./usr/share/man/cat3/vidattr.0
 ./usr/share/man/cat3/vidputs.0
 ./usr/share/man/cat3/vis.0
@@ -5937,12 +5957,14 @@
 ./usr/share/man/cat3/vsnprintf.0
 ./usr/share/man/cat3/vsprintf.0
 ./usr/share/man/cat3/vsscanf.0
+./usr/share/man/cat3/vswprintf.0
 ./usr/share/man/cat3/vsyslog.0
 ./usr/share/man/cat3/vsyslog_r.0
 ./usr/share/man/cat3/vw_printw.0
 ./usr/share/man/cat3/vw_scanw.0
 ./usr/share/man/cat3/vwarn.0
 ./usr/share/man/cat3/vwarnx.0
+./usr/share/man/cat3/vwprintf.0
 ./usr/share/man/cat3/vwprintw.0
 ./usr/share/man/cat3/vwscanw.0
 ./usr/share/man/cat3/wadd_wch.0
@@ -5976,6 +5998,7 @@
 ./usr/share/man/cat3/wclrtoeol.0
 ./usr/share/man/cat3/wcolor_set.0
 ./usr/share/man/cat3/wcrtomb.0
+./usr/share/man/cat3/wcscasecmp.0
 ./usr/share/man/cat3/wcscat.0
 ./usr/share/man/cat3/wcschr.0
 ./usr/share/man/cat3/wcscmp.0
@@ -5984,6 +6007,7 @@
 ./usr/share/man/cat3/wcslcat.0
 ./usr/share/man/cat3/wcslcpy.0
 ./usr/share/man/cat3/wcslen.0
+./usr/share/man/cat3/wcsncasecmp.0
 ./usr/share/man/cat3/wcsncat.0
 ./usr/share/man/cat3/wcsncmp.0
 ./usr/share/man/cat3/wcsncpy.0
@@ -6053,6 +6077,7 @@
 ./usr/share/man/cat3/wmouse_trafo.0
 ./usr/share/man/cat3/wmove.0
 ./usr/share/man/cat3/wnoutrefresh.0
+./usr/share/man/cat3/wprintf.0
 ./usr/share/man/cat3/wprintw.0
 ./usr/share/man/cat3/wredrawln.0
 ./usr/share/man/cat3/wrefresh.0
@@ -6562,6 +6587,7 @@
 ./usr/share/man/cat9/pci_intr_establish.0
 ./usr/share/man/cat9/pci_intr_line.0
 ./usr/share/man/cat9/pci_intr_map.0
+./usr/share/man/cat9/pci_intr_map_msi.0
 ./usr/share/man/cat9/pci_intr_string.0
 ./usr/share/man/cat9/pci_make_tag.0
 ./usr/share/man/cat9/pfind.0
