@@ -101,7 +101,7 @@
 ./usr/lib/libiberty.so.10.1
 ./usr/lib/libkafs.so.18.0
 ./usr/lib/libkrb5.so.18.0
-./usr/lib/libkvm.so.10.0
+./usr/lib/libkvm.so.11.0
 ./usr/lib/libm.so.5.3
 ./usr/lib/libmenu.so.5.0
 ./usr/lib/libmenuw.so.5.0
@@ -742,6 +742,7 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/ioctl_fd.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/kcore.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/limits.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/loadfile_machdep.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/lock.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/logout.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/alpha/mutex.ph
