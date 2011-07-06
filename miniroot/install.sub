@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.638 2011/04/18 16:52:10 thib Exp $
+#	$OpenBSD: install.sub,v 1.641 2011/07/06 20:02:16 halex Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -69,6 +69,7 @@
 #	MDCDDEVS    - '/^cd[0-9][0-9]* /s/ .*//p'    assumed if not provided
 #	MDMTDEVS    - '/^[cms]t[0-9][0-9]* /s/ .*//p'
 #	MDXAPERTURE - set machdep.allowaperture=value in sysctl.conf
+#	NCPU	    - the number of cpus for mp capable arches
 . install.md
 
 set_term() {
@@ -1167,6 +1168,15 @@ install_files() {
 			GOTSETS="$GOTSETS $_f"
 		fi
 	done
+
+	# save arguments from the first installation source for sysmerge(8)
+	if [[ -z "$FETCH_CMD" ]]; then
+		FETCH_CMD="ftp $FTPOPTS -m"
+		isin base$VERSION.tgz $GOTSETS && \
+			_sm_args="-s $_src/etc$VERSION.tgz"
+		isin xbase$VERSION.tgz $GOTSETS && \
+			_sm_argx="-x $_src/xetc$VERSION.tgz"
+	fi
 }
 
 # Encode $1 as specified for usercodes and passwords in RFC 1738
@@ -1623,6 +1633,14 @@ install_sets() {
 	done
 }
 
+run_sysmerge() {
+	if [[ -n "$_sm_args" || -n "$_sm_argx" ]]; then
+		ask_yn "Merge the new etc/xetc install sets using sysmerge(8)?" no
+		[[ $resp == y ]] && \
+			/mnt/usr/sbin/chroot /mnt /usr/sbin/sysmerge $_sm_args $_sm_argx
+	fi
+}
+
 # Create a skeletal but useful /etc/fstab from /tmp/fstab by stripping all
 # comment lines and dropping all filesystems which
 #
@@ -1927,12 +1945,6 @@ finish_up() {
 		done </mnt/etc/fstab
 	fi
 
-	if grep -qs '^rtsol' /mnt/etc/hostname.*; then
-		sed -e "/^#\(net\.inet6\.ip6\.accept_rtadv\)/s//\1/" \
-			/mnt/etc/sysctl.conf >/tmp/sysctl.conf
-		cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
-	fi
-
 	# Create or update pkg.conf with the new package path, if any
 	if [[ -n $package_path ]]; then
 		grep -v '^[ 	]*installpath[ 	]*=' /mnt/etc/pkg.conf 2>&- > /tmp/pkgconf
@@ -1955,6 +1967,14 @@ finish_up() {
 	[ -x /mnt/$MODE.site ] && /mnt/usr/sbin/chroot /mnt /$MODE.site
 
 	md_installboot $ROOTDISK
+
+	if [[ -f /mnt/bsd.mp ]] && ((NCPU > 1)); then
+		echo "Multiprocessor machine; using bsd.mp instead of bsd."
+		mv /mnt/bsd /mnt/bsd.sp 2>/dev/null
+		mv /mnt/bsd.mp /mnt/bsd
+	fi
+
+	[[ "$MODE" == upgrade ]] && run_sysmerge
 
 	# Pat on the back.
 	cat <<__EOT

@@ -29,12 +29,10 @@
 ./usr/include/altq
 ./usr/include/altq/altq.h
 ./usr/include/altq/altq_cbq.h
-./usr/include/altq/altq_cdnr.h
 ./usr/include/altq/altq_classq.h
 ./usr/include/altq/altq_hfsc.h
 ./usr/include/altq/altq_priq.h
 ./usr/include/altq/altq_red.h
-./usr/include/altq/altq_rio.h
 ./usr/include/altq/altq_rmclass.h
 ./usr/include/altq/altq_rmclass_debug.h
 ./usr/include/altq/altq_var.h
@@ -399,7 +397,6 @@
 ./usr/include/dev/isa/ad1848var.h
 ./usr/include/dev/isa/ahareg.h
 ./usr/include/dev/isa/cs4231var.h
-./usr/include/dev/isa/egavar.h
 ./usr/include/dev/isa/elink.h
 ./usr/include/dev/isa/essreg.h
 ./usr/include/dev/isa/essvar.h
@@ -426,14 +423,12 @@
 ./usr/include/dev/isa/isavar.h
 ./usr/include/dev/isa/itvar.h
 ./usr/include/dev/isa/madreg.h
-./usr/include/dev/isa/mcdreg.h
 ./usr/include/dev/isa/opti.h
 ./usr/include/dev/isa/pasreg.h
 ./usr/include/dev/isa/pcdisplayvar.h
 ./usr/include/dev/isa/pcppireg.h
 ./usr/include/dev/isa/pcppivar.h
 ./usr/include/dev/isa/pnpdevs.h
-./usr/include/dev/isa/pssreg.h
 ./usr/include/dev/isa/rtreg.h
 ./usr/include/dev/isa/rtvar.h
 ./usr/include/dev/isa/sbdspvar.h
@@ -1069,8 +1064,6 @@
 ./usr/include/miscfs/fifofs/fifo.h
 ./usr/include/miscfs/procfs
 ./usr/include/miscfs/procfs/procfs.h
-./usr/include/miscfs/specfs
-./usr/include/miscfs/specfs/specdev.h
 ./usr/include/mpool.h
 ./usr/include/msdosfs
 ./usr/include/msdosfs/bootsect.h
@@ -1505,6 +1498,7 @@
 ./usr/include/sys/gmon.h
 ./usr/include/sys/gpio.h
 ./usr/include/sys/hash.h
+./usr/include/sys/hiballoc.h
 ./usr/include/sys/hotplug.h
 ./usr/include/sys/ioccom.h
 ./usr/include/sys/ioctl.h
@@ -1560,6 +1554,7 @@
 ./usr/include/sys/socket.h
 ./usr/include/sys/socketvar.h
 ./usr/include/sys/sockio.h
+./usr/include/sys/specdev.h
 ./usr/include/sys/stat.h
 ./usr/include/sys/statvfs.h
 ./usr/include/sys/stdarg.h
@@ -1654,7 +1649,6 @@
 ./usr/include/uvm/uvm_param.h
 ./usr/include/uvm/uvm_pmap.h
 ./usr/include/uvm/uvm_pmemrange.h
-./usr/include/uvm/uvm_stat.h
 ./usr/include/uvm/uvm_swap.h
 ./usr/include/uvm/uvm_swap_encrypt.h
 ./usr/include/uvm/uvm_vnode.h
@@ -2907,6 +2901,7 @@
 ./usr/share/man/man3/SIMPLEQ_INSERT_TAIL.3
 ./usr/share/man/man3/SIMPLEQ_NEXT.3
 ./usr/share/man/man3/SIMPLEQ_REMOVE_HEAD.3
+./usr/share/man/man3/SIMPLEQ_REMOVE_NEXT.3
 ./usr/share/man/man3/SLIST_EMPTY.3
 ./usr/share/man/man3/SLIST_END.3
 ./usr/share/man/man3/SLIST_ENTRY.3
@@ -6008,6 +6003,7 @@
 ./usr/share/man/man3/wcscmp.3
 ./usr/share/man/man3/wcscpy.3
 ./usr/share/man/man3/wcscspn.3
+./usr/share/man/man3/wcsdup.3
 ./usr/share/man/man3/wcslcat.3
 ./usr/share/man/man3/wcslcpy.3
 ./usr/share/man/man3/wcslen.3
