@@ -29,11 +29,11 @@
 ./usr/lib/gcc-lib/m68k-unknown-openbsd4.9/2.95.3/include
 ./usr/lib/gcc-lib/m68k-unknown-openbsd4.9/2.95.3/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.58.4
+./usr/lib/libc.so.60.0
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.19.0
 ./usr/lib/libcurses.so.12.0
-./usr/lib/libedit.so.4.0
+./usr/lib/libedit.so.4.1
 ./usr/lib/libevent.so.3.0
 ./usr/lib/libexpat.so.9.0
 ./usr/lib/libform.so.5.0
@@ -43,7 +43,7 @@
 ./usr/lib/libkafs.so.18.0
 ./usr/lib/libkrb5.so.18.0
 ./usr/lib/libkvm.so.11.0
-./usr/lib/libm.so.5.4
+./usr/lib/libm.so.7.0
 ./usr/lib/libmenu.so.5.0
 ./usr/lib/libmenuw.so.5.0
 ./usr/lib/libmilter.so.2.1
@@ -687,7 +687,6 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/cmac.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/cryptodev.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/cryptosoft.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/deflate.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/des.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/des_locl.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/crypto/gmac.ph
@@ -1883,7 +1882,6 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net/slcompress.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net/slip.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net/trunklacp.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/net/zlib.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211/ieee80211.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211/ieee80211_amrr.ph
@@ -1896,15 +1894,6 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211/ieee80211_regdomain.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211/ieee80211_rssadapt.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/net80211/ieee80211_var.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/aarp.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/at.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/at_extern.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/at_var.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/ddp.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/ddp_var.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/endian.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/netatalk/phase2.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/netbt
 ./usr/libdata/perl5/site_perl/m68k-openbsd/netbt/bluetooth.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/netbt/bt_var.ph
@@ -2250,7 +2239,7 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/gmon.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/gpio.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/hash.ph
-./usr/libdata/perl5/site_perl/m68k-openbsd/sys/hiballoc.ph
+./usr/libdata/perl5/site_perl/m68k-openbsd/sys/hibernate.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/hotplug.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/ioccom.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/sys/ioctl.ph
@@ -2352,6 +2341,7 @@
 ./usr/libdata/perl5/site_perl/m68k-openbsd/term.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/termcap.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/termios.ph
+./usr/libdata/perl5/site_perl/m68k-openbsd/tgmath.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/time.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/ttyent.ph
 ./usr/libdata/perl5/site_perl/m68k-openbsd/tzfile.ph

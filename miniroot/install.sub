@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.642 2011/07/06 23:38:41 halex Exp $
+#	$OpenBSD: install.sub,v 1.646 2011/07/09 17:53:58 halex Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -1170,9 +1170,9 @@ install_files() {
 
 		# save arguments for sysmerge(8)
 		[[ $_f == base$VERSION.tgz ]] && \
-			SM_ARGS="-s $_src/etc$VERSION.tgz"
+			SM_ETC="$_src/etc$VERSION.tgz"
 		[[ $_f == xbase$VERSION.tgz ]] && \
-			SM_ARGSX="-x $_src/xetc$VERSION.tgz"
+			SM_XETC="$_src/xetc$VERSION.tgz"
 	done
 }
 
@@ -1631,11 +1631,27 @@ install_sets() {
 }
 
 run_sysmerge() {
-	if [[ -n "$SM_ARGS" || -n "$SM_ARGSX" ]]; then
+	if [[ -n "$SM_ETC" || -n "$SM_XETC" ]]; then
 		ask_yn "Merge the new etc/xetc install sets using sysmerge(8)?" no
-		[[ $resp == y ]] && \
+		if [[ $resp == y ]]; then \
+			[[ X"$SM_ETC" != X"" ]] && \
+				ftp $FTPOPTS -o /mnt/tmp/etc$VERSION.tgz -m "$SM_ETC" && \
+				SM_ARGS="-s /tmp/etc$VERSION.tgz"
+			[[ X"$SM_XETC" != X"" ]] && \
+				ftp $FTPOPTS -o /mnt/tmp/xetc$VERSION.tgz -m "$SM_XETC" && \
+				SM_ARGSX="-x /tmp/xetc$VERSION.tgz"
 			/mnt/usr/sbin/chroot /mnt /usr/sbin/sysmerge $SM_ARGS $SM_ARGSX
+		fi
 	fi
+}
+
+update_firmwares() {
+	local _get=Install
+	[[ $MODE == upgrade ]] && _get=Update
+	ask_yn "$_get non-free firmwares on first boot?" no
+	[[ $resp == y ]] && \
+		echo "echo 'updating firmwares'; /usr/sbin/fw_update -v" \
+			>> /mnt/etc/rc.firsttime
 }
 
 # Create a skeletal but useful /etc/fstab from /tmp/fstab by stripping all
@@ -1959,6 +1975,10 @@ finish_up() {
 	)
 	echo "done."
 
+	# We may run some programs in chroot, and some of them might be
+	# dynamic.  That is highly discouraged, but let us play it safe.
+	rm -f /mnt/var/run/ld.so.hints
+
 	populateusrlocal
 
 	[ -x /mnt/$MODE.site ] && /mnt/usr/sbin/chroot /mnt /$MODE.site
@@ -1972,6 +1992,8 @@ finish_up() {
 	fi
 
 	[[ "$MODE" == upgrade ]] && run_sysmerge
+
+	update_firmwares
 
 	# Pat on the back.
 	cat <<__EOT

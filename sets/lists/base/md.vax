@@ -44,7 +44,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/cmac.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/cryptodev.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/cryptosoft.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/crypto/deflate.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/des.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/des_locl.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/crypto/gmac.ph
@@ -1157,7 +1156,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/net/slcompress.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net/slip.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net/trunklacp.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/net/zlib.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211/ieee80211.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211/ieee80211_amrr.ph
@@ -1170,15 +1168,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211/ieee80211_regdomain.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211/ieee80211_rssadapt.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/net80211/ieee80211_var.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/aarp.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/at.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/at_extern.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/at_var.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/ddp.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/ddp_var.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/endian.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/netatalk/phase2.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/netbt
 ./usr/libdata/perl5/site_perl/vax-openbsd/netbt/bluetooth.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/netbt/bt_var.ph
@@ -1524,7 +1513,7 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/gmon.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/gpio.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/hash.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/sys/hiballoc.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/sys/hibernate.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/hotplug.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/ioccom.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/ioctl.ph
@@ -1626,6 +1615,7 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/term.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/termcap.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/termios.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/tgmath.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/time.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/ttyent.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/tzfile.ph

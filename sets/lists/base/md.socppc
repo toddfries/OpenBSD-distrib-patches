@@ -84,11 +84,11 @@
 ./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/4.2.1/collect2
 ./usr/lib/gcc-lib/powerpc-unknown-openbsd4.9/4.2.1/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.58.4
+./usr/lib/libc.so.60.0
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.19.0
 ./usr/lib/libcurses.so.12.0
-./usr/lib/libedit.so.4.0
+./usr/lib/libedit.so.4.1
 ./usr/lib/libevent.so.3.0
 ./usr/lib/libexpat.so.9.0
 ./usr/lib/libform.so.5.0
@@ -98,7 +98,7 @@
 ./usr/lib/libkafs.so.18.0
 ./usr/lib/libkrb5.so.18.0
 ./usr/lib/libkvm.so.11.0
-./usr/lib/libm.so.5.4
+./usr/lib/libm.so.7.0
 ./usr/lib/libmenu.so.5.0
 ./usr/lib/libmenuw.so.5.0
 ./usr/lib/libmilter.so.2.1
@@ -743,7 +743,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/cmac.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/cryptodev.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/cryptosoft.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/deflate.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/des.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/des_locl.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/crypto/gmac.ph
@@ -1939,7 +1938,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/slcompress.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/slip.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net/trunklacp.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/net/zlib.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211/ieee80211.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211/ieee80211_amrr.ph
@@ -1952,15 +1950,6 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211/ieee80211_regdomain.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211/ieee80211_rssadapt.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/net80211/ieee80211_var.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/aarp.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/at.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/at_extern.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/at_var.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/ddp.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/ddp_var.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/endian.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/netatalk/phase2.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/netbt
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/netbt/bluetooth.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/netbt/bt_var.ph
@@ -2397,7 +2386,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/gmon.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/gpio.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/hash.ph
-./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/hiballoc.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/hibernate.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/hotplug.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/ioccom.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/sys/ioctl.ph
@@ -2499,6 +2488,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/term.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/termcap.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/termios.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/tgmath.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/time.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/ttyent.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/tzfile.ph
