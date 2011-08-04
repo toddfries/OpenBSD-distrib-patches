@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.647 2011/07/14 14:54:57 ajacoutot Exp $
+#	$OpenBSD: install.sub,v 1.650 2011/08/02 20:40:52 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -1635,21 +1635,21 @@ install_sets() {
 }
 
 run_sysmerge() {
-	if [[ -n "$SM_ARGS" || -n "$SM_ARGSX" ]]; then
-		ask_yn "Merge the new etc/xetc install sets using sysmerge(8)?" no
-		if [[ $resp == y ]]; then \
-			/mnt/usr/sbin/chroot /mnt /usr/sbin/sysmerge $SM_ARGS $SM_ARGSX
-		fi
-	fi
+	echo "Please run sysmerge(8) after rebooting to repair your /etc configuration."
+	#if [[ -n "$SM_ARGS" || -n "$SM_ARGSX" ]]; then
+	#	ask_yn "Merge the new etc/xetc install sets using sysmerge(8)?" no
+	#	if [[ $resp == y ]]; then \
+	#		/mnt/usr/sbin/chroot /mnt /usr/sbin/sysmerge $SM_ARGS $SM_ARGSX
+	#	fi
+	#fi
 }
 
-update_firmwares() {
+update_firmware() {
 	local _get=Install
 	[[ $MODE == upgrade ]] && _get=Update
-	ask_yn "$_get non-free firmwares on first boot?" no
+	ask_yn "$_get non-free firmware files on first boot?" no
 	[[ $resp == y ]] && \
-		echo "echo 'updating firmwares'; /usr/sbin/fw_update -v" \
-			>> /mnt/etc/rc.firsttime
+		echo "/usr/sbin/fw_update -v" >> /mnt/etc/rc.firsttime
 }
 
 # Create a skeletal but useful /etc/fstab from /tmp/fstab by stripping all
@@ -1991,7 +1991,7 @@ finish_up() {
 
 	[[ "$MODE" == upgrade ]] && run_sysmerge
 
-	update_firmwares
+	update_firmware
 
 	# Pat on the back.
 	cat <<__EOT
