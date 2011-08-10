@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.650 2011/08/02 20:40:52 deraadt Exp $
+#	$OpenBSD: install.sub,v 1.652 2011/08/08 15:41:17 halex Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -1555,7 +1555,7 @@ set_timezone() {
 			continue ;;
 		esac
 
-		while isin $_zonepath/ $(cat $_zonefile); do
+		while isin "$_zonepath/" $(cat $_zonefile); do
 			ask "What sub-timezone of '$_zonepath' are you in? ('?' for list)"
 			_zsed=$(echo $_zonepath/ | sed 's,/,\\/,g')
 			resp=${resp%%*(/)}
@@ -1566,7 +1566,7 @@ set_timezone() {
 			esac
 		done
 
-		if isin $_zonepath $(cat $_zonefile); then
+		if isin "$_zonepath" $(cat $_zonefile); then
 			TZ=${_zonepath#$_zoneroot}
 			return
 		fi
