@@ -465,7 +465,6 @@
 ./usr/share/man/man1/merge.1
 ./usr/share/man/man1/mesg.1
 ./usr/share/man/man1/mg.1
-./usr/share/man/man1/midicat.1
 ./usr/share/man/man1/midiplay.1
 ./usr/share/man/man1/mixerctl.1
 ./usr/share/man/man1/mkdep.1
@@ -1529,7 +1528,6 @@
 ./usr/share/man/man4/carp.4
 ./usr/share/man/man4/cas.4
 ./usr/share/man/man4/cbb.4
-./usr/share/man/man4/ccd.4
 ./usr/share/man/man4/cd.4
 ./usr/share/man/man4/cdce.4
 ./usr/share/man/man4/cdcef.4
@@ -2403,6 +2401,7 @@
 ./usr/share/man/man5/armish/boot.conf.5
 ./usr/share/man/man5/bgpd.conf.5
 ./usr/share/man/man5/bootparams.5
+./usr/share/man/man5/bsd.port.arch.mk.5
 ./usr/share/man/man5/bsd.port.mk.5
 ./usr/share/man/man5/bsd.regress.mk.5
 ./usr/share/man/man5/changelist.5
@@ -2616,7 +2615,6 @@
 ./usr/share/man/man8/boot_config.8
 ./usr/share/man/man8/bootparamd.8
 ./usr/share/man/man8/bos.8
-./usr/share/man/man8/ccdconfig.8
 ./usr/share/man/man8/chat.8
 ./usr/share/man/man8/chown.8
 ./usr/share/man/man8/chroot.8
@@ -2791,6 +2789,7 @@
 ./usr/share/man/man8/makekey.8
 ./usr/share/man/man8/makemap.8
 ./usr/share/man/man8/makewhatis.8
+./usr/share/man/man8/mandocdb.8
 ./usr/share/man/man8/map-mbone.8
 ./usr/share/man/man8/mfs.8
 ./usr/share/man/man8/mkalias.8
