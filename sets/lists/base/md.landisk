@@ -53,7 +53,7 @@
 ./usr/lib/libasn1.so.18.0
 ./usr/lib/libc.so.61.0
 ./usr/lib/libcom_err.so.18.0
-./usr/lib/libcrypto.so.19.0
+./usr/lib/libcrypto.so.20.0
 ./usr/lib/libcurses.so.12.1
 ./usr/lib/libedit.so.4.1
 ./usr/lib/libevent.so.3.0
@@ -84,7 +84,7 @@
 ./usr/lib/librpcsvc.so.1.2
 ./usr/lib/libskey.so.5.1
 ./usr/lib/libsndio.so.4.0
-./usr/lib/libssl.so.16.0
+./usr/lib/libssl.so.17.0
 ./usr/lib/libstdc++.so.53.0
 ./usr/lib/libtermcap.so.12.1
 ./usr/lib/libtermlib.so.12.1
@@ -1803,6 +1803,7 @@
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/signal.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/spinlock.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/stdarg.ph
+./usr/libdata/perl5/site_perl/sh-openbsd/landisk/tcb.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/trap.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/varargs.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/landisk/vmparam.ph
@@ -2232,6 +2233,7 @@
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/signal.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/spinlock.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/stdarg.ph
+./usr/libdata/perl5/site_perl/sh-openbsd/sh/tcb.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/tmureg.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/trap.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sh/ubcreg.ph

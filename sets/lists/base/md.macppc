@@ -94,7 +94,7 @@
 ./usr/lib/libasn1.so.18.0
 ./usr/lib/libc.so.61.0
 ./usr/lib/libcom_err.so.18.0
-./usr/lib/libcrypto.so.19.0
+./usr/lib/libcrypto.so.20.0
 ./usr/lib/libcurses.so.12.1
 ./usr/lib/libedit.so.4.1
 ./usr/lib/libevent.so.3.0
@@ -125,7 +125,7 @@
 ./usr/lib/librpcsvc.so.1.2
 ./usr/lib/libskey.so.5.1
 ./usr/lib/libsndio.so.4.0
-./usr/lib/libssl.so.16.0
+./usr/lib/libssl.so.17.0
 ./usr/lib/libstdc++.so.53.0
 ./usr/lib/libtermcap.so.12.1
 ./usr/lib/libtermlib.so.12.1
@@ -1932,6 +1932,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/signal.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/spinlock.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/stdarg.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/tcb.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/trap.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/varargs.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/macppc/vmparam.ph
@@ -2261,6 +2262,7 @@
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/signal.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/spinlock.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/stdarg.ph
+./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/tcb.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/trap.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/powerpc/varargs.ph
 ./usr/libdata/perl5/site_perl/powerpc-openbsd/ppc-asm.ph
