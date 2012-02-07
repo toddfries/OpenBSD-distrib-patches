@@ -14,7 +14,6 @@
 ./usr/share/doc/html/curses/hackguide.html
 ./usr/share/doc/html/curses/ncurses-intro.html
 ./usr/share/doc/html/httpd
-./usr/share/doc/html/httpd/FAQ.html
 ./usr/share/doc/html/httpd/LICENSE
 ./usr/share/doc/html/httpd/bind.html
 ./usr/share/doc/html/httpd/configuring.html
@@ -1144,6 +1143,7 @@
 ./usr/share/man/man3p/OpenBSD::State.3p
 ./usr/share/man/man3p/OpenBSD::Ustar.3p
 ./usr/share/man/man3p/OpenBSD::Vstat.3p
+./usr/share/man/man3p/OpenBSD::md5.3p
 ./usr/share/man/man3p/POSIX.3p
 ./usr/share/man/man3p/Package::Constants.3p
 ./usr/share/man/man3p/Params::Check.3p
@@ -2758,6 +2758,7 @@
 ./usr/share/man/man8/login_snk.8
 ./usr/share/man/man8/login_tis.8
 ./usr/share/man/man8/login_token.8
+./usr/share/man/man8/login_yubikey.8
 ./usr/share/man/man8/logresolve.8
 ./usr/share/man/man8/loongson
 ./usr/share/man/man8/loongson/MAKEDEV.8
