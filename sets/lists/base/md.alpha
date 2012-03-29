@@ -89,7 +89,7 @@
 ./usr/lib/gcc-lib/alpha-unknown-openbsd5.1/4.2.1/collect2
 ./usr/lib/gcc-lib/alpha-unknown-openbsd5.1/4.2.1/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.62.0
+./usr/lib/libc.so.63.0
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.20.1
 ./usr/lib/libcurses.so.12.1
@@ -117,7 +117,7 @@
 ./usr/lib/libpanelw.so.5.0
 ./usr/lib/libpcap.so.6.0
 ./usr/lib/libperl.so.12.0
-./usr/lib/libpthread.so.14.1
+./usr/lib/libpthread.so.15.0
 ./usr/lib/libreadline.so.3.0
 ./usr/lib/librpcsvc.so.1.2
 ./usr/lib/libskey.so.5.1
@@ -987,9 +987,10 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dl10019var.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dp8390reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dp8390var.ph
-./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dp857xreg.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dp8573areg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dptreg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/dptvar.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/ds1286reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/ds1687reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/elink3reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/elink3var.ph
@@ -1097,6 +1098,7 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/rtwvar.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/s3_617.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/sa2400reg.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/seeq8003reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/si4136reg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/silireg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/silivar.ph
@@ -1128,6 +1130,8 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/w83l518d_sdmmc.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/w83l518dreg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/w83l518dvar.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/wd33c93reg.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/wd33c93var.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/wdcevent.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/wdcreg.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/dev/ic/wdcvar.ph
@@ -2307,6 +2311,7 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/skey.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/sndio.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/soundcard.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/spawn.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/spinlock.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/ssl
 ./usr/libdata/perl5/site_perl/alpha-openbsd/stab.ph

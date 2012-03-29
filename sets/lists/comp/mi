@@ -244,9 +244,10 @@
 ./usr/include/dev/ic/dl10019var.h
 ./usr/include/dev/ic/dp8390reg.h
 ./usr/include/dev/ic/dp8390var.h
-./usr/include/dev/ic/dp857xreg.h
+./usr/include/dev/ic/dp8573areg.h
 ./usr/include/dev/ic/dptreg.h
 ./usr/include/dev/ic/dptvar.h
+./usr/include/dev/ic/ds1286reg.h
 ./usr/include/dev/ic/ds1687reg.h
 ./usr/include/dev/ic/elink3reg.h
 ./usr/include/dev/ic/elink3var.h
@@ -354,6 +355,7 @@
 ./usr/include/dev/ic/rtwvar.h
 ./usr/include/dev/ic/s3_617.h
 ./usr/include/dev/ic/sa2400reg.h
+./usr/include/dev/ic/seeq8003reg.h
 ./usr/include/dev/ic/si4136reg.h
 ./usr/include/dev/ic/silireg.h
 ./usr/include/dev/ic/silivar.h
@@ -385,6 +387,8 @@
 ./usr/include/dev/ic/w83l518d_sdmmc.h
 ./usr/include/dev/ic/w83l518dreg.h
 ./usr/include/dev/ic/w83l518dvar.h
+./usr/include/dev/ic/wd33c93reg.h
+./usr/include/dev/ic/wd33c93var.h
 ./usr/include/dev/ic/wdcevent.h
 ./usr/include/dev/ic/wdcreg.h
 ./usr/include/dev/ic/wdcvar.h
@@ -1437,6 +1441,7 @@
 ./usr/include/skey.h
 ./usr/include/sndio.h
 ./usr/include/soundcard.h
+./usr/include/spawn.h
 ./usr/include/spinlock.h
 ./usr/include/ssl
 ./usr/include/stab.h
@@ -1904,6 +1909,9 @@
 ./usr/share/man/man2/__set_tcb.2
 ./usr/share/man/man2/__syscall.2
 ./usr/share/man/man2/__tfork.2
+./usr/share/man/man2/__thrsigdivert.2
+./usr/share/man/man2/__thrsleep.2
+./usr/share/man/man2/__thrwakeup.2
 ./usr/share/man/man2/_exit.2
 ./usr/share/man/man2/accept.2
 ./usr/share/man/man2/access.2
@@ -3850,6 +3858,7 @@
 ./usr/share/man/man3/execlp.3
 ./usr/share/man/man3/execv.3
 ./usr/share/man/man3/execvp.3
+./usr/share/man/man3/execvpe.3
 ./usr/share/man/man3/exit.3
 ./usr/share/man/man3/exp.3
 ./usr/share/man/man3/exp2.3
@@ -4049,6 +4058,7 @@
 ./usr/share/man/man3/getcurx.3
 ./usr/share/man/man3/getcury.3
 ./usr/share/man/man3/getcwd.3
+./usr/share/man/man3/getdelim.3
 ./usr/share/man/man3/getdiskbyname.3
 ./usr/share/man/man3/getdomainname.3
 ./usr/share/man/man3/getdtablesize.3
@@ -4069,6 +4079,7 @@
 ./usr/share/man/man3/gethostid.3
 ./usr/share/man/man3/gethostname.3
 ./usr/share/man/man3/getifaddrs.3
+./usr/share/man/man3/getline.3
 ./usr/share/man/man3/getloadavg.3
 ./usr/share/man/man3/getmaxpartitions.3
 ./usr/share/man/man3/getmaxx.3
@@ -5419,6 +5430,27 @@
 ./usr/share/man/man3/pos_menu_cursor.3
 ./usr/share/man/man3/posix2time.3
 ./usr/share/man/man3/posix_memalign.3
+./usr/share/man/man3/posix_spawn.3
+./usr/share/man/man3/posix_spawn_file_actions_addclose.3
+./usr/share/man/man3/posix_spawn_file_actions_adddup2.3
+./usr/share/man/man3/posix_spawn_file_actions_addopen.3
+./usr/share/man/man3/posix_spawn_file_actions_destroy.3
+./usr/share/man/man3/posix_spawn_file_actions_init.3
+./usr/share/man/man3/posix_spawnattr_destroy.3
+./usr/share/man/man3/posix_spawnattr_getflags.3
+./usr/share/man/man3/posix_spawnattr_getpgroup.3
+./usr/share/man/man3/posix_spawnattr_getschedparam.3
+./usr/share/man/man3/posix_spawnattr_getschedpolicy.3
+./usr/share/man/man3/posix_spawnattr_getsigdefault.3
+./usr/share/man/man3/posix_spawnattr_getsigmask.3
+./usr/share/man/man3/posix_spawnattr_init.3
+./usr/share/man/man3/posix_spawnattr_setflags.3
+./usr/share/man/man3/posix_spawnattr_setpgroup.3
+./usr/share/man/man3/posix_spawnattr_setschedparam.3
+./usr/share/man/man3/posix_spawnattr_setschedpolicy.3
+./usr/share/man/man3/posix_spawnattr_setsigdefault.3
+./usr/share/man/man3/posix_spawnattr_setsigmask.3
+./usr/share/man/man3/posix_spawnp.3
 ./usr/share/man/man3/post_form.3
 ./usr/share/man/man3/post_menu.3
 ./usr/share/man/man3/pow.3
@@ -5467,7 +5499,6 @@
 ./usr/share/man/man3/pthread_key_delete.3
 ./usr/share/man/man3/pthread_kill.3
 ./usr/share/man/man3/pthread_main_np.3
-./usr/share/man/man3/pthread_multi_np.3
 ./usr/share/man/man3/pthread_mutex_destroy.3
 ./usr/share/man/man3/pthread_mutex_init.3
 ./usr/share/man/man3/pthread_mutex_lock.3
@@ -5484,8 +5515,6 @@
 ./usr/share/man/man3/pthread_mutexattr_setprotocol.3
 ./usr/share/man/man3/pthread_mutexattr_settype.3
 ./usr/share/man/man3/pthread_once.3
-./usr/share/man/man3/pthread_resume_all_np.3
-./usr/share/man/man3/pthread_resume_np.3
 ./usr/share/man/man3/pthread_rwlock_destroy.3
 ./usr/share/man/man3/pthread_rwlock_init.3
 ./usr/share/man/man3/pthread_rwlock_rdlock.3
@@ -5508,10 +5537,7 @@
 ./usr/share/man/man3/pthread_setschedparam.3
 ./usr/share/man/man3/pthread_setspecific.3
 ./usr/share/man/man3/pthread_sigmask.3
-./usr/share/man/man3/pthread_single_np.3
 ./usr/share/man/man3/pthread_stackseg_np.3
-./usr/share/man/man3/pthread_suspend_all_np.3
-./usr/share/man/man3/pthread_suspend_np.3
 ./usr/share/man/man3/pthread_testcancel.3
 ./usr/share/man/man3/pthread_yield.3
 ./usr/share/man/man3/pthreads.3
