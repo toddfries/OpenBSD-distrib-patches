@@ -159,7 +159,6 @@
 ./sbin/ping
 ./sbin/ping6
 ./sbin/quotacheck
-./sbin/raidctl
 ./sbin/rdump
 ./sbin/reboot
 ./sbin/restore
@@ -534,7 +533,6 @@
 ./usr/libdata/cvs/contrib
 ./usr/libdata/cvs/contrib/README
 ./usr/libdata/cvs/contrib/intro.doc
-./usr/libdata/lint
 ./usr/libdata/perl5
 ./usr/libdata/perl5/AnyDBM_File.pm
 ./usr/libdata/perl5/App
