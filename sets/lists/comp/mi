@@ -1368,6 +1368,8 @@
 ./usr/include/soundcard.h
 ./usr/include/spawn.h
 ./usr/include/spinlock.h
+./usr/include/sqlite3.h
+./usr/include/sqlite3ext.h
 ./usr/include/ssl
 ./usr/include/stab.h
 ./usr/include/stdarg.h
@@ -1716,6 +1718,8 @@
 ./usr/lib/libskey_p.a
 ./usr/lib/libsndio.a
 ./usr/lib/libsndio_p.a
+./usr/lib/libsqlite3.a
+./usr/lib/libsqlite3_p.a
 ./usr/lib/libssl.a
 ./usr/lib/libssl_p.a
 ./usr/lib/libstdc++.a
@@ -6810,6 +6814,7 @@
 ./usr/share/man/man9/strncasecmp.9
 ./usr/share/man/man9/strncmp.9
 ./usr/share/man/man9/strncpy.9
+./usr/share/man/man9/strnlen.9
 ./usr/share/man/man9/style.9
 ./usr/share/man/man9/syscall.9
 ./usr/share/man/man9/sysctl_int.9
