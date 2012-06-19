@@ -519,6 +519,7 @@
 ./usr/include/dev/pci/drm/drm_sarea.h
 ./usr/include/dev/pci/drm/i915_drm.h
 ./usr/include/dev/pci/drm/i915_drv.h
+./usr/include/dev/pci/drm/i915_reg.h
 ./usr/include/dev/pci/drm/r300_reg.h
 ./usr/include/dev/pci/drm/r600_blit_shaders.h
 ./usr/include/dev/pci/drm/r600_microcode.h
@@ -793,7 +794,6 @@
 ./usr/include/dev/usb/urio.h
 ./usr/include/dev/usb/usb.h
 ./usr/include/dev/usb/usb_mem.h
-./usr/include/dev/usb/usb_port.h
 ./usr/include/dev/usb/usb_quirks.h
 ./usr/include/dev/usb/usbcdc.h
 ./usr/include/dev/usb/usbdevs.h
@@ -1382,6 +1382,7 @@
 ./usr/include/strings.h
 ./usr/include/struct.h
 ./usr/include/sys
+./usr/include/sys/_time.h
 ./usr/include/sys/_types.h
 ./usr/include/sys/acct.h
 ./usr/include/sys/agpio.h
@@ -1878,6 +1879,7 @@
 ./usr/share/man/man2/futimens.2
 ./usr/share/man/man2/futimes.2
 ./usr/share/man/man2/getdirentries.2
+./usr/share/man/man2/getdtablecount.2
 ./usr/share/man/man2/getegid.2
 ./usr/share/man/man2/geteuid.2
 ./usr/share/man/man2/getfh.2
@@ -5008,6 +5010,7 @@
 ./usr/share/man/man3/mbrlen.3
 ./usr/share/man/man3/mbrtowc.3
 ./usr/share/man/man3/mbsinit.3
+./usr/share/man/man3/mbsnrtowcs.3
 ./usr/share/man/man3/mbsrtowcs.3
 ./usr/share/man/man3/mbstowcs.3
 ./usr/share/man/man3/mbtowc.3
@@ -5260,9 +5263,12 @@
 ./usr/share/man/man3/parse_time.3
 ./usr/share/man/man3/pause.3
 ./usr/share/man/man3/pcap.3
+./usr/share/man/man3/pcap_activate.3
 ./usr/share/man/man3/pcap_breakloop.3
+./usr/share/man/man3/pcap_can_set_rfmon.3
 ./usr/share/man/man3/pcap_close.3
 ./usr/share/man/man3/pcap_compile.3
+./usr/share/man/man3/pcap_create.3
 ./usr/share/man/man3/pcap_datalink.3
 ./usr/share/man/man3/pcap_datalink_name_to_val.3
 ./usr/share/man/man3/pcap_datalink_val_to_description.3
@@ -5300,12 +5306,18 @@
 ./usr/share/man/man3/pcap_open_offline.3
 ./usr/share/man/man3/pcap_perror.3
 ./usr/share/man/man3/pcap_sendpacket.3
+./usr/share/man/man3/pcap_set_buffer_size.3
 ./usr/share/man/man3/pcap_set_datalink.3
+./usr/share/man/man3/pcap_set_promisc.3
+./usr/share/man/man3/pcap_set_rfmon.3
+./usr/share/man/man3/pcap_set_snaplen.3
+./usr/share/man/man3/pcap_set_timeout.3
 ./usr/share/man/man3/pcap_setdirection.3
 ./usr/share/man/man3/pcap_setfilter.3
 ./usr/share/man/man3/pcap_setnonblock.3
 ./usr/share/man/man3/pcap_snapshot.3
 ./usr/share/man/man3/pcap_stats.3
+./usr/share/man/man3/pcap_statustostr.3
 ./usr/share/man/man3/pcap_strerror.3
 ./usr/share/man/man3/pclose.3
 ./usr/share/man/man3/pechochar.3
@@ -5437,6 +5449,11 @@
 ./usr/share/man/man3/pthread_setschedparam.3
 ./usr/share/man/man3/pthread_setspecific.3
 ./usr/share/man/man3/pthread_sigmask.3
+./usr/share/man/man3/pthread_spin_destroy.3
+./usr/share/man/man3/pthread_spin_init.3
+./usr/share/man/man3/pthread_spin_lock.3
+./usr/share/man/man3/pthread_spin_trylock.3
+./usr/share/man/man3/pthread_spin_unlock.3
 ./usr/share/man/man3/pthread_stackseg_np.3
 ./usr/share/man/man3/pthread_testcancel.3
 ./usr/share/man/man3/pthread_yield.3
@@ -6089,6 +6106,7 @@
 ./usr/share/man/man3/wcsncat.3
 ./usr/share/man/man3/wcsncmp.3
 ./usr/share/man/man3/wcsncpy.3
+./usr/share/man/man3/wcsnrtombs.3
 ./usr/share/man/man3/wcspbrk.3
 ./usr/share/man/man3/wcsrchr.3
 ./usr/share/man/man3/wcsrtombs.3

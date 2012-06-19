@@ -504,6 +504,7 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/drm_sarea.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/i915_drm.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/i915_drv.ph
+./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/i915_reg.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/r300_reg.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/r600_blit_shaders.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/pci/drm/r600_microcode.ph
@@ -778,7 +779,6 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/urio.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usb.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usb_mem.ph
-./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usb_port.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usb_quirks.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usbcdc.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/dev/usb/usbdevs.ph
@@ -1409,6 +1409,7 @@
 ./usr/libdata/perl5/site_perl/vax-openbsd/strings.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/struct.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys
+./usr/libdata/perl5/site_perl/vax-openbsd/sys/_time.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/_types.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/acct.ph
 ./usr/libdata/perl5/site_perl/vax-openbsd/sys/agpio.ph

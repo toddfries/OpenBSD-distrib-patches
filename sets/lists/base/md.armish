@@ -61,7 +61,7 @@
 ./usr/lib/gcc-lib/arm-unknown-openbsd5.1/4.2.1/collect2
 ./usr/lib/gcc-lib/arm-unknown-openbsd5.1/4.2.1/specs
 ./usr/lib/libasn1.so.18.0
-./usr/lib/libc.so.64.0
+./usr/lib/libc.so.64.2
 ./usr/lib/libcom_err.so.18.0
 ./usr/lib/libcrypto.so.20.1
 ./usr/lib/libcurses.so.12.1
@@ -87,20 +87,20 @@
 ./usr/lib/libotermcap.so.5.0
 ./usr/lib/libpanel.so.5.0
 ./usr/lib/libpanelw.so.5.0
-./usr/lib/libpcap.so.6.0
+./usr/lib/libpcap.so.7.0
 ./usr/lib/libperl.so.12.0
-./usr/lib/libpthread.so.15.1
+./usr/lib/libpthread.so.15.2
 ./usr/lib/libreadline.so.3.0
 ./usr/lib/librpcsvc.so.1.2
 ./usr/lib/libskey.so.5.1
 ./usr/lib/libsndio.so.4.0
-./usr/lib/libsqlite3.so.18.0
+./usr/lib/libsqlite3.so.19.0
 ./usr/lib/libssl.so.17.1
 ./usr/lib/libstdc++.so.54.0
 ./usr/lib/libtermcap.so.12.1
 ./usr/lib/libtermlib.so.12.1
 ./usr/lib/libusbhid.so.3.0
-./usr/lib/libutil.so.11.2
+./usr/lib/libutil.so.11.3
 ./usr/lib/libwrap.so.4.0
 ./usr/lib/libz.so.4.1
 ./usr/libdata/perl5/arm-openbsd
@@ -1282,6 +1282,7 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/drm_sarea.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/i915_drm.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/i915_drv.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/i915_reg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r300_reg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r600_blit_shaders.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/drm/r600_microcode.ph
@@ -1556,7 +1557,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/urio.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usb.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usb_mem.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usb_port.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usb_quirks.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usbcdc.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/usb/usbdevs.ph
@@ -2273,6 +2273,7 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/strings.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/struct.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys
+./usr/libdata/perl5/site_perl/arm-openbsd/sys/_time.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/_types.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/acct.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/agpio.ph
