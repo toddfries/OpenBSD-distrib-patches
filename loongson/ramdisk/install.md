@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.6 2011/04/17 20:57:10 krw Exp $
+#	$OpenBSD: install.md,v 1.9 2012/07/13 09:23:11 halex Exp $
 #
 #
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
@@ -35,13 +35,13 @@
 md_installboot() {
 	local _disk=$1
 
-	if mount -t ext2fs /dev/${_disk}i /mnt2 ; then
-		if mkdir -p /mnt2/boot && cp /usr/mdec/boot /mnt2/boot &&
-		    [[ $(sysctl -n hw.product) != Gdium ]] ||
-		      cp /mnt/bsd /mnt2/boot/bsd; then
-			umount /mnt2
-			return
-		fi
+	if mount -t ext2fs /dev/${_disk}i /mnt2 &&
+	   mkdir -p /mnt2/boot &&
+	   cp /usr/mdec/boot /mnt2/boot &&
+	   ( [[ $(sysctl -n hw.product) != Gdium ]] ||
+	     cp /mnt/bsd /mnt2/boot/bsd ); then
+		umount /mnt2
+		return
 	fi
 
 	echo "Failed to install bootblocks."
@@ -130,7 +130,6 @@ md_prep_disklabel() {
 
 	md_prep_fdisk $_disk
 
-	disklabel -W $_disk >/dev/null 2>&1
 	_f=/tmp/fstab.$_disk
 	if [[ $_disk == $ROOTDISK ]]; then
 		while :; do
