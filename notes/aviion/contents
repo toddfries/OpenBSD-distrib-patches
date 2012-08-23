@@ -1,4 +1,4 @@
-dnl	$OpenBSD: contents,v 1.2 2008/03/10 21:25:52 miod Exp $
+dnl	$OpenBSD: contents,v 1.4 2011/04/10 13:47:19 miod Exp $
 TopPart
 
 OpenBSDdistsets
@@ -25,7 +25,7 @@ dnl They can also be used to configure an NFS server to support installation
 dnl over the network. See the section "Getting the OpenBSD system onto Useful
 dnl Media" for more information.
 
-DistributionDescription(six)
+DistributionDescription(five)
 
 OpenBSDbase(87127369,214673707)
 
@@ -37,5 +37,4 @@ OpenBSDgame(7198035,15341026)
 
 OpenBSDman(7055148,25283996)
 
-OpenBSDmisc(2292816,7568192)
 

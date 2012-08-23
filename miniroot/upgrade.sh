@@ -1,8 +1,8 @@
 #!/bin/ksh
-#	$OpenBSD: upgrade.sh,v 1.64 2006/08/29 01:02:49 krw Exp $
+#	$OpenBSD: upgrade.sh,v 1.72 2012/04/21 10:17:26 henning Exp $
 #	$NetBSD: upgrade.sh,v 1.2.4.5 1996/08/27 18:15:08 gwr Exp $
 #
-# Copyright (c) 1997-2004 Todd Miller, Theo de Raadt, Ken Westerback
+# Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
 # All rights reserved.
 #
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
@@ -19,13 +19,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -52,72 +45,43 @@ MODE=upgrade
 
 # Have the user confirm that $ROOTDEV is the root filesystem.
 while :; do
-	ask "Root filesystem?" "$ROOTDEV"
+	ask "Root filesystem?" $ROOTDEV
 	resp=${resp##*/}
 	[[ -b /dev/$resp ]] && break
 
-	echo "Sorry, $resp is not a block device."
+	echo "$resp is not a block device."
 done
 ROOTDEV=$resp
 
-echo -n "Checking root filesystem (fsck -fp /dev/${ROOTDEV}) ... "
-if ! fsck -fp /dev/$ROOTDEV >/dev/null 2>&1; then
-	echo	"FAILED.\nYou must fsck ${ROOTDEV} manually."
-	exit
-fi
+echo -n "Checking root filesystem (fsck -fp /dev/$ROOTDEV)..."
+fsck -fp /dev/$ROOTDEV >/dev/null 2>&1 || { echo "FAILED." ; exit ; }
 echo	"OK."
 
-echo -n "Mounting root filesystem..."
-if ! mount -o ro /dev/$ROOTDEV /mnt; then
-	echo	"ERROR: can't mount root filesystem!"
-	exit
-fi
-echo	"done."
+echo -n "Mounting root filesystem (mount -o ro /dev/$ROOTDEV /mnt)..."
+mount -o ro /dev/$ROOTDEV /mnt || { echo "FAILED." ; exit ; }
+echo	"OK."
 
 # The fstab, hosts and myname files are required.
-for _file in fstab hosts myname; do
-	if [ ! -f /mnt/etc/$_file ]; then
-		echo "ERROR: no /mnt/etc/${_file}!"
-		exit
-	fi
-	cp /mnt/etc/$_file /tmp/$_file
+for _f in fstab hosts myname; do
+	[[ -f /mnt/etc/$_f ]] || { echo "No /mnt/etc/$_f!" ; exit ; }
+	cp /mnt/etc/$_f /tmp/$_f
 done
 hostname $(stripcom /tmp/myname)
 THESETS="$THESETS site$VERSION-$(hostname -s).tgz"
 
-ask_yn "Enable network using configuration stored on root filesystem?" yes
-[[ $resp == y ]] && enable_network
+# Configure the network.
+enable_network
 
-# Offer the user the opportunity to tweak, repair, or create the network
-# configuration by hand.
-manual_net_cfg
+startftplist
 
-cat <<__EOT
-
-The fstab is configured as follows:
-
-$(</tmp/fstab)
-
-For the $MODE, filesystems in the fstab will be automatically mounted if the
-'noauto' option is absent, and /sbin/mount_<fstype> is found, and the fstype is
-not nfs. Non-ffs filesystems will be mounted read-only.
-
-You can edit the fstab now, before it is used, but the edited fstab will only
-be used during the upgrade. It will not be copied back to disk.
-__EOT
-edit_tmp_file fstab
-
-# Create /etc/fstab.
+# Create fstab for use during upgrade.
 munge_fstab
 
 # fsck -p non-root filesystems in /etc/fstab.
 check_fs
 
 # Mount filesystems in /etc/fstab.
-if ! umount /mnt; then
-	echo	"ERROR: can't unmount previously mounted root!"
-	exit
-fi
+umount /mnt || { echo "Can't umount $ROOTDEV!" ; exit ; }
 mount_fs
 
 # Install sets.

@@ -1,4 +1,4 @@
-#	$OpenBSD: list,v 1.30 2007/02/14 23:38:21 deraadt Exp $
+#	$OpenBSD: list,v 1.39 2010/10/18 04:07:51 deraadt Exp $
 #	$NetBSD: list,v 1.4.4.1 1996/06/20 20:30:26 pk Exp $
 
 SRCDIRS distrib/special
@@ -7,6 +7,7 @@ SRCDIRS bin sbin usr.bin usr.sbin
 # copy the crunched binary, link to it, and kill it
 COPY	${OBJDIR}/instbin			instbin
 LINK	instbin					bin/cat
+LINK	instbin					bin/date
 LINK	instbin					bin/chmod bin/chgrp sbin/chown
 LINK	instbin					bin/cp
 LINK	instbin					bin/dd
@@ -15,7 +16,7 @@ LINK	instbin					bin/ed
 LINK	instbin					bin/expr
 LINK	instbin					bin/hostname
 LINK	instbin					bin/ksh bin/sh
-ARGVLINK ksh		-sh
+ARGVLINK ksh					-sh
 LINK	instbin					bin/ln
 LINK	instbin					bin/ls
 LINK	instbin					bin/mkdir
@@ -23,6 +24,8 @@ LINK	instbin					bin/mt bin/eject
 LINK	instbin					bin/mv
 LINK	instbin					bin/pax bin/tar bin/cpio
 LINK	instbin					bin/rm
+LINK	instbin					bin/sha256
+LINK	instbin					bin/sleep
 LINK	instbin					bin/stty
 LINK	instbin					bin/sync
 LINK	instbin					sbin/dhclient
@@ -42,15 +45,17 @@ LINK	instbin					sbin/ping6
 LINK	instbin					sbin/reboot sbin/halt
 LINK	instbin					sbin/route
 LINK	instbin					sbin/rtsol
+LINK	instbin					sbin/sysctl
 LINK	instbin					sbin/umount
+LINK	instbin					usr/bin/arch
 LINK	instbin					usr/bin/ftp
 LINK	instbin					usr/bin/gzip usr/bin/gunzip usr/bin/gzcat
 LINK	instbin					usr/bin/sed
-LINK	instbin					usr/bin/disknames
 
 # various files that we need in /etc for the install
 COPY	${DESTDIR}/etc/group			etc/group
-COPY	${DESTDIR}/etc/spwd.db			etc/spwd.db
+COPY	${CURDIR}/../miniroot/master.passwd	etc/master.passwd
+SPECIAL	pwd_mkdb -p -d etc master.passwd; rm etc/master.passwd
 COPY	${CURDIR}/../miniroot/protocols		etc/protocols
 COPY	${CURDIR}/../miniroot/services		etc/services
 
@@ -63,3 +68,6 @@ SCRIPT	${CURDIR}/../miniroot/upgrade.sh	upgrade
 SCRIPT	${CURDIR}/../miniroot/install.sh	install
 SCRIPT	${CURDIR}/../miniroot/install.sub	install.sub
 SPECIAL	chmod 755 install upgrade sbin/dhclient-script
+
+HASH	var/hash
+TZ

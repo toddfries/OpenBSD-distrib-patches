@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile.inc,v 1.11 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile.inc,v 1.18 2011/07/09 00:42:48 drahn Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -14,7 +14,7 @@ MTREE=		${UTILS}/mtree.conf
 
 XNAME?=		floppy
 FS?=		${XNAME}${REV}.fs
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -60,13 +60,14 @@ bsd.gz: bsd.rd
 
 bsd.rd:	${IMAGE} bsd rdsetroot
 	cp bsd bsd.rd
-	${.OBJDIR}/rdsetroot bsd.rd < ${IMAGE}
+	${.OBJDIR}/rdsetroot bsd.rd ${IMAGE}
 
 
 bsd:
 	cd ${.CURDIR}/../../../sys/arch/amd64/conf && config ${RAMDISK}
 	cd ${.CURDIR}/../../../sys/arch/amd64/compile/${RAMDISK} && \
-	    ${MAKE} clean && ${MAKE} depend && COPTS=-Os ${MAKE}
+	    COPTS=-Os exec ${MAKE}
+#	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 	cp ${.CURDIR}/../../../sys/arch/amd64/compile/${RAMDISK}/bsd bsd
 
 ${IMAGE}: ${CBIN} rd_setup do_files rd_teardown
@@ -87,7 +88,9 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} ${HOSTCFLAGS} -o rdsetroot \
+	    ${TOP}/../common/elfrdsetroot.c ${TOP}/../common/elf32.c \
+	    ${TOP}/../common/elf64.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
@@ -95,13 +98,15 @@ unconfig:
 
 .PRECIOUS:	${IMAGE}
 
+.ifdef RELEASEDIR
 install:
 .ifndef NOBSDRD
-	cp bsd.rd ${DESTDIR}/snapshot/bsd.rd
+	cp bsd.rd ${RELEASEDIR}/bsd.rd
 .endif
 .ifndef NOFS
-	cp ${FS} ${DESTDIR}/snapshot/${FS}
+	cp ${FS} ${RELEASEDIR}/${FS}
 .endif
+.endif	# RELEASEDIR
 
 ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CRUNCHCONF}
 	crunchgen -E -D ${BSDSRCDIR} -L ${DESTDIR}/usr/lib \
@@ -118,7 +123,7 @@ do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
-	    sh ${UTILS}/runlist.sh ${LISTS}
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:

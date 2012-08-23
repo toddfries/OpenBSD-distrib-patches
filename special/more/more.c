@@ -1,4 +1,4 @@
-/*	$OpenBSD: more.c,v 1.27 2007/08/02 03:23:37 david Exp $	*/
+/*	$OpenBSD: more.c,v 1.32 2012/03/04 04:05:15 fgsch Exp $	*/
 
 /*
  * Copyright (c) 2003 Todd C. Miller <Todd.Miller@courtesan.com>
@@ -47,20 +47,6 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
-#ifndef lint
-static const char copyright[] =
-"@(#) Copyright (c) 1980 The Regents of the University of California.\n\
- All rights reserved.\n";
-#endif /* not lint */
-
-#ifndef lint
-#if 0
-static const char sccsid[] = "@(#)more.c	5.28 (Berkeley) 3/1/93";
-#else
-static const char rcsid[] = "$OpenBSD: more.c,v 1.27 2007/08/02 03:23:37 david Exp $";
-#endif
-#endif /* not lint */
 
 /*
  * more.c - General purpose tty output filter and file perusal program
@@ -167,7 +153,7 @@ int		pstate = 0;	/* current UL state */
 int		altscr = 0;	/* terminal supports an alternate screen */
 size_t		linsize = LINSIZ;
 
-volatile sig_atomic_t signo;	/* signal received */
+volatile sig_atomic_t signo[_NSIG];	/* signals received */
 
 struct {
 	off_t chrctr, line;
@@ -180,7 +166,7 @@ int   colon(char *, int, int);
 int   command(char *, FILE *);
 int   do_shell(char *);
 int   expand(char *, size_t, char *);
-int   getline(FILE *, int *);
+int   get_line(FILE *, int *);
 int   magic(FILE *, char *);
 int   number(char *);
 int   readch(void);
@@ -192,8 +178,6 @@ void  doclear(void);
 void  end_it(void);
 void  erasep(int);
 void  error(char *);
-void  errwrite(char *);
-void  errwrite1(char *);
 void  execute(char *filename, char *cmd, char *, char *, char *);
 void  initterm(void);
 void  kill_line(void);
@@ -533,7 +517,7 @@ screen(FILE *f, int num_lines)
 
 	for (;;) {
 		while (num_lines > 0 && !Pause) {
-			if ((nchars = getline(f, &length)) == EOF) {
+			if ((nchars = get_line(f, &length)) == EOF) {
 				if (clreol)
 					clreos();
 				return;
@@ -677,7 +661,7 @@ prompt(char *filename)
  * Get a logical line.
  */
 int
-getline(FILE *f, int *length)
+get_line(FILE *f, int *length)
 {
 	int		ch, lastch;
 	char		*p, *ep;
@@ -1181,6 +1165,7 @@ colon(char *filename, int cmd, int nlines)
 	case 'q':
 	case 'Q':
 		end_it();
+		/*FALLTHROUGH*/
 	default:
 		write(STDERR_FILENO, &bell, 1);
 		return (-1);
@@ -1551,69 +1536,73 @@ retry:
 }
 
 int
-handle_signal(int sig)
+handle_signal(void)
 {
-	int ch = -1;
+	int sig, ch = -1;
 
-	signo = 0;
+	for (sig = 0; sig < _NSIG; sig++) {
+		if (signo[sig] == 0)
+			continue;
+		signo[sig] = 0;
 
-	switch (sig) {
-	case SIGQUIT:
-		if (!inwait) {
-			putchar('\n');
-			if (startup)
-				Pause++;
-		} else if (!dum_opt && notell) {
-			write(STDERR_FILENO, QUIT_IT,
-			    sizeof(QUIT_IT) - 1);
-			promptlen += sizeof(QUIT_IT) - 1;
-			notell = 0;
-		}
-		break;
-	case SIGTSTP:
-	case SIGTTIN:
-	case SIGTTOU:
-		/* XXX - should use saved values instead of SIG_DFL */
-		sa.sa_handler = SIG_DFL;
-		sa.sa_flags = SA_RESTART;
-		(void)sigaction(SIGTSTP, &sa, NULL);
-		(void)sigaction(SIGTTIN, &sa, NULL);
-		(void)sigaction(SIGTTOU, &sa, NULL);
-		reset_tty();
-		kill(getpid(), sig);
-
-		sa.sa_handler = onsignal;
-		sa.sa_flags = 0;
-		(void)sigaction(SIGTSTP, &sa, NULL);
-		(void)sigaction(SIGTTIN, &sa, NULL);
-		(void)sigaction(SIGTTOU, &sa, NULL);
-		set_tty();
-		if (!no_intty)
-			ch = '\f';	/* force redraw */
-		break;
-	case SIGINT:
-		end_it();
-		break;
-	case SIGWINCH: {
-		struct winsize win;
-
-		if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &win) != 0)
+		switch (sig) {
+		case SIGQUIT:
+			if (!inwait) {
+				putchar('\n');
+				if (startup)
+					Pause++;
+			} else if (!dum_opt && notell) {
+				write(STDERR_FILENO, QUIT_IT,
+				    sizeof(QUIT_IT) - 1);
+				promptlen += sizeof(QUIT_IT) - 1;
+				notell = 0;
+			}
 			break;
-		if (win.ws_row != 0) {
-			Lpp = win.ws_row;
-			nscroll = Lpp/2 - 1;
-			if (nscroll <= 0)
-				nscroll = 1;
-			dlines = Lpp - 1;
+		case SIGTSTP:
+		case SIGTTIN:
+		case SIGTTOU:
+			/* XXX - should use saved values instead of SIG_DFL */
+			sa.sa_handler = SIG_DFL;
+			sa.sa_flags = SA_RESTART;
+			(void)sigaction(SIGTSTP, &sa, NULL);
+			(void)sigaction(SIGTTIN, &sa, NULL);
+			(void)sigaction(SIGTTOU, &sa, NULL);
+			reset_tty();
+			kill(getpid(), sig);
+	
+			sa.sa_handler = onsignal;
+			sa.sa_flags = 0;
+			(void)sigaction(SIGTSTP, &sa, NULL);
+			(void)sigaction(SIGTTIN, &sa, NULL);
+			(void)sigaction(SIGTTOU, &sa, NULL);
+			set_tty();
+			if (!no_intty)
+				ch = '\f';	/* force redraw */
+			break;
+		case SIGINT:
+			end_it();
+			break;
+		case SIGWINCH: {
+			struct winsize win;
+	
+			if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &win) != 0)
+				break;
+			if (win.ws_row != 0) {
+				Lpp = win.ws_row;
+				nscroll = Lpp/2 - 1;
+				if (nscroll <= 0)
+					nscroll = 1;
+				dlines = Lpp - 1;
+			}
+			if (win.ws_col != 0)
+				Mcol = win.ws_col;
+			if (!no_intty)
+				ch = '\f';	/* force redraw */
+			break;
+		} default:
+			/* NOTREACHED */
+			break;
 		}
-		if (win.ws_col != 0)
-			Mcol = win.ws_col;
-		if (!no_intty)
-			ch = '\f';	/* force redraw */
-		break;
-	} default:
-		/* NOTREACHED */
-		break;
 	}
 	return (ch);
 }
@@ -1628,7 +1617,7 @@ readch(void)
 again:
 	if (read(STDERR_FILENO, &ch, 1) <= 0) {
 		if (signo != 0) {
-			if ((ch = handle_signal(signo)) == -1)
+			if ((ch = handle_signal()) == -1)
 				goto again;
 		} else {
 			if (errno != EINTR)
@@ -1640,14 +1629,14 @@ again:
 	return (ch);
 }
 
-static char BS = '\b';
+static char BS1 = '\b';
 static char BSB[] = "\b \b";
 static char CARAT = '^';
 #define	ERASEONECHAR	do {					\
 	if (docrterase)						\
 		write(STDERR_FILENO, BSB, sizeof(BSB) - 1);	\
 	else							\
-		write(STDERR_FILENO, &BS, 1);			\
+		write(STDERR_FILENO, &BS1, 1);			\
 } while (0)
 
 int
@@ -1880,7 +1869,7 @@ resize_line(char *pos)
 void
 onsignal(int sig)
 {
-	signo = sig;
+	signo[sig] = 1;
 }
 
 __dead void

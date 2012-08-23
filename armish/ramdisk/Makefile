@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.4 2007/06/17 00:28:21 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.11 2011/07/09 00:42:48 drahn Exp $
 
 REV=	${OSrev}
 
@@ -15,7 +15,7 @@ UTILS?=		${.CURDIR}/../../miniroot
 MOUNT_POINT=	/mnt
 MTREE=		${UTILS}/mtree.conf
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -42,7 +42,7 @@ ${BSD_RD}: ${CBIN} ${IMAGE} bsd rdsetroot
 	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=95 conv=notrunc 2>/dev/null;
 	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=127 conv=notrunc 2>/dev/null;
 	awk 'BEGIN { printf("%c", 192); }' < /dev/null | dd of=${BSD_RD} bs=1 count=1 seek=159 conv=notrunc 2>/dev/null;
-	${.OBJDIR}/rdsetroot ${BSD_RD} < ${IMAGE}
+	${.OBJDIR}/rdsetroot ${BSD_RD} ${IMAGE}
 	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=95 conv=notrunc 2>/dev/null;
 	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=127 conv=notrunc 2>/dev/null;
 	dd if=/dev/zero of=${BSD_RD} bs=1 count=1 seek=159 conv=notrunc 2>/dev/null;
@@ -54,7 +54,7 @@ ${IMAGE}: rd_setup do_files rd_teardown
 bsd:
 	cd ${TOP}/../../sys/arch/armish/conf && config RAMDISK
 	cd ${TOP}/../../sys/arch/armish/compile/RAMDISK && \
-	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
+	    ${MAKE} clean && exec ${MAKE}
 	cp ${TOP}/../../sys/arch/armish/compile/RAMDISK/bsd bsd
 
 rd_setup:
@@ -71,16 +71,15 @@ rd_teardown:
 	-vnconfig -u ${VND}
 
 rdsetroot:	${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} ${HOSTCFLAGS} -o rdsetroot \
+	    ${TOP}/../common/elfrdsetroot.c ${TOP}/../common/elf32.c \
+	    ${TOP}/../common/elf64.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
 	-vnconfig -u ${VND}
 
 .PRECIOUS:	${IMAGE}
-
-install:
-	cp ${BSD_RD} ${DESTDIR}/snapshot/
 
 ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CRUNCHCONF}
 	crunchgen -E -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${.ALLSRC}
@@ -95,7 +94,7 @@ do_files:
 	cat ${MTREE} | mtree -de -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
-	    sh ${TOP}/../miniroot/runlist.sh ${LISTS}
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:
@@ -104,8 +103,10 @@ clean cleandir:
 	rm -f instbin.conf
 	rm -rf cd-dir
 
-beforeinstall:
-	cp ${BSD.RD} ${DESTDIR}/snapshot
+.ifdef RELEASEDIR
+install:
+	cp ${BSD_RD} ${RELEASEDIR}
+.endif
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>

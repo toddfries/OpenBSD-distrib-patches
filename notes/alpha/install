@@ -1,4 +1,4 @@
-dnl	$OpenBSD: install,v 1.30 2008/03/10 21:27:33 miod Exp $
+dnl	$OpenBSD: install,v 1.36 2011/08/08 20:03:03 miod Exp $
 OpenBSDInstallPrelude
 
 There are several ways to install OpenBSD onto a disk.  The easiest way is
@@ -32,16 +32,9 @@ Booting from CD-ROM installation media:
 	as DKA600, you want to use dka6 (device IDs are case
 	insensitive).
 
-	On all MACHINE computers but the TURBOchannel DEC 3000 series,
-	insert the OpenBSD/MACHINE CD-ROM and enter
-		boot -fi OSREV/MACHINE/bsd.rd DEVICE
+	Insert the OpenBSD/MACHINE CD-ROM and enter
+		boot DEVICE
 	where DEVICE is the dka device name.
-
-	On the DEC 3000 series, insert the OpenBSD/MACHINE CD-ROM and enter
-		boot -fi ALPHA DEVICE
-	where DEVICE is the dka device name.
-	
-	Note that, in both cases, the argument order is important.
 
 	You should see info about the primary and secondary boot
 	and then the kernel should start to load.  If the kernel
@@ -106,40 +99,31 @@ OpenBSDInstallPart2
 	Boot your machine from the installation media as described above.
 
 	It will take a while to load the miniroot image, especially from
-	a slow network connection or a CD-ROM, most likely more than a minute.
+	a slow network connection or a CD-ROM, most likely more than a
+	minute.
 	If some action doesn't eventually happen, or the spinning cursor
 	has stopped and nothing further has happened, either your boot
 	media is bad, your diskless setup is incorrect, or you may have
 	a hardware or configuration problem.
 
-OpenBSDBootMsgs
-
-	You will next be asked for your terminal type.  If you are
-	installing from a non-serial console, the default of "vt220"
-	is correct.  If you are installing from a serial console
-	you should choose the terminal type from amongst those listed.
-	(If your terminal type is xterm, just use vt220.)
-
 OpenBSDInstallPart3
 
 OpenBSDInstallPart4
 
-OpenBSDInstallPart5(sd0)
+OpenBSDInstallPart5
 
-OpenBSDInstallNet({:-CD-ROM, -:},nofloppy)
+OpenBSDInstallPart6({:-CD-ROM, tape, -:})
 
-OpenBSDFTPInstall
-
-OpenBSDHTTPInstall
-
-OpenBSDTAPEInstall
+OpenBSDURLInstall
 
 OpenBSDCDROMInstall
 
 OpenBSDDISKInstall({:-"wdN" or -:},{:-only -:})
 
-OpenBSDCommonFS
+OpenBSDCommonInstall
 
-OpenBSDCommonURL
+OpenBSDTAPEInstall
+
+OpenBSDInstallWrapup
 
 OpenBSDCongratulations

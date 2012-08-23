@@ -1,9 +1,9 @@
-dnl	$OpenBSD: contents,v 1.21 2008/03/10 21:25:52 miod Exp $
+dnl	$OpenBSD: contents,v 1.29 2011/08/08 20:03:03 miod Exp $
 TopPart
 
 OpenBSDfloppy
 
-	pxeboot		i386-specific second-stage PXE bootstrap (for
+	pxeboot		amd64-specific second-stage PXE bootstrap (for
 			network installs); see below.
 
 OpenBSDdistsets
@@ -45,26 +45,24 @@ dnl
 dnl In addition, the "tools/" directory contains some utilities that might be
 dnl useful for the installation.
 
-DistributionDescription(eleven)
+DistributionDescription(ten)
 
-OpenBSDbase(48347476,148896227,shared)
+OpenBSDbase(59712136,184352350)
 
-OpenBSDcomp(91564208,321576408,shared)
+OpenBSDcomp(65743681,249418349)
 
-OpenBSDetc(1217072,4016473)
+OpenBSDetc(524814,1580671)
 
-OpenBSDgame(2702471,6162604)
+OpenBSDgame(2712261,6176911)
 
-OpenBSDman(7710700,27896380)
+OpenBSDman(9726358,37465438)
 
-OpenBSDmisc(2306646,7714263)
+OpenBSDxbase(12721216,41624603)
 
-OpenBSDxbase(10929656,34574070)
+OpenBSDxetc(73038,278557)
 
-OpenBSDxetc(79031,299834)
+OpenBSDxfont(39409049,50905227)
 
-OpenBSDxfont(35580507,43728442)
+OpenBSDxserv(24714888,62881393)
 
-OpenBSDxserv(9384576,27980931)
-
-OpenBSDxshare(2742763,14575889)
+OpenBSDxshare(3424704,18440335)

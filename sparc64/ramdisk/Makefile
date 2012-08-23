@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.19 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.26 2011/07/08 21:39:32 drahn Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -17,7 +17,7 @@ FLOPPYSIZE?=	2880
 FLOPPYTYPE?=	floppy
 INSTALLBOOT?=	/usr/mdec/installboot
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -30,7 +30,7 @@ GZIPEXT?=	.gz
 MOUNT_POINT?=	/mnt
 DISKTYPE=	rdroot
 PID!=		echo $$$$
-REALIMAGE!=	echo /tmp/image.${PID}
+REALIMAGE!=	echo /var/tmp/image.${PID}
 IMAGE?=		ramdisk${REV}.fs
 IMAGESIZE?=	8192 # 4MB in 512 byte blocks
 NEWFS_WILL_FAIL?=false
@@ -42,7 +42,7 @@ STRIP?=		strip
 DISKTYPE=       rdroot
 NBLKS=          6144
 # minfree, opt, b/i  trks, sects, cpg
-NEWFSARGS= -m 0 -o space -i 8192
+NEWFSARGS= -m 0 -o space -i 4096
 
 .ifndef DESTDIR
 all ${IMAGE}:
@@ -85,7 +85,7 @@ ${IMAGE}: rd_setup do_files rd_teardown
 bsd:
 	cd ${TOP}/../../sys/arch/sparc64/conf && config ${KERNEL}
 	cd ${TOP}/../../sys/arch/sparc64/compile/${KERNEL} && \
-	    ${MAKE} clean && ${MAKE} depend && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 	cp ${TOP}/../../sys/arch/sparc64/compile/${KERNEL}/bsd bsd
 
 rd_setup:
@@ -102,16 +102,15 @@ rd_teardown:
 	-vnconfig -u ${VND}
 
 elfrdsetroot:	${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} -DDEBUG -o elfrdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} ${HOSTCFLAGS} -o elfrdsetroot \
+	    ${TOP}/../common/elfrdsetroot.c ${TOP}/../common/elf32.c \
+	    ${TOP}/../common/elf64.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
 	-vnconfig -u ${VND}
 
 .PRECIOUS:	${IMAGE}
-
-install:
-	cp ${FLOPPY} ${DESTDIR}/snapshot/
 
 ${CBIN}.conf: ${LISTS}
 	awk -f ${UTILS}/makeconf.awk CBIN=${CBIN} ${LISTS} > ${CBIN}.conf
@@ -124,17 +123,19 @@ ${CBIN}: ${CBIN}.mk ${CBIN}.cache ${CBIN}.c
 
 do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
-	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
-	    REV=${REV} ARCHDIR=${.CURDIR}/.. TARGDIR=${MOUNT_POINT} \
-	    UTILS=${UTILS} sh ${UTILS}/runlist.sh ${LISTS}
+	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} REV=${REV} \
+	    ARCHDIR=${.CURDIR}/.. TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:
 	/bin/rm -f core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	    *.o *.lo *.c bsd ${BSD_RD} bsd.gz ${FLOPPY} elfrdsetroot
 
-beforeinstall:
-	cp ${BSD.RD} ${DESTDIR}/snapshot
+.ifdef RELEASEDIR
+install:
+	cp ${FLOPPY} ${BSD.RD} ${RELEASEDIR}
+.endif
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>

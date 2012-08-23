@@ -1,4 +1,4 @@
-dnl	$OpenBSD: hardware,v 1.74 2008/04/15 20:23:51 miod Exp $
+dnl	$OpenBSD: hardware,v 1.77 2010/07/10 19:38:36 miod Exp $
 OpenBSD/MACHINE OSREV runs on the following classes of machines:
     * sun4: the VME series
 	- 4/100: Original SPARC with VME. Many hardware bugs.
@@ -16,6 +16,10 @@ OpenBSD/MACHINE OSREV runs on the following classes of machines:
 	- SS2: 40MHz version of the SS1
 	- IPX: SS2 in a cube, with cgsix graphics builtin
 	- ELC: SS2-performance built into a B&W monitor
+
+    * sun4e:
+	- SPARCengine 1E: a 6U VME cross between a sun4 and a sun4c,
+	  similar to a Sun 4/300 with an OpenPROM interface.
 
     * sun4m:
 	- 600MP: The original Sun4m machine. This is an mbus machine with
@@ -36,16 +40,19 @@ OpenBSD/MACHINE OSREV runs on the following classes of machines:
 	- Aries Research Inc, Parrot II (SS2 clone)
 	- Axil 243 and 245 (and possibly other models) (SS5 clones)
 	- Axil 320 (SS20 clone)
+	- CPU5V: VME card by Force Computer (sun4m)
+	- DTKstation/Classic+
+	- Fujitsu S-4/Leia2 (MicroSPARC-2 laptop)
+	- Goldstar GWS-40 (SS2 clone)
 	- Opus 5000 (SS1 clone)
 	- Opus 5250 (SS1 clone)
-	- SPARCbook 3, 3GS, 3GX, 3TX and 3XP by Tadpole (MicroSPARC-2)
-	- CPU5V: VME card by Force Computer (sun4m)
-	- TWS,SuperCOMPstation-20S (SS20 clone)
+	- RDI,PowerLite: sun4m models, available in 50MHz, 85MHz, and 110MHz
+	- RDI,BrigeLite
+	- Solair WS19L (SS10 clone)
+	- SPARCbook 3, 3GS, 3GX, 3TX and 3XP by Tadpole (MicroSPARC-2 laptops)
 	- Tatung micro COMPstation 5 (SS5 clone)
 	- Tatung micro COMPstation LX (LX clone)
-	- RDI,PowerLite: sun4m models, available in 50, 85 and 110 MHz
-	- RDI,BrideLite
-	- DTKstation/Classic+
+	- Tatung TWS,SuperCOMPstation-20S (SS20 clone)
 	- Transtec SS5/170
 
 For sun4m machines, the following mbus CPU modules are supported:
@@ -67,13 +74,12 @@ For sun4m machines, the following mbus CPU modules are supported:
 	- Ross HyperSPARC RT620/625 at 166 MHz, with 512KB of primary cache
 	- Ross HyperSPARC RT620/625 at 180 MHz, with 512KB of primary cache
 
-The minimal configuration requires 12MB of RAM and ~120MB of disk space.
+The minimal configuration requires 16MB of RAM and ~160MB of disk space.
 To install the entire system requires much more disk space, and to run
-X or compile the system, more RAM is recommended.  (OpenBSD with 16MB of
-RAM or less feels like Solaris with 16MB of RAM or less.) Note that until
+X or compile the system, more RAM is recommended.  (OpenBSD with 32MB of
+RAM or less feels like Solaris with 32MB of RAM or less.) Note that until
 you have around 32MB of RAM, getting more RAM is more important than
-getting a faster CPU.)  Installation from "ramdisk" kernels requires 16MB
-of RAM.
+getting a faster CPU.)
 
 Supported devices {:-include-:}:
     * Sun keyboard and mouse
@@ -151,10 +157,10 @@ Supported devices {:-include-:}:
 	- SBus 10/100MBit hme Ethernet cards (hme) [*]
 	- SBus 10/100MBit SunSwift SUNW,fas Ethernet+SCSI cards (hme) [*]
 	- SBus Quad 10/100MBit hme and qfe Ethernet cards (hme) [*]
-	[*] Not supported in sun4c-class machines due to PROM limitations.
+	[*] Not supported in sun4c and sun4e machines due to PROM limitations.
 
     * SCSI controllers:
-	- on-board SCSI controller (sun4c, sun4m, and 4/300) (esp)
+	- on-board SCSI controller (sun4c, sun4e, sun4m, and 4/300) (esp)
 	- SBus SCSI controllers (including 3rd party compatible boards) (esp)
 	- SBus cards containing both AMD Lance le and esp SCSI (esp)
 	- SBus SUNW,fas Ethernet+SCSI cards (esp) [*]
@@ -162,7 +168,7 @@ Supported devices {:-include-:}:
 	- 4/110 "SCSI weird" on-board controller (polled DMA) (sw)
 	- QSP/ISP SCSI controllers (i.e. "PTI,ptisp", "ptisp", "SUNW,isp"
 	  and "QLGC,isp") (isp)
-	[*] Not supported in sun4c-class machines due to PROM limitations.
+	[*] Not supported in sun4c and sun4e machines due to PROM limitations.
 
     * SMD and other disk controllers:
 	- Xylogics 7053 VME SMD disk controller (xd)
@@ -331,4 +337,4 @@ Hardware that we do NOT currently support, but get many questions about:
     * SBus FDDI cards
 
 The supplied GENERIC kernel is the best attempt at a configuration that
-works on the widest range of machines (sun4, sun4c, and sun4m).
+works on the widest range of machines (sun4, sun4c, sun4e and sun4m).

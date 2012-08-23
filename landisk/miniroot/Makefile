@@ -6,7 +6,7 @@ IMAGE=	miniroot${REV}.fs
 
 MOUNT_POINT=	/mnt
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -37,10 +37,9 @@ do_files:
 
 rd_setup:
 	dd if=/dev/zero of=${IMAGE} bs=512 count=${NBLKS}
-	vnconfig -v -c ${VND} ${IMAGE}
-	disklabel -w ${VND} ${DISKTYPE}
+	vnconfig -v -c -t ${DISKTYPE} ${VND} ${IMAGE}
 	fdisk -i -y ${VND}
-	fdisk -u -f ${DESTDIR}/usr/mdec/mbr -y ${VND}
+	fdisk -u -y -f ${DESTDIR}/usr/mdec/mbr ${VND}
 	disklabel -w ${VND} ${DISKTYPE}
 	disklabel -v -B -b ${DESTDIR}/usr/mdec/xxboot ${VND} 
 	newfs ${NEWFSARGS} ${VND_RDEV}
@@ -59,8 +58,10 @@ unconfig:
 
 .PRECIOUS:	${IMAGE}
 
+.ifdef RELEASEDIR
 install:
-	cp ${IMAGE} ${DESTDIR}/snapshot/
+	cp ${IMAGE} ${RELEASEDIR}
+.endif
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>

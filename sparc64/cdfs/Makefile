@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.12 2008/03/04 05:37:51 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.16 2011/06/08 19:16:19 krw Exp $
 
 TOP=	${.CURDIR}/..
 
@@ -22,18 +22,21 @@ ${CDROM}:
 	echo 'm 5	sun4u' >> ${.OBJDIR}/cd-dir/.slicemapfile
 	echo 'm 5	sun4us' >> ${.OBJDIR}/cd-dir/.slicemapfile
 	echo 'm 6	sun4v' >> ${.OBJDIR}/cd-dir/.slicemapfile
-	mkhybrid -A "OpenBSD ${OSREV} sparc64 bootonly CD" \
+	mkhybrid -a -R -r -T -L -d -D -N \
+	    -A "OpenBSD ${OSREV} sparc64 bootonly CD" \
 	    -P "Copyright (c) `date +%Y` Theo de Raadt, The OpenBSD project" \
 	    -p "Theo de Raadt <deraadt@openbsd.org>" \
 	    -V "OpenBSD/sparc64 ${OSREV} boot-only CD" \
 	    -o ${.OBJDIR}/${CDROM} ${.OBJDIR}/cd-dir
-	vnconfig -v -c svnd0 ${.OBJDIR}/${CDROM}
-	disklabel -w svnd0 fakecdrom "OpenBSD${REV}sparc64"
-	vnconfig -u svnd0
+	vnconfig -v -c vnd0 ${.OBJDIR}/${CDROM}
+	disklabel -w vnd0 fakecdrom "OpenBSD${REV}sparc64"
+	vnconfig -u vnd0
 	mksuncd f ${.OBJDIR}/${CDROM} ${.OBJDIR}/../miniroot/miniroot${REV}.fs
 
+.ifdef RELEASEDIR
 install:
-	cp ${CDROM} ${DESTDIR}/snapshot
+	cp ${CDROM} ${RELEASEDIR}
+.endif
 
 clean cleandir:
 	/bin/rm -rf ${CDROM} ${.OBJDIR}/cd-dir

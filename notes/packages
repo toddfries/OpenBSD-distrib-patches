@@ -1,18 +1,18 @@
-dnl	$OpenBSD: packages,v 1.42 2007/05/29 04:30:38 miod Exp $
+dnl	$OpenBSD: packages,v 1.45 2010/07/29 17:38:13 steven Exp $
 As complete as your OpenBSD system is, you may want to add any of several
 excellent third party software applications.  There are several ways to do
 this.  You can:
 
-1) Obtain the source code and build the application based
-   upon whatever installation procedures are provided with the
-   application.
+1) Use the OpenBSD ``package'' collection to grab a pre-compiled
+   and tested version of the application for your hardware.
 
 2) Use the OpenBSD ``ports'' collection to automatically get any
    needed source file, apply any required patches, create the
    application, and install it for you.
 
-3) Use the OpenBSD ``package'' collection to grab a pre-compiled
-   and tested version of the application for your hardware.
+3) Obtain the source code and build the application based
+   upon whatever installation procedures are provided with the
+   application.
 
 If you purchased the OpenBSD CD-ROM set you already have several popular
 ``packages'', and the ``ports'' collection.
@@ -100,72 +100,21 @@ Installing applications from the CD-ROM ports collection:
 
 Installing applications from the OpenBSD ports collection:
 
-	See http://www.OpenBSD.org/ports.html for current instructions
-	on obtaining and installing OpenBSD ports.
+	See http://www.OpenBSD.org/faq/ports/ports.html for current
+	instructions on obtaining and installing OpenBSD ports.
 
 	You should also refer to the ports(7) manual page.
 
-dnl
-dnl If this architecture is also supported under FreeBSD or NetBSD, define
-dnl text that tells which ports collection you can try to tinker with.
-dnl
-define({:-PORTS-:},
-{:-ifelse(
-MACHINE_ARCH,alpha,{:-FreeBSD
-	ports or NetBSD pkgsrc-:},
-MACHINE_ARCH,amd64,{:-FreeBSD
-	ports or NetBSD pkgsrc-:},
-MACHINE_ARCH,arm,{:-NetBSD
-	pkgsrc-:},
-dnl MACHINE_ARCH,hppa,{:-NetBSD
-dnl 	pkgsrc-:},
-MACHINE_ARCH,i386,{:-FreeBSD
-	ports or NetBSD pkgsrc-:},
-MACHINE_ARCH,m68k,{:-NetBSD
-	pkgsrc-:},
-MACHINE_ARCH,powerpc,{:-NetBSD
-	pkgsrc-:},
-MACHINE_ARCH,sh,{:-NetBSD
-	pkgsrc-:},
-MACHINE_ARCH,sparc,{:-NetBSD
-	pkgsrc-:},
-MACHINE_ARCH,sparc64,{:-FreeBSD
-	ports or NetBSD pkgsrc-:},
-MACHINE_ARCH,vax,{:-NetBSD
-	pkgsrc-:})-:})dnl
-dnl
-dnl If this architecture supports FreeBSD or NetBSD emulation by default,
-dnl define text that tells which binary packages you can try to run.
-dnl
-define({:-EMUL-:},
-{:-ifelse(
-MACHINE_ARCH,i386,{:-FreeBSD-:})-:})dnl
-dnl
-dnl Same as above, defining a manual page to check for more compat
-dnl information.
-dnl
-define({:-EMULMAN-:},
-{:-ifelse(
-MACHINE_ARCH,i386,{:-compat_freebsd(8)-:})-:})dnl
-dnl
 Installing other applications:
 
 	If an OpenBSD package or port does not exist for an application
 	you're pretty much on your own.  The first thing to do is ask
 	<ports@OpenBSD.org> if anyone is working on a port -- there may
-	be one in progress.
-	ifelse(PORTS,,,{:-
-	If no such port exists, you might want to tinker with the PORTS.
--:})dnl
-	ifelse(EMUL,,,{:-
-	It is also quite possible that the EMUL binary packages,
-	if they exist, will work for you. Note that you will need to
-	enable EMUL binaries emulation with sysctl(8) and set up a
-	complete emulation environment.ifelse(EMULMAN,,,{:- Refer to the EMULMAN
-	manual page for more information about this.-:})
--:})dnl
+	be one in progress.  If no such port exists, you might want to
+	look at the FreeBSD ports or NetBSD pkgsrc for inspiration.
 
 	If you can't find an existing port, try to make your own and
 	feed it back to OpenBSD.  That's how our ports collection grows.
-	Some details can be found at http://www.OpenBSD.org/porting.html
+	Some details can be found in the OpenBSD Porter's Handbook at
+	http://www.openbsd.org/faq/ports/
 	with more help coming from the mailing list, <ports@OpenBSD.org>.

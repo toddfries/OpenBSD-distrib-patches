@@ -1,14 +1,23 @@
-#	$OpenBSD: Makefile,v 1.1 2005/08/03 22:33:58 espie Exp $
+#	$OpenBSD: Makefile,v 1.9 2012/01/18 14:01:38 stsp Exp $
 
 .include <bsd.own.mk>
 LIB=    stubs
-SRCS=	setlocale.c db.c
+SRCS=	db.c setlocale.c sha1.c sha2.c getgrent.c getpwent.c \
+	ethers.c getaddrinfo.c gethostnamadr.c getnetnamadr.c \
+	mbrtowc_sb.c sscanf.c vfprintf.c vfscanf.c
 NOPIC=	Yes
 NOPROFILE=Yes
-NOMAN=1
+NOMAN=	1
 
-CFLAGS+=-Os -D__DBINTERFACE_PRIVATE
+CFLAGS+=-D__DBINTERFACE_PRIVATE -DSHA256_ONLY -UYP -I${LIBCSRCDIR}/include \
+	-DNO_LOG_BAD_DNS_RESPONSES -I${LIBCSRCDIR}/locale \
+	-I${LIBCSRCDIR}/stdio -DFLOATING_POINT
 
 LIBCSRCDIR=${.CURDIR}/../../../lib/libc
+
+.PATH: ${.CURDIR}/../../../lib/libc/hash
+.PATH: ${.CURDIR}/../../../lib/libc/gen
+.PATH: ${.CURDIR}/../../../lib/libc/net
+.PATH: ${.CURDIR}/../../../lib/libc/stdio
 
 .include <bsd.lib.mk>

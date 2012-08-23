@@ -1,16 +1,16 @@
-#	$OpenBSD: Makefile,v 1.2 2008/02/24 19:32:48 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.8 2012/04/26 15:54:54 deraadt Exp $
 
 TOP=	${.CURDIR}/..
 
 .include "${TOP}/Makefile.inc"
 
 CDROM=		install${REV}.iso
-RELXDIR=	/home/relx-${MACHINE}
+RELXDIR?=	/home/relx-${MACHINE}
 RELDIR?=	/home/rel-${MACHINE}
 
 BASE=		${RELDIR}/base${OSrev}.tgz ${RELDIR}/comp${OSrev}.tgz \
 		${RELDIR}/etc${OSrev}.tgz ${RELDIR}/game${OSrev}.tgz \
-		${RELDIR}/man${OSrev}.tgz ${RELDIR}/misc${OSrev}.tgz \
+		${RELDIR}/man${OSrev}.tgz \
 		${RELDIR}/bsd ${RELDIR}/bsd.rd \
 		${RELDIR}/INSTALL.${MACHINE}
 XBASE=		${RELXDIR}/xbase${OSrev}.tgz ${RELXDIR}/xetc${OSrev}.tgz \
@@ -18,13 +18,13 @@ XBASE=		${RELXDIR}/xbase${OSrev}.tgz ${RELXDIR}/xetc${OSrev}.tgz \
 		${RELXDIR}/xserv${OSrev}.tgz
 
 MOUNT_POINT?=	/mnt
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 DISKTYPE=	isoroot
 PID!=		echo $$$$
 ISOIMAGE!=	echo image.${PID}
-ISOSIZE=	547041	# 33*11*1507
+ISOSIZE=	617100	# 33*11*1700
 BOOT=		${DESTDIR}/usr/mdec/boot
 BOOTXX=		${DESTDIR}/usr/mdec/xxboot
 NEWFSOPTS=	-t ffs -m 0 -o space -f 1024 -b 8192 -i 8192 -s ${ISOSIZE}
@@ -53,6 +53,11 @@ ${CDROM}: ${BASE} ${XBASE} ${BOOT} ${BOOTXX}
 
 install:
 	cp ${CDROM} ${RELDIR}/
+	# update the SHA256 file
+	grep -v ${CDROM} ${RELDIR}/SHA256 > ${RELDIR}/SHA256.new
+	sum -a sha256 ${CDROM} >> ${RELDIR}/SHA256.new
+	sort ${RELDIR}/SHA256.new > ${RELDIR}/SHA256
+	rm ${RELDIR}/SHA256.new
 
 clean cleandir:
 	/bin/rm -f ${CDROM} ${.OBJDIR}/image.*

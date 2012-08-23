@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.29 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.33 2011/04/18 16:52:10 thib Exp $
 
 REV=		${OSrev}
 
@@ -11,8 +11,10 @@ ARCHDIR=	${.CURDIR}/../${MACHINE}/miniroot
 .include "${ARCHDIR}/Makefile.inc"
 .endif
 
+UTILS=		${.CURDIR}
+
 MOUNT_POINT?=	/mnt
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 DISKTYPE=	miniroot
@@ -28,7 +30,7 @@ CRUNCHGENOPTS?=-E
 CRUNCHGENOPTS?=
 .endif
 
-LISTS=		${.CURDIR}/list ${ARCHDIR}/list
+LISTS=		${.CURDIR}/list ${ARCHDIR}/list.local
 CRUNCHCONF=	${CBIN}.conf
 MTREE=		${.CURDIR}/mtree.conf
 
@@ -41,7 +43,7 @@ all:
 bsd:
 	cd ${.CURDIR}/../../sys/arch/${MACHINE}/conf && config GENERIC
 	cd ${.CURDIR}/../../sys/arch/${MACHINE}/compile/GENERIC && \
-	    ${MAKE} clean && ${MAKE}
+	    ${MAKE} clean && ${MAKE} depend && ${MAKE}
 	cp ${.CURDIR}/../../sys/arch/${MACHINE}/compile/GENERIC/bsd bsd
 
 all: ${CBIN} bsd
@@ -51,8 +53,9 @@ all: ${CBIN} bsd
 	newfs -m 0 -o space ${NEWFSOPTS} ${VND_RDEV} || ${NEWFS_WILL_FAIL}
 	mount ${VND_DEV} ${MOUNT_POINT}
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
-	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} ARCHDIR=${ARCHDIR} \
-	    TARGDIR=${MOUNT_POINT} sh ${.CURDIR}/runlist.sh ${LISTS}
+	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
+	    UTILS=${UTILS} ARCHDIR=${ARCHDIR} TARGDIR=${MOUNT_POINT} \
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 	@echo ""
 	@df -i ${MOUNT_POINT}
@@ -76,10 +79,12 @@ clean cleandir:
 	/bin/rm -f *.core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	${CBIN}.conf *.o *.lo *.c
 
-beforeinstall:
-	cp ${IMAGE} ${DESTDIR}/snapshot
-
 .endif	# DESTDIR check
+
+.ifdef RELEASEDIR
+beforeinstall:
+	cp ${IMAGE} ${RELEASEDIR}
+.endif
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

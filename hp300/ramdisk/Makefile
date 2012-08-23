@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.24 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.29 2011/04/18 16:52:09 thib Exp $
 #	$NetBSD: Makefile,v 1.1 1995/07/18 04:13:06 briggs Exp $
 
 TOP=		${.CURDIR}/..
@@ -10,7 +10,7 @@ BASE=		ramdisk
 
 MOUNT_POINT=	/mnt
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -22,8 +22,10 @@ GZIPFLAGS?=	-9fn
 
 all: ${CBIN} ${IMAGE} bsd.rd
 
+.ifdef RELEASEDIR
 install: bsd.rd
-	${GZIPCMD} -c ${GZIPFLAGS} bsd.rd > ${DESTDIR}/snapshot/bsd.rd
+	${GZIPCMD} -c ${GZIPFLAGS} bsd.rd > ${RELEASEDIR}/bsd.rd
+.endif
 
 .include "Makefile.inc"
 
@@ -35,10 +37,10 @@ bsd.rd:	rdsetroot
 .ifndef(NOBUILD)
 	cd ${.CURDIR}/../../../sys/arch/hp300/conf && config RAMDISK
 	cd ${.CURDIR}/../../../sys/arch/hp300/compile/RAMDISK && \
-	    ${MAKE} clean && ${MAKE} depend && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 .endif
 	cp ${.CURDIR}/../../../sys/arch/hp300/compile/RAMDISK/bsd bsd.rd
-	${.OBJDIR}/rdsetroot bsd.rd < ${IMAGE}
+	${.OBJDIR}/rdsetroot bsd.rd ${IMAGE}
 
 ${IMAGE}: ${CBIN} rd_setup do_files rd_teardown
 
@@ -58,7 +60,7 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../common/rdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../common/rdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../common/rdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

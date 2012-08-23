@@ -1,4 +1,4 @@
-#	$OpenBSD: list2sh.awk,v 1.12 2002/11/28 03:06:30 deraadt Exp $
+#	$OpenBSD: list2sh.awk,v 1.17 2012/03/19 08:30:08 nicm Exp $
 #	$NetBSD: list2sh.awk,v 1.2 1996/05/04 15:45:31 pk Exp $
 
 BEGIN {
@@ -59,6 +59,19 @@ $1 == "CRUNCHSPECIAL" {
 	# crunchgen directive; ignored here
 	next;
 }
+$1 == "HASH" {
+	printf("echo '%s' from RELEASEDIR=$RELEASEDIR for REV=$REV\n", $0);
+	printf("(cd ${TARGDIR}; sh $UTILS/makehash.sh %s $REV $RELEASEDIR", $2);
+	for (i = 3; i <= NF; i++)
+		printf(" %s", $i);
+	printf(")\n");
+	next;
+}
+$1 == "TZ" {
+	printf("echo '%s'\n", $0);
+	printf("(cd ${TARGDIR}; sh $UTILS/maketz.sh $DESTDIR)\n");
+	next;
+}
 $1 == "COPYDIR" {
 	printf("echo '%s'\n", $0);
 	printf("(cd ${TARGDIR}/%s && find . ! -name . | xargs /bin/rm -rf)\n",
@@ -80,14 +93,16 @@ $1 == "SPECIAL" {
 	next;
 }
 $1 == "TERMCAP" {
+# tic -r flag may generate harmless warning about pccon+base:
+#     "terminal 'pccon+base': enter_reverse_mode but no exit_attribute_mode"
 	printf("echo '%s'\n", $0);
-	printf("(cd ${TARGDIR}; tic -C -x -r -e %s ${UTILS}/../../share/termtypes/termtypes.master | sed -e '/^#.*/d' -e 's,/usr/share/lib/tabset,/usr/share/tabset,g' -e 's,/usr/lib/tabset,/usr/share/tabset,g' > %s)\n",
+	printf("(cd ${TARGDIR}; tic -C -x -r -e %s ${UTILS}/../../share/termtypes/termtypes.master | sed -e '/^#.*/d' -e '/^$$/d' > %s)\n",
 	    $2, $3);
 	next;
 }
 $1 == "SCRIPT" {
 	printf("echo '%s'\n", $0);
-	printf("sed -e '/^[ 	]*#[ 	].*$/d' -e '/^[ 	]*#$/d' -e \"s/^ARCH=ARCH$/ARCH=`arch -ks`/\" < %s > ${TARGDIR}/%s\n",
+	printf("sed -e '/^[ 	]*#[ 	].*$/d' -e '/^[ 	]*#$/d' < %s > ${TARGDIR}/%s\n",
 	    $2, $3);
 	next;
 }

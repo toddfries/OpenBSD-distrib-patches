@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.12 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.19 2011/07/08 21:39:32 drahn Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -7,7 +7,7 @@ IMAGE=		ramdisk${REV}.fs
 
 MOUNT_POINT=	/mnt
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -27,7 +27,7 @@ RDSETROOT=	elfrdsetroot
 
 .include "${TOP}/inst-common/Makefile.inc"
 
-LISTS+=		${.CURDIR}/list
+LISTS+=		${.CURDIR}/list.local
 
 all: ${CBIN} bsd.rd
 
@@ -46,19 +46,21 @@ bsd.rd:	bsd.rd_unz
 
 bsd.rd_unz: bsd ${IMAGE} ${RDSETROOT}
 	cp bsd bsd.rd_unz
-	${.OBJDIR}/${RDSETROOT} bsd.rd_unz < ${IMAGE}
+	${.OBJDIR}/${RDSETROOT} bsd.rd_unz ${IMAGE}
 
 bsd:
 	cd ${.CURDIR}/../../../sys/arch/alpha/conf && config ${RAMDISK}
 	cd ${.CURDIR}/../../../sys/arch/alpha/compile/${RAMDISK} && \
-	    ${MAKE} depend && ${MAKE} clean && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 	cp ${.CURDIR}/../../../sys/arch/alpha/compile/${RAMDISK}/bsd bsd
 
 ${IMAGE}:	do_prep do_mount do_files do_umount
 	mv -f ${REALIMAGE} ${IMAGE}
 
 elfrdsetroot: ${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} ${HOSTCFLAGS} -o elfrdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} ${HOSTCFLAGS} -o elfrdsetroot \
+	    ${TOP}/../common/elfrdsetroot.c ${TOP}/../common/elf32.c \
+	    ${TOP}/../common/elf64.c
 
 do_prep:
 	dd if=/dev/zero of=${REALIMAGE} count=${NBLKS}
@@ -80,5 +82,7 @@ unconfig:
 	-umount ${MOUNT_POINT}
 	-vnconfig -u ${VND}
 
+.ifdef RELEASEDIR
 beforeinstall:
-	cp bsd.rd ${DESTDIR}/snapshot
+	cp bsd.rd ${RELEASEDIR}
+.endif

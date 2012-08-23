@@ -1,34 +1,94 @@
-dnl	$OpenBSD: contents,v 1.7 2008/03/10 21:25:53 miod Exp $
+dnl	$OpenBSD: contents,v 1.19 2012/05/25 17:40:35 miod Exp $
 TopPart
 
 OpenBSDdistsets
 
-OpenBSDbsd
+dnl five flavours of OpenBSDbsd
+	bsd.IP22	A stock GENERIC-IP22 MACHINE kernel for IP22 class
+			machines, which will be installed on such systems
+			during the install.
 
-OpenBSDrd
+	bsd.IP27	A stock GENERIC-IP27 MACHINE kernel for IP27 and IP35
+			class machines, which will be installed on such
+			systems during the install.
 
-OpenBSDcd
+	bsd.IP28	A stock GENERIC-IP28 MACHINE kernel for IP28 class
+			machines, which will be installed on such systems
+			during the install.
 
-DistributionDescription(eleven)
+	bsd.IP30	A stock GENERIC-IP30 MACHINE kernel for IP30 class
+			machines, which will be installed on such systems
+			during the install.
 
-OpenBSDbase(51021070,172072808,shared)
+	bsd.IP32	A stock GENERIC-IP32 MACHINE kernel for IP32 class
+			machines, which will be installed on such systems
+			during the install.
 
-OpenBSDcomp(66933792,235897016,shared)
+dnl one flavour of OpenBSDbsdmp so far...
+	bsd.IP30.mp	A stock GENERIC-IP30.MP MACHINE kernel for IP30 class
+			machines, with support for multiprocessor systems,
+			which can be used instead of the GENERIC-IP30 kernel
+			after the install.
 
-OpenBSDetc(1218235,4018044)
+dnl five flavours of OpenBSDrd
+	bsd.rd.IP22	A RAMDISK-IP22 kernel; the embedded filesystem
+			contains the installation tools.
+			Used for installation and upgrades.
 
-OpenBSDgame(2800914,6674836)
+	bsd.rd.IP27	A RAMDISK-IP27 kernel; the embedded filesystem
+			contains the installation tools.
+			Used for installation and upgrades.
 
-OpenBSDman(7710777,27896814)
+	bsd.rd.IP28	A RAMDISK-IP28 kernel; the embedded filesystem
+			contains the installation tools.
+			Used for installation and upgrades.
 
-OpenBSDmisc(2306696,7714263)
+	bsd.rd.IP30	A RAMDISK-IP30 kernel; the embedded filesystem
+			contains the installation tools.
+			Used for installation and upgrades.
 
-OpenBSDxbase(8961850,30628712)
+	bsd.rd.IP32	A RAMDISK-IP32 kernel; the embedded filesystem
+			contains the installation tools.
+			Used for installation and upgrades.
 
-OpenBSDxetc(79860,309174)
+dnl can't use OpenBSDcd because of the multiple bsd.rd
+	cd{:--:}OSrev.iso	A miniroot filesystem image suitable to be used
+			as a bootable CD-ROM image, but will require the base
+			and X sets be found via another media or network;
+			otherwise similar to the bsd.rd* images above.
 
-OpenBSDxfont(35584472,43728442)
+	boot32		A 32-bit ELF boot block for IP32 systems; will be
+			installed into the ``volume header'' of the boot
+			disk.
 
-OpenBSDxserv(4575559,15151497)
+	boot64		A 64-bit relocatable ELF boot block for IP27, IP28,
+			IP30 and IP35 systems; will be installed into the
+			``volume header'' of the boot disk.
 
-OpenBSDxshare(2745052,14575889)
+	bootecoff	A 32-bit ECOFF boot block for IP22 systems, also
+			used to boot ELF kernels over the network on
+			ELF-unaware PROM; will be installed into the
+			``volume header'' of the boot disk.
+
+
+DistributionDescription(ten)
+
+OpenBSDbase(57051101,196747310)
+
+OpenBSDcomp(54181303,207433625)
+
+OpenBSDetc(524615,1579604)
+
+OpenBSDgame(2790750,6672247)
+
+OpenBSDman(9726715,37465303)
+
+OpenBSDxbase(11475488,41144106)
+
+OpenBSDxetc(72938,280808)
+
+OpenBSDxfont(39409663,50905227)
+
+OpenBSDxserv(5610334,17450845)
+
+OpenBSDxshare(3425419,18440335)

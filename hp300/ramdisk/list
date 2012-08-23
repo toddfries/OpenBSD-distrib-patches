@@ -1,10 +1,12 @@
-#	$OpenBSD: list,v 1.48 2007/02/14 23:38:20 deraadt Exp $
+#	$OpenBSD: list,v 1.56 2010/10/18 04:07:50 deraadt Exp $
 
 SRCDIRS distrib/special
 SRCDIRS bin sbin usr.bin usr.sbin
 
 COPY	${OBJDIR}/instbin			instbin
+LINK	instbin					bin/arch
 LINK	instbin					bin/cat
+LINK	instbin					bin/date
 LINK	instbin					bin/chmod bin/chgrp sbin/chown
 LINK	instbin					bin/cp
 LINK	instbin					bin/dd
@@ -21,6 +23,8 @@ LINK	instbin					bin/mt bin/eject
 LINK	instbin					bin/mv
 LINK	instbin					bin/pax bin/tar bin/cpio
 LINK	instbin					bin/rm
+LINK	instbin					bin/sha256
+LINK	instbin					bin/sleep
 LINK	instbin					bin/stty
 LINK	instbin					bin/sync
 LINK	instbin					sbin/dhclient
@@ -47,7 +51,7 @@ LINK	instbin					usr/bin/grep usr/bin/egrep usr/bin/fgrep
 LINK	instbin					usr/bin/gzip usr/bin/gunzip usr/bin/gzcat
 LINK	instbin					usr/bin/less usr/bin/more
 LINK	instbin					usr/bin/sed
-LINK	instbin					usr/bin/disknames
+LINK	instbin					sbin/sysctl
 
 # copy the MAKEDEV script and make some devices
 SCRIPT	${DESTDIR}/dev/MAKEDEV			dev/MAKEDEV
@@ -66,16 +70,15 @@ LINK	usr/mdec/uboot.lif			usr/mdec/sdboot
 COPY	${DESTDIR}/etc/group			etc/group
 COPY	${CURDIR}/../../miniroot/protocols	etc/protocols
 COPY	${CURDIR}/../../miniroot/services	etc/services
-COPY	${DESTDIR}/etc/spwd.db			etc/spwd.db
-SCRIPT	${DESTDIR}/etc/disktab			etc/disktab
-SYMLINK	/tmp/disktab.shadow			etc/disktab
+COPY	${CURDIR}/../../miniroot/master.passwd	etc/master.passwd
+SPECIAL	pwd_mkdb -p -d etc master.passwd; rm etc/master.passwd
 SYMLINK	/tmp/fstab.shadow			etc/fstab
 SYMLINK	/tmp/resolv.conf.shadow			etc/resolv.conf
 SYMLINK	/tmp/hosts				etc/hosts
 TERMCAP	vt100,vt220,dumb,hp2392,hpansi,hpsub,hpex,hp700-wy,hp70092	usr/share/misc/termcap
 
 # dhcp things
-SCRIPT    ${DESTDIR}/sbin/dhclient-script	sbin/dhclient-script
+SCRIPT	${DESTDIR}/sbin/dhclient-script		sbin/dhclient-script
 
 # and the installation tools
 SCRIPT	${CURDIR}/../../miniroot/dot.profile	.profile
@@ -84,3 +87,5 @@ SCRIPT	${CURDIR}/../../miniroot/install.sh	install
 SCRIPT	${CURDIR}/../../miniroot/upgrade.sh	upgrade
 SCRIPT	${CURDIR}/../../miniroot/install.sub	install.sub
 SPECIAL	chmod 755 install upgrade sbin/dhclient-script
+
+HASH	var/hash

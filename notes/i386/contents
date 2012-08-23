@@ -1,4 +1,4 @@
-dnl	$OpenBSD: contents,v 1.61 2008/03/10 21:45:44 miod Exp $
+dnl	$OpenBSD: contents,v 1.68 2011/08/08 20:03:03 miod Exp $
 TopPart
 
 OpenBSDfloppy
@@ -58,26 +58,24 @@ OpenBSDfloppydesc(three,Each,s)
 In addition, the "tools/" directory contains some utilities that might be
 useful for the installation.
 
-DistributionDescription(eleven)
+DistributionDescription(ten)
 
-OpenBSDbase(43882720,131245205,shared)
+OpenBSDbase(55199075,166826041)
 
-OpenBSDcomp(79425411,224429349,shared)
+OpenBSDcomp(58616242,177297610)
 
-OpenBSDetc(1218746,4019611)
+OpenBSDetc(524962,1580960)
 
-OpenBSDgame(2608954,5967996)
+OpenBSDgame(2629385,6072219)
 
-OpenBSDman(7710689,27896378)
+OpenBSDman(9726399,37465436)
 
-OpenBSDmisc(2306662,7714263)
+OpenBSDxbase(11570649,33993820)
 
-OpenBSDxbase(9677800,27543056)
+OpenBSDxetc(71701,272529)
 
-OpenBSDxetc(76180,293890)
+OpenBSDxfont(39408895,50905227)
 
-OpenBSDxfont(35579536,43728442)
+OpenBSDxserv(23678372,57497808)
 
-OpenBSDxserv(8748320,24385407)
-
-OpenBSDxshare(2742793,14575889)
+OpenBSDxshare(3424914,18440335)

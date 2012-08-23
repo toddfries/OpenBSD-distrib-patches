@@ -1,4 +1,4 @@
-dnl	$OpenBSD: contents,v 1.57 2008/03/10 21:25:53 miod Exp $
+dnl	$OpenBSD: contents,v 1.66 2011/08/08 20:03:04 miod Exp $
 TopPart
 
 OpenBSDminiroot
@@ -11,9 +11,6 @@ OpenBSDfloppy
 OpenBSDdistsets
 
 OpenBSDbsd
-
-	bsd.scsi3	A kernel with SCSI target 3 re-mapped as 0 and 0
-			mapped as 3.
 
 OpenBSDrd
 
@@ -37,26 +34,24 @@ Sun bootblocks require a separate kernel image and root filesystem.
 
 OpenBSDfloppydesc(single,The)
 
-DistributionDescription(eleven)
+DistributionDescription(ten)
 
-OpenBSDbase(41308903,121322118,shared)
+OpenBSDbase(53878520,163471615)
 
-OpenBSDcomp(63260167,236522182,shared)
+OpenBSDcomp(58787002,183321005)
 
-OpenBSDetc(1223052,4035889)
+OpenBSDetc(525487,1584118)
 
-OpenBSDgame(2677934,6032588)
+OpenBSDgame(2684031,6061655)
 
-OpenBSDman(7436835,26822328)
+OpenBSDman(9726710,37459493)
 
-OpenBSDmisc(2306723,7714263)
+OpenBSDxbase(11462017,34180756)
 
-OpenBSDxbase(9983245,30079166)
+OpenBSDxetc(71791,276824)
 
-OpenBSDxetc(77085,295566)
+OpenBSDxfont(39418059,50905227)
 
-OpenBSDxfont(35584459,43728442)
+OpenBSDxserv(5452314,14174320)
 
-OpenBSDxserv(7145463,21227449)
-
-OpenBSDxshare(2745602,14575990)
+OpenBSDxshare(3436800,18458554)

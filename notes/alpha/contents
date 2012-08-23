@@ -1,12 +1,14 @@
-dnl	$OpenBSD: contents,v 1.44 2008/03/10 21:25:52 miod Exp $
+dnl	$OpenBSD: contents,v 1.52 2011/08/08 20:03:03 miod Exp $
 TopPart
 
 OpenBSDfloppy
 			This floppy image will boot on the following MACHINE
 			models:
 			- AlphaStation 200, 250, 255, 400
+			- AlphaServer 300 and 400
 			- AlphaStation 500, 600
-			- AlphaServer 800, 1000, 1000A
+			- AlphaStation 600A, 1200
+			- AlphaServer 800, 1000, 1000A, 1200, 4000 and 4100
 			- AXPpci33 based machines, including ``Noname'',
 			  UDB, Multia
 			- EB164 based machines, including PC164, 164SX,
@@ -17,8 +19,10 @@ OpenBSDfloppy
 			below.
 			This floppy image will boot on the following MACHINE
 			models:
-   			- Alpha Processor, Inc. UP1000
-			- XP900, XP1000, 264DP, DS10, DS20
+   			- Alpha Processor, Inc. UP1000, UP1100, UP2000 and
+			  UP2000+
+			- XP900, XP1000, CS20, DS10, DS20, DS20L, ES40 and
+			  264DP
 
 OpenBSDdistsets
 
@@ -34,26 +38,24 @@ OpenBSDfloppydesc(two,Each,s)
 
 dnl boot, bootxx, netboot
 dnl
-DistributionDescription(eleven)
+DistributionDescription(ten)
 
-OpenBSDbase(54987391,168900724,shared)
+OpenBSDbase(64284940,208752874)
 
-OpenBSDcomp(95565572,338162732,shared)
+OpenBSDcomp(116220098,390941173)
 
-OpenBSDetc(1217019,4015847)
+OpenBSDetc(524882,1580160)
 
-OpenBSDgame(2846694,6596484)
+OpenBSDgame(2838915,6602967)
 
-OpenBSDman(7710785,27896380)
+OpenBSDman(9537631,36674867)
 
-OpenBSDmisc(2306623,7714263)
+OpenBSDxbase(18494197,64265190)
 
-OpenBSDxbase(13320645,46203376)
+OpenBSDxetc(74665,282516)
 
-OpenBSDxetc(81768,308688)
+OpenBSDxfont(39409644,50905227)
 
-OpenBSDxfont(35581179,43728442)
+OpenBSDxserv(4810943,12907245)
 
-OpenBSDxserv(10975463,32974795)
-
-OpenBSDxshare(2743060,14575889)
+OpenBSDxshare(3425554,18440347)

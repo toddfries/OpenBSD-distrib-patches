@@ -1,6 +1,7 @@
-#	$OpenBSD: dot.profile,v 1.7 2007/11/16 21:18:35 krw Exp $
+#	$OpenBSD: dot.profile,v 1.17 2011/07/08 23:53:53 halex Exp $
 #	$NetBSD: dot.profile,v 1.1 1995/12/18 22:54:43 pk Exp $
 #
+# Copyright (c) 2009 Kenneth R. Westerback
 # Copyright (c) 1995 Jason R. Thorpe
 # Copyright (c) 1994 Christopher G. Demetriou
 # All rights reserved.
@@ -31,36 +32,51 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+export VNAME=$(sysctl -n kern.osrelease)
+export VERSION="${VNAME%.*}${VNAME#*.}"
+export ARCH=$(sysctl -n hw.machine)
+export OBSD="OpenBSD/$ARCH $VNAME"
+
 export PATH=/sbin:/bin:/usr/bin:/usr/sbin:/
 umask 022
 # emacs-style command line editing
 set -o emacs
 
-rootdisk=`dmesg|sed -n '/^root on /!d;${s#^root on \([^ ]*\).*#/dev/\1#;p;}'`
+# Extract rootdisk from last 'root on ...' line. e.g.
+# 	root on wd0a swap on wd0b dump on wd0b
+set -- $(dmesg | sed -n '/^root on /h;${g;p;}')
+rootdisk=$3
 
 if [ "X${DONEPROFILE}" = "X" ]; then
 	DONEPROFILE=YES
 
-	mount -u ${rootdisk:-/dev/rd0a} /
+	mount -u /dev/${rootdisk:-rd0a} /
+
+	# Create a fake rc that just returns 1 and throws us back
+	echo ! : > /etc/rc
 
 	# set up some sane defaults
 	echo 'erase ^?, werase ^W, kill ^U, intr ^C, status ^T'
 	stty newcrt werase ^W intr ^C kill ^U erase ^? status ^T
 
 	# Installing or upgrading?
-	_forceloop=""
-	while [ "X$_forceloop" = "X" ]; do
-		echo -n '(I)nstall'
-		[ -f upgrade ] && echo -n ', (U)pgrade'
-		echo -n ' or (S)hell? '
-		read _forceloop
-		case "$_forceloop" in
-		i*|I*)	/install
+	cat <<__EOT
+
+Welcome to the $OBSD installation program.
+__EOT
+	while :; do
+		read REPLY?'(I)nstall, (U)pgrade or (S)hell? '
+		case $REPLY in
+		i*|I*)	/install && break
 			;;
-		u*|U*)	/upgrade
+		u*|U*)	/upgrade && break
 			;;
-		s*|S*)	;;
-		*)	_forceloop=""
+		s*|S*)	break
+			;;
+		!)	echo "Type 'exit' to return to install."
+			ksh
+			;;
+		!*)	eval "${REPLY#?}"
 			;;
 		esac
 	done

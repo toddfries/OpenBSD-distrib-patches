@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.16 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.23 2011/07/08 21:39:32 drahn Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -10,7 +10,7 @@ UTILS?=		${TOP}/../miniroot
 
 MOUNT_POINT=	/mnt
 
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -50,19 +50,21 @@ bsd.rd:	bsd.rd_unz
 
 bsd.rd_unz: bsd ${IMAGE} ${RDSETROOT}
 	cp bsd bsd.rd_unz
-	${.OBJDIR}/${RDSETROOT} bsd.rd_unz < ${IMAGE}
+	${.OBJDIR}/${RDSETROOT} bsd.rd_unz ${IMAGE}
 
 bsd:
 	cd ${.CURDIR}/../../../sys/arch/sparc64/conf && config ${RAMDISK}
 	cd ${.CURDIR}/../../../sys/arch/sparc64/compile/${RAMDISK} && \
-	    ${MAKE} depend && ${MAKE} clean && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && COPTS=-Os exec ${MAKE}
 	cp ${.CURDIR}/../../../sys/arch/sparc64/compile/${RAMDISK}/bsd bsd
 
 ${IMAGE}:	do_prep do_mount do_files do_umount
 	mv -f ${REALIMAGE} ${IMAGE}
 
 elfrdsetroot: ${TOP}/../common/elfrdsetroot.c
-	${HOSTCC} ${HOSTCFLAGS} -o elfrdsetroot ${TOP}/../common/elfrdsetroot.c
+	${HOSTCC} ${HOSTCFLAGS} -o elfrdsetroot \
+	    ${TOP}/../common/elfrdsetroot.c ${TOP}/../common/elf32.c \
+	    ${TOP}/../common/elf64.c
 
 do_prep:
 	dd if=/dev/zero of=${REALIMAGE} count=${NBLKS}
@@ -100,7 +102,7 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../../common/rdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../../common/rdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../../common/rdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
@@ -109,9 +111,11 @@ unconfig:
 
 .PRECIOUS:	${IMAGE}
 
+.ifdef RELEASEDIR
 install:
 .ifndef NOBSDRD
-	cp bsd.rd ${DESTDIR}/snapshot/bsd.rd
+	cp bsd.rd ${RELEASEDIR}
+.endif
 .endif
 
 ${CBIN}.conf: ${LISTS}
@@ -128,7 +132,7 @@ do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
-	    sh ${UTILS}/runlist.sh ${LISTS}
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:

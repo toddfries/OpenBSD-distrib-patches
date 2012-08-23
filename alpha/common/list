@@ -1,4 +1,4 @@
-#	$OpenBSD: list,v 1.21 2007/07/11 01:50:40 deraadt Exp $
+#	$OpenBSD: list,v 1.31 2010/10/18 04:07:49 deraadt Exp $
 
 SRCDIRS distrib/special
 SRCDIRS bin sbin usr.bin usr.sbin
@@ -6,7 +6,9 @@ SRCDIRS sys/arch/alpha/stand
 
 # copy the crunched binary, link to it, and kill it
 COPY	${OBJDIR}/instbin			instbin
+LINK	instbin					bin/arch
 LINK	instbin					bin/cat
+LINK	instbin					bin/date
 LINK	instbin					bin/chmod bin/chgrp sbin/chown
 LINK	instbin					bin/cp
 #LINK	instbin					bin/dd
@@ -20,6 +22,7 @@ LINK	instbin					bin/mkdir
 LINK	instbin					bin/mv
 LINK	instbin					bin/pax bin/tar bin/cpio
 LINK	instbin					bin/rm
+LINK	instbin					bin/sleep
 LINK	instbin					bin/stty
 LINK	instbin					sbin/disklabel
 LINK	instbin					sbin/dmesg
@@ -40,7 +43,7 @@ LINK	instbin					usr/bin/grep usr/bin/egrep usr/bin/fgrep
 LINK	instbin					usr/bin/gzip usr/bin/gunzip usr/bin/gzcat
 LINK	instbin					usr/bin/more usr/bin/less
 LINK	instbin					usr/bin/sed
-LINK	instbin					usr/bin/disknames
+LINK	instbin					sbin/sysctl
 #LINK	instbin					usr/mdec/installboot
 
 # copy the MAKEDEV script and make some devices
@@ -55,15 +58,14 @@ SPECIAL	cd dev; sh MAKEDEV ramdisk
 COPY	${DESTDIR}/etc/group			etc/group
 COPY	${CURDIR}/../../miniroot/protocols	etc/protocols
 COPY	${CURDIR}/../../miniroot/services	etc/services
-COPY	${DESTDIR}/etc/spwd.db			etc/spwd.db
+COPY	${CURDIR}/../../miniroot/master.passwd	etc/master.passwd
+SPECIAL	pwd_mkdb -p -d etc master.passwd; rm etc/master.passwd
 TERMCAP	vt100,vt220,dumb			usr/share/misc/termcap
 
-# so DNS can work
-SYMLINK /tmp/resolv.conf.shadow			etc/resolv.conf
+SYMLINK	/tmp/resolv.conf.shadow			etc/resolv.conf
 
 # and the installation tools
 SCRIPT	${CURDIR}/../../miniroot/dot.profile	.profile
-SCRIPT	${CURDIR}/../common/disktab.shadow	etc/disktab.shadow
 SCRIPT	${CURDIR}/../../miniroot/install.sub	install.sub
 SCRIPT	${CURDIR}/../../miniroot/install.sh	install
 SCRIPT	${CURDIR}/../../miniroot/upgrade.sh	upgrade

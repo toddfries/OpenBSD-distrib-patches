@@ -1,11 +1,13 @@
-dnl	$OpenBSD: install,v 1.66 2008/03/10 21:38:28 miod Exp $
+dnl	$OpenBSD: install,v 1.74 2011/06/15 21:36:48 miod Exp $
 OpenBSDInstallPrelude({:-SMD disks-:})
 
-There are several ways to install OpenBSD onto a disk. The easiest way
-in terms of preliminary setup is to use the OpenBSD miniroot that can
-be booted off your local disk's swap partition. The normal way is to
-use the OpenBSD CD-ROM, or the bootable CD-ROM mini image, or an
+There are several ways to install OpenBSD onto a disk.  The normal way
+is to use the OpenBSD CD-ROM, or the bootable CD-ROM mini image, or an
 installation floppy, or an installation tape, depending on your hardware.
+Alternatively, if you already have an operating system installed and
+do not wish to change the existing partition layout, it is simpler to
+use the OpenBSD miniroot that can be booted off your local disk's swap
+partition.
 
 If your SPARC is hooked up to a network, try and find a server to
 arrange for a diskless setup. This is a convenient way to install on a
@@ -90,6 +92,10 @@ boot image is only known to work on sun4c and sun4m architectures.
 If it does not work, you'll have to create a boot floppy or bootable
 hard disk using the instructions under preparing boot media.
 
+Note that older SPARC machines will not boot from CD-ROM drives
+unless the drive is set to use 512-byte blocks instead of the usual
+2048-byte blocks. Sun-provided CD-ROM drives from that era are OK;
+some third-party drives have a dip-switch or jumper setting.
 
 Booting from SCSI disk (miniroot or floppy image):
 
@@ -172,37 +178,27 @@ OpenBSDInstallPart2
 	is bad, your diskless setup isn't correct, or you may have
 	a hardware or configuration problem.
 
-OpenBSDBootMsgs(SMD drives are noisy and weight a ton per kilobyte and scare
+OpenBSDInstallPart3(SMD drives are noisy and weight a ton per kilobyte and scare
 		cats,"sd0" for SCSI drives,{:-and "xd0" or "xy0"
 	for SMD drives-:})
 
-	You will next be asked for your terminal type.  If you are
-	installing from a non-serial console, the default of "vt220"
-	is correct.  If you are installing from a serial console
-	you should choose the terminal type from amongst those listed.
-	(If your terminal type is xterm, just use vt220.)
-
-OpenBSDInstallPart3
-
 OpenBSDInstallPart4
 
-OpenBSDInstallPart5(sd0)
+OpenBSDInstallPart5
 
-OpenBSDInstallNet({:-CD-ROM, -:},nofloppy)
+OpenBSDInstallPart6({:-CD-ROM, tape, -:})
 
-OpenBSDFTPInstall
-
-OpenBSDHTTPInstall
-
-OpenBSDTAPEInstall(2)
+OpenBSDURLInstall
 
 OpenBSDCDROMInstall
 		
-OpenBSDDISKInstall(,{:-only -:})
+OpenBSDDISKInstall({:-"xdN", "xyN" or -:},{:-only -:})
 
-OpenBSDCommonFS
-		
-OpenBSDCommonURL
+OpenBSDCommonInstall
+
+OpenBSDTAPEInstall(2)
+
+OpenBSDInstallWrapup
 
 After completing an installation:
 
@@ -224,18 +220,6 @@ On sun4 systems, you may not need to specify the boot file, as
 the OpenBSD boot blocks will look for "bsd" on the boot device by default.
 
 OpenBSDCongratulations
-
-If you will be running your OpenBSD system from a serial console, you may
-need to edit /etc/ttys and change the terminal type, and getty method from
-"sun" and "suncons" to "vt100" and "std.9600" or something similar.  Also
-when running from a serial console, you may wish to adjust the eeprom
-settings for input-device, output-device, screen-#columns, and screen-#rows
-as appropriate.
-
-In order to use 'tip' on OpenBSD/MACHINE, you'll need to edit /etc/ttys
-and add "local" to the end of the tty configuration line, and run
-'ttyflags -a' to put your changes into effect.
-
 
 
 Installing from SunOS:
@@ -305,15 +289,15 @@ The installboot man page says to do something like this:
 You can now extract the provided "*.tgz" files onto your disk.
 
     sunos# ls -FC
-    base{:--:}OSrev.tgz      comp{:--:}OSrev.tgz   man{:--:}OSrev.tgz       xfont{:--:}OSrev.tgz
-    bsd             etc{:--:}OSrev.tgz    misc{:--:}OSrev.tgz      xserv{:--:}OSrev.tgz
-    bsd.scsi3       game{:--:}OSrev.tgz   xbase{:--:}OSrev.tgz
+    base{:--:}OSrev.tgz      comp{:--:}OSrev.tgz      man{:--:}OSrev.tgz       xfont{:--:}OSrev.tgz
+    bsd             etc{:--:}OSrev.tgz       xbase{:--:}OSrev.tgz     xserv{:--:}OSrev.tgz
+    bsd.rd          game{:--:}OSrev.tgz      xetc{:--:}OSrev.tgz      xshare{:--:}OSrev.tgz
     sunos{:-#-:} gunzip < base{:--:}OSrev.tgz | (cd /mnt; gtar xvpf -)
     [...] for each set
 
-And finally copy an OpenBSD kernel (either bsd or bsd.scsi3) onto your disk.
+And finally copy the OpenBSD kernel onto your disk.
 
-    sunos# cp bsd.scsi3 /mnt/bsd
+    sunos# cp bsd /mnt/bsd
 
 The GNU gunzip and gtar programs are not distributed as part of SunOS,
 but may be present in your /usr/local/bin.  If not, you will need to
@@ -398,15 +382,15 @@ The installboot man page says to do something like this:
 You can now extract the provided "*.tgz" files onto your disk.
 
     solaris# ls -FC
-    base{:--:}OSrev.tgz      comp{:--:}OSrev.tgz   man{:--:}OSrev.tgz       xfont{:--:}OSrev.tgz
-    bsd             etc{:--:}OSrev.tgz    misc{:--:}OSrev.tgz      xserv{:--:}OSrev.tgz
-    bsd.scsi3       game{:--:}OSrev.tgz   xbase{:--:}OSrev.tgz
+    base{:--:}OSrev.tgz      comp{:--:}OSrev.tgz      man{:--:}OSrev.tgz       xfont{:--:}OSrev.tgz
+    bsd             etc{:--:}OSrev.tgz       xbase{:--:}OSrev.tgz     xserv{:--:}OSrev.tgz
+    bsd.rd          game{:--:}OSrev.tgz      xetc{:--:}OSrev.tgz      xshare{:--:}OSrev.tgz
     solaris{:-#-:} gunzip < base{:--:}OSrev.tgz | (cd /mnt; tar xvpf -)
     [...] for each set
 
-And finally copy an OpenBSD kernel (either bsd or bsd.scsi3) onto your disk.
+And finally copy the OpenBSD kernel onto your disk.
 
-    solaris# cp bsd.scsi3 /mnt/bsd
+    solaris# cp bsd /mnt/bsd
 
 The GNU gunzip program is not distributed as part of Solaris, but may be
 present in your /usr/local/bin.  If not, you will need to obtain it from a
@@ -443,25 +427,15 @@ Normally, this file is a symbolic link to an appropriate second-stage
 boot program, which should be located in a place where the TFTP daemon
 can find it (remember, many TFTP daemons run in a chroot'ed environment).
 
-You can find the boot program in `/usr/mdec/boot' in the OpenBSD/MACHINE
-distribution. Unfortunately, it is necessary to install this file
-differently for sun4 and sun4c clients: the sun4 version needs to have its
-`a.out' header stripped off (otherwise the machine will crash), while the
-sun4c version must retain it (otherwise the PROM will complain).
+As an exception to the above rule, sun4e systems make a request for
+`/tftpboot/IP_IN_HEX.SUN4E', i.e. the TFTP filename is in a subdirectory.
 
-Here's an example to illustrate this whole mess:
-
-    server# cd /<client-root-dir>/usr/mdec
-    if client is a sun4:
-	server# set SKIP=1
-	server# set KARCH=SUN4
-    else
-	server# set SKIP=0
-	server# set KARCH=SUN4C
-    server# dd if=boot of=/tftpboot/boot.MACHINE.OpenBSD.$KARCH skip=$SKIP bs=32
-    server# cd /tftpboot
-    server# ln -s boot.MACHINE.OpenBSD.$KARCH 8273900B.$KARCH
-
+You can find the boot program as `boot.net' in the OpenBSD/MACHINE
+distribution. Unfortunately, many, if not all, sun4e PROM have a bug and
+fail to load a file which size is a multiple of 512 bytes. If you are
+trying to netboot a sun4e system, simply append some bytes to the
+file, like this:
+	dd if=/dev/zero bs=32b count=1 >> boot.net
 
 After the boot program has been loaded into memory and given control by
 the PROM, it starts locating the machine's remote root directory through

@@ -1,4 +1,4 @@
-dnl	$OpenBSD: contents,v 1.6 2008/03/10 21:25:53 miod Exp $
+dnl	$OpenBSD: contents,v 1.13 2011/08/08 20:03:04 miod Exp $
 TopPart
 
 OpenBSDdistsets
@@ -19,26 +19,24 @@ dnl OpenBSDcd
 
 	Packages	Index file for the Linux package installer.
 
-DistributionDescription(eleven)
+DistributionDescription(ten)
 
-OpenBSDbase(45352967,119413217,shared)
+OpenBSDbase(49953310,146448403)
 
-OpenBSDcomp(19044958,64041678,shared)
+OpenBSDcomp(26806869,87694525)
 
-OpenBSDetc(1222023,3868096)
+OpenBSDetc(524346,1416307)
 
-OpenBSDgame(2659820,5961132)
+OpenBSDgame(2674521,6026167)
 
-OpenBSDman(7712481,27896820)
+OpenBSDman(9728246,37463799)
 
-OpenBSDmisc(2306754,7714263)
+OpenBSDxbase(10870674,31110050)
 
-OpenBSDxbase(10713844,30425249)
+OpenBSDxetc(72223,273268)
 
-OpenBSDxetc(77018,290925)
+OpenBSDxfont(39411808,50905227)
 
-OpenBSDxfont(35584445,43728442)
+OpenBSDxserv(5813985,14514535)
 
-OpenBSDxserv(7617529,21346432)
-
-OpenBSDxshare(2745145,14575889)
+OpenBSDxshare(3426989,18440335)

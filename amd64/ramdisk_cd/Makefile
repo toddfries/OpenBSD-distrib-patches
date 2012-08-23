@@ -1,12 +1,13 @@
-#	$OpenBSD: Makefile,v 1.3 2007/08/09 12:48:07 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.5 2010/10/18 04:07:50 deraadt Exp $
 
 .PATH: ${.CURDIR}/../ramdisk
 RAMDISK=RAMDISK_CD
-FLOPPYSIZE=5760
-FLOPPYTYPE=floppy288
+FLOPPYSIZE=11520
+FLOPPYTYPE=floppy576
 XNAME=cdrom
 NOFS=1
 
 .include "${.CURDIR}/../common/Makefile.inc"
 
 LISTS+=		${.CURDIR}/list.local
+

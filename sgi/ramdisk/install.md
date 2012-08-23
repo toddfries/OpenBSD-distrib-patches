@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.10 2008/03/22 23:28:10 krw Exp $
+#	$OpenBSD: install.md,v 1.30 2012/07/10 14:25:00 halex Exp $
 #
 #
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
@@ -15,13 +15,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -39,16 +32,35 @@
 # machine dependent section of installation/upgrade script.
 #
 
-ARCH=ARCH
+IPARCH=$(sysctl -n hw.model)
+NCPU=$(sysctl -n hw.ncpufound)
+
+MDSETS="bsd.${IPARCH} bsd.rd.${IPARCH}"
+SANESETS="bsd.${IPARCH}"
+# Since we do not provide bsd.mp on IP27 yet, do not add bsd.mp.IP27 to the
+# sets, as this will cause a warning in sane_install()
+if ((NCPU > 1)) && [[ $IPARCH = IP30 ]]; then
+	MDSETS="${MDSETS} bsd.mp.${IPARCH}"
+	SANESETS="${SANESETS} bsd.mp.${IPARCH}"
+fi
+DEFAULTSETS=${MDSETS}
 
 md_installboot() {
+	if [[ -f /mnt/bsd.${IPARCH} ]]; then
+		mv /mnt/bsd.${IPARCH} /mnt/bsd
+	fi
+	if [[ -f /mnt/bsd.mp.${IPARCH} ]]; then
+		mv /mnt/bsd.mp.${IPARCH} /mnt/bsd.mp
+	fi
+	if [[ -f /mnt/bsd.rd.${IPARCH} ]]; then
+		mv /mnt/bsd.rd.${IPARCH} /mnt/bsd.rd
+	fi
 }
 
 md_prep_disklabel()
 {
-	local _disk
+	local _disk=$1 _f _op
 
-	_disk=$1
 	echo
 	echo "Checking SGI Volume Header:"
 	/usr/mdec/sgivol -q $_disk >/dev/null 2>/dev/null
@@ -56,7 +68,7 @@ md_prep_disklabel()
 	0)	/usr/mdec/sgivol $_disk
 	cat <<__EOT
 
-A SGI Volume Header was found on the disk. Normally you want to replace it
+An SGI Volume Header was found on the disk. Normally you want to replace it
 with a new Volume Header suitable for installing OpenBSD. Doing this will
 of course delete all data currently on the disk.
 __EOT
@@ -120,7 +132,7 @@ __EOT
 	esac
 
 	echo "Installing boot loader in volume header."
-	/usr/mdec/sgivol -w boot /usr/mdec/boot $_disk
+	/usr/mdec/sgivol -w boot /usr/mdec/boot-`sysctl -n hw.model` $_disk
 	case $? in
 	0)
 		;;
@@ -129,33 +141,47 @@ __EOT
 		;;
 	esac
 
+	_f=/tmp/fstab.$_disk
+	if [[ $_disk == $ROOTDISK ]]; then
+		while :; do
+			echo "The auto-allocated layout for $_disk is:"
+			disklabel -h -A $_disk | egrep "^#  |^  [a-p]:"
+			ask "Use (A)uto layout, (E)dit auto layout, or create (C)ustom layout?" a
+			case $resp in
+			a*|A*)	_op=-w ; AUTOROOT=y ;;
+			e*|E*)	_op=-E ;;
+			c*|C*)	break ;;
+			*)	continue ;;
+			esac
+			disklabel $FSTABFLAG $_f $_op -A $_disk
+			return
+		done
+	fi
+
 	cat <<__EOT
 
-You will now create an OpenBSD disklabel. The default disklabel must have
-an 'a' partition which is the space available for OpenBSD.
-The 'i' partition must be retained since it contains the Volume Header and
-the boot loader.
+You will now create an OpenBSD disklabel. The disklabel must have an
+'a' partition, being the space available for OpenBSD's root file system.
+The 'p' partition must be retained since it contains the SGI Volume Header;
+this in turn contains the boot loader. No other partitions should overlap
+with the SGI Volume Header, which by default will use the first 3134 sectors.
+
+Additionally, the 'a' partition must be the first partition on the disk,
+immediately following the SGI Volume Header. If the default SGI Volume Header
+size is used, the 'a' partition should be located at offset 3135. If the
+'a' partition is not located immediately after the SGI Volume Header the
+boot loader will not be able to locate and load the kernel.
 
 Do not change any parameters except the partition layout and the label name.
-Also, don't change the 'i' partition or start any other partition below the
-end of the 'i' partition. This is the Volume Header and destroying it will
-render the disk useless.
 
 __EOT
-	disklabel -W $_disk
-	disklabel -c -f /tmp/fstab.$_disk -E $_disk
+	disklabel -c $FSTABFLAG /tmp/fstab.$_disk -E $_disk
 }
 
 md_congrats() {
 	cat <<__EOT
 
-Your machine is now set up to boot OpenBSD. Normally the ARCS PROM will
-set up the system to boot from the first disk found with a valid Volume
-Header. If the 'OSLoader' environment variable already is set to 'boot'
-nothing in the firmware setup should need to be changed. To set up booting
-refer to the install document.
-
-To reboot the system, just enter 'reboot' at the shell prompt.
+INSTALL.$ARCH describes how to configure the ARCS PROM to boot OpenBSD.
 __EOT
 }
 

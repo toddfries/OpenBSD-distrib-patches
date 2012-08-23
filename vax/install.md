@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.27 2008/03/22 23:28:10 krw Exp $
+#	$OpenBSD: install.md,v 1.39 2012/07/13 14:50:34 halex Exp $
 #	$NetBSD: install.md,v 1.3.2.5 1996/08/26 15:45:28 gwr Exp $
 #
 #
@@ -16,13 +16,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -41,22 +34,44 @@
 #
 
 MDTERM=vt100
-MDDKDEVS='/^[hs]d[0-9] /s/ .*//p;/^r[al][0-9] /s/ .*//p'
+MDDKDEVS='/^[hs]d[0-9] /s/ .*//p;/^ra[0-9] /s/ .*//p'
 MDCDDEVS='/^cd[0-9] /s/ .*//p;/^ra[0-9] .* RRD40$/s/ .*//p'
-MDMTDEVS='/^[cms]t[0-9][0-9]* /s/ .*//p;/^ts[0-9]0-9]* /s/ .*//p'
-ARCH=ARCH
+MDMTDEVS='/^[ms]t[0-9][0-9]* /s/ .*//p'
 
 md_installboot() {
-	echo "Installing boot block..."
-	cp /mnt/usr/mdec/boot /mnt/boot
+	# Use cat to avoid holes created by cp(1)
+	cat /mnt/usr/mdec/boot > /mnt/boot
 	/sbin/disklabel -B $1
 }
 
 md_prep_disklabel() {
-	local _disk=$1
+	local _disk=$1 _f _op
 
-	disklabel -W $_disk >/dev/null 2>&1
-	disklabel -f /tmp/fstab.$_disk -E $_disk
+	_f=/tmp/fstab.$_disk
+	if [[ $_disk == $ROOTDISK ]]; then
+		while :; do
+			echo "The auto-allocated layout for $_disk is:"
+			disklabel -h -A $_disk | egrep "^#  |^  [a-p]:"
+			ask "Use (A)uto layout, (E)dit auto layout, or create (C)ustom layout?" a
+			case $resp in
+			a*|A*)	_op=-w ; AUTOROOT=y ;;
+			e*|E*)	_op=-E ;;
+			c*|C*)	break ;;
+			*)	continue ;;
+			esac
+			disklabel $FSTABFLAG $_f $_op -A $_disk
+			return
+		done
+	fi
+	cat <<__EOT
+You will now create a OpenBSD disklabel on the disk.  The disklabel defines
+how OpenBSD splits up the disk into OpenBSD partitions in which filesystems
+and swap space are created.  You must provide each filesystem's mountpoint
+in this program.
+
+__EOT
+
+	disklabel $FSTABFLAG $_f -E $_disk
 }
 
 md_congrats() {

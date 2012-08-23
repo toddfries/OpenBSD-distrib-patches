@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.5 2005/03/11 15:40:59 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.9 2011/06/08 19:16:19 krw Exp $
 
 TOP=	${.CURDIR}/..
 
@@ -21,22 +21,24 @@ ${CDROM}:
 	    -p "Theo de Raadt <deraadt@openbsd.org>" \
 	    -V "OpenBSD/sparc   ${OSREV} boot-only CD" \
 	    ${.OBJDIR}/cd-dir 2>&1) | tee log
-	vnconfig -v -c svnd0 ${.OBJDIR}/${CDROM}
-	mount -t cd9660 /dev/svnd0a /mnt
+	vnconfig -v -c vnd0 ${.OBJDIR}/${CDROM}
+	mount -t cd9660 /dev/vnd0a /mnt
 	/usr/mdec/installboot -v \
 	    -s `cat log | grep -v 'Name' | egrep "/cd-dir/${OSREV}/sparc/boot$$" | cut -d' ' -f1` \
 	    -e `cat log | grep -v 'Name' | egrep "/cd-dir/${OSREV}/sparc/boot$$" | cut -d' ' -f2` \
-	    /mnt/${OSREV}/sparc/boot /usr/mdec/bootxx /dev/rsvnd0c
-	disklabel -w svnd0 fakecdrom "OpenBSD/sparc   "
+	    /mnt/${OSREV}/sparc/boot /usr/mdec/bootxx /dev/rvnd0c
+	disklabel -w vnd0 fakecdrom "OpenBSD/sparc   "
 	umount /mnt
-	vnconfig -u svnd0
+	vnconfig -u vnd0
 	# XXX Some sparc machines fail to load the kernel correctly if the
 	# XXX cd image is truncated.  It is not yet known why this happens.
 	# XXX For now we pad the image.
 	dd if=/dev/zero bs=2k count=200 >> ${.OBJDIR}/${CDROM}
 
+.ifdef RELEASEDIR
 install:
-	cp ${CDROM} ${DESTDIR}/snapshot
+	cp ${CDROM} ${RELEASEDIR}
+.endif
 
 clean cleandir:
 	/bin/rm -f ${CDROM}
@@ -44,7 +46,7 @@ clean cleandir:
 
 unconfig:
 	-umount /mnt
-	-vnconfig -u svnd0
+	-vnconfig -u vnd0
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>

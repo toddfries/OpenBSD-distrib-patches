@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile.inc,v 1.9 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile.inc,v 1.12 2011/04/18 16:52:10 thib Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -14,7 +14,7 @@ MTREE=		${UTILS}/mtree.conf
 
 XNAME?=		floppy
 FS?=		${XNAME}${REV}.fs
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
@@ -35,7 +35,7 @@ ${FS}:	bsd.rd
 	mount ${VND_DEV} ${MOUNT_POINT}
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
-	    sh ${UTILS}/runlist.sh ${LISTFLOPPY}
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTFLOPPY}
 	/usr/mdec/installboot -v ${DESTDIR}/usr/mdec/bootblk ${VND_CRDEV}
 	@echo ""
 	@df -i ${MOUNT_POINT}
@@ -68,7 +68,7 @@ rd_teardown:
 	rm ${REALIMAGE}
 
 rdsetroot:	${TOP}/../../common/rdsetroot.c
-	${HOSTCC} -DDEBUG -o rdsetroot ${TOP}/../../common/rdsetroot.c
+	${HOSTCC} -o rdsetroot ${TOP}/../../common/rdsetroot.c
 
 unconfig:
 	-umount -f ${MOUNT_POINT}
@@ -77,11 +77,13 @@ unconfig:
 
 .PRECIOUS:	${IMAGE}
 
+.ifdef RELEASEDIR
 install:
 .ifndef NOBSDRD
-	cp bsd.rd ${DESTDIR}/snapshot/bsd.rd
+	cp bsd.rd ${RELEASEDIR}
 .endif
-	cp ${FS} ${DESTDIR}/snapshot/${FS}
+	cp ${FS} ${RELEASEDIR}
+.endif
 
 ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CRUNCHCONF}
 	crunchgen -E -D ${BSDSRCDIR} -L ${DESTDIR}/usr/lib \
@@ -94,7 +96,7 @@ do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
-	    sh ${UTILS}/runlist.sh ${LISTS}
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 
 clean cleandir:

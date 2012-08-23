@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.32 2008/01/11 10:16:40 espie Exp $
+#	$OpenBSD: Makefile,v 1.40 2011/07/10 16:24:08 deraadt Exp $
 
 REV=		${OSrev}
 
@@ -12,27 +12,29 @@ ARCHDIR=	${.CURDIR}/../${MACHINE}/ramdisk
 .endif
 
 MOUNT_POINT?=	/mnt
-VND?=		svnd0
+VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 DISKTYPE=	rdroot
 PID!=		echo $$$$
-REALIMAGE!=	echo /tmp/image.${PID}
+REALIMAGE!=	echo /var/tmp/image.${PID}
 IMAGE?=		ramdisk${REV}.fs
 IMAGESIZE?=	8192 # 4MB in 512 byte blocks
 NEWFS_WILL_FAIL?=false
 .if ${ELF_TOOLCHAIN:L} == "yes"
 RDSETROOT?=	elfrdsetroot
+RDSETROOT_EXT_SRC=${.CURDIR}/../common/elf32.c ${.CURDIR}/../common/elf64.c
 CRUNCHGENOPTS?=-E
 .else
 RDSETROOT?=	rdsetroot
 CRUNCHGENOPTS?=
+RDSETROOT_EXT_SRC=
 .endif
 KERNEL?=	RAMDISK
 UTILS?=		${.CURDIR}/../miniroot
 STRIP?=		strip
 
-LISTS=		${.CURDIR}/list ${ARCHDIR}/list
+LISTS=		${.CURDIR}/list ${ARCHDIR}/list.local
 MTREE=		${UTILS}/mtree.conf
 
 FLOPPY?=	floppy${REV}.fs
@@ -85,19 +87,20 @@ ${FLOPPY}:	bsd.gz ${BOOT} ${BOOTXX}
 bsd:
 	cd ${.CURDIR}/../../sys/arch/${MACHINE}/conf && config ${KERNEL}
 	cd ${.CURDIR}/../../sys/arch/${MACHINE}/compile/${KERNEL} && \
-	    ${MAKE} depend && ${MAKE} clean && COPTS=-Os ${MAKE}
+	    ${MAKE} clean && ${MAKE} depend && COPTS=-Os ${MAKE}
 	cp ${.CURDIR}/../../sys/arch/${MACHINE}/compile/${KERNEL}/bsd bsd
 
 bsd.rd:	bsd ${IMAGE} ${RDSETROOT}
 	cp bsd bsd.rd
-	${.OBJDIR}/${RDSETROOT} bsd.rd < ${IMAGE}
+	${.OBJDIR}/${RDSETROOT} bsd.rd ${IMAGE}
 	${STRIP} bsd.rd
 
 bsd.gz:	bsd.rd
 	${GZIPCMD} ${GZIPFLAGS} < bsd.rd > bsd.gz
 
-${RDSETROOT}: ${.CURDIR}/../common/${RDSETROOT}.c
-	${HOSTCC} ${HOSTCCFLAGS} -o ${RDSETROOT} ${.CURDIR}/../common/${RDSETROOT}.c
+${RDSETROOT}: ${.CURDIR}/../common/${RDSETROOT}.c ${RDSETROOT_EXT_SRC}
+	${HOSTCC} ${HOSTCCFLAGS} -o ${RDSETROOT} ${RDSETROOT_EXT_SRC} \
+	    ${.CURDIR}/../common/${RDSETROOT}.c
 
 ${IMAGE}: ${CBIN}
 	dd if=/dev/zero of=${REALIMAGE} count=${IMAGESIZE}
@@ -106,8 +109,9 @@ ${IMAGE}: ${CBIN}
 	newfs ${NEWFSOPTS_RD} ${VND_RDEV} || ${NEWFS_WILL_FAIL}
 	mount ${VND_DEV} ${MOUNT_POINT}
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
-	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} ARCHDIR=${ARCHDIR} \
-	    TARGDIR=${MOUNT_POINT} UTILS=${UTILS} sh ${UTILS}/runlist.sh ${LISTS}
+	REV=${REV} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
+	    ARCHDIR=${ARCHDIR} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
+	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
 	rm ${MOUNT_POINT}/${CBIN}
 	@echo ""
 	@df -i ${MOUNT_POINT}
@@ -131,13 +135,15 @@ clean cleandir:
 	/bin/rm -f *.core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	${CBIN}.conf *.o *.lo *.c bsd bsd.*
 
-beforeinstall:
-	cp bsd.rd ${DESTDIR}/snapshot
-.ifdef MAKEFLOPPY
-	cp ${FLOPPY} ${DESTDIR}/snapshot
-.endif
-
 .endif	# DESTDIR check
+
+.ifdef RELEASEDIR
+beforeinstall:
+	cp bsd.rd ${RELEASEDIR}
+.ifdef MAKEFLOPPY
+	cp ${FLOPPY} ${RELEASEDIR}
+.endif	# MAKEFLOPPY
+.endif	# RELEASEDIR
 
 unconfig:
 	-umount -f ${MOUNT_POINT}

@@ -1,17 +1,17 @@
-#	$OpenBSD: Makefile,v 1.4 2007/08/10 12:29:55 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.8 2010/10/18 05:40:47 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
 #.include "${TOP}/Makefile.inc"
 
 CDROM=		install${OSrev}.iso
-RELXDIR=	/home/relx-${MACHINE}
+RELXDIR?=	/home/relx-${MACHINE}
 RELDIR?=	/home/rel-${MACHINE}
 
 BASE=		${RELDIR}/base${OSrev}.tgz ${RELDIR}/comp${OSrev}.tgz \
 		${RELDIR}/etc${OSrev}.tgz ${RELDIR}/game${OSrev}.tgz \
-		${RELDIR}/man${OSrev}.tgz ${RELDIR}/misc${OSrev}.tgz \
-		${RELDIR}/bsd ${RELDIR}/bsd.rd \
+		${RELDIR}/man${OSrev}.tgz \
+		${RELDIR}/bsd ${RELDIR}/bsd.rd ${RELDIR}/bsd.mp \
 		${RELDIR}/INSTALL.${MACHINE}
 XBASE=		${RELXDIR}/xbase${OSrev}.tgz ${RELXDIR}/xetc${OSrev}.tgz \
 		${RELXDIR}/xfont${OSrev}.tgz ${RELXDIR}/xshare${OSrev}.tgz \
@@ -41,6 +41,11 @@ ${CDROM}: ${BASE} ${XBASE}
 
 install:
 	cp ${CDROM} ${RELDIR}/
+	# update the SHA256 file
+	grep -v ${CDROM} ${RELDIR}/SHA256 > ${RELDIR}/SHA256.new
+	sum -a sha256 ${CDROM} >> ${RELDIR}/SHA256.new
+	sort ${RELDIR}/SHA256.new > ${RELDIR}/SHA256
+	rm ${RELDIR}/SHA256.new
 
 clean cleandir:
 	/bin/rm -f ${CDROM}

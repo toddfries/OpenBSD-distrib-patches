@@ -1,4 +1,4 @@
-dnl	$OpenBSD: install,v 1.30 2008/03/10 21:38:28 miod Exp $
+dnl	$OpenBSD: install,v 1.37 2010/03/16 17:23:09 miod Exp $
 OpenBSDInstallPrelude
 
 There are several ways to install OpenBSD onto a disk. The easiest way
@@ -40,7 +40,7 @@ Where `xx' is the SCSI controller number (00 for the built-in SCSI
 controller), and `yy' is the encoding for the SCSI device ID, which varies
 between controllers.
 
-Recent BUG can list the available disk and tape controllers, using the
+Most BUG versions can list the available disk and tape controllers, using the
 "IOT;H" command:
 
     167-Bug>IOT;H
@@ -65,9 +65,19 @@ the built-in SCSI controller (if present), using the following convention:
 - 'xx' is the device ID.
 - 'yy' is zero.
 
+MVME141 boards are quite similar to the MVME147, but can boot from various
+controller; the IOT;H command will list all the available boot options.
+Usually, the boot device numbers will be:
+- `xx' is the `Lun' value printed by IOT;H, and is usually the device ID.
+- `yy' is the subdevice number, if any.
+
+Thus to boot a MVME141 from a MVME327 controller:
+- `xx' is the SCSI device ID.
+- `yy' is zero.
+
 For example, booting from a tape drive using SCSI ID #4:
     147-Bug> BO 04 00
-for a MVME147, and
+for MVME141 and MVME147, and
     167-Bug> BO 00 40
 for any other MACHINE board using the built-in controller. However, a tape
 drive connected to an MVME328 board using SCSI ID #5, will be booted as:
@@ -119,9 +129,9 @@ controller will be reported:
     CLUN  DLUN  Name      Address
        0     0  VME167    $FFF46000
 
-If the BUG does not support the NIOT command (most MVME147 don't), then
-it has no support for netbooting, and you'll have to use S-Records,
-described later in this document.
+If the BUG does not support the NIOT command (most MVME141, MVME147
+and MVME165 don't), then it has no support for netbooting, and you'll
+have to use S-Records, described later in this document.
 
 Before netbooting, enter "NIOT" and fill the parameters. Be sure to provide
 the correct values for Controller LUN and Device LUN (as listed in the
@@ -190,7 +200,8 @@ where, in this example, 192.168.0.68 is the address of the MACHINE computer,
 and 192.168.0.1 the address of the diskless server.
 
 If the BUG version does not understand the NIOT and NBO commands (most
-MVME147 don't), the alternative is to boot from S-Records.
+MVME141, MVME147 and MVME165 don't), the alternative is to boot from
+S-Records.
 
 
 Booting from S-Records:
@@ -203,13 +214,13 @@ and send their contents over the serial link, such as cu(1) and tip(1) - both
 being available on OpenBSD - the MACHINE workstation should be put in
 S-Records receive mode, with the LO command at the BUG prompt:
 
-    147-Bug> LO
+    147-Diag> LO
 
 If this command prints an error message and returns to the BUG prompt
 immediately, it might be necessary to switch directories, using the SD
-command, before retrying.
+command (the prompt will change from 147-Bug to 147-Diag), before retrying.
 
-Then, the contents of the ``sboot'' file should be sent From the terminal
+Then, the contents of the ``sboot'' file should be sent from the terminal
 emulator. Depending on the speed of the serial link, this will take some
 time, but no more than a couple of minutes.
 
@@ -240,27 +251,15 @@ OpenBSDInstallPart2
 	diskless setup isn't correct, or you may have a hardware or
 	configuration problem.
 
-OpenBSDBootMsgs(,"sd0")
-
-	You will next be asked for your terminal type.  If you are
-	installing from a non-serial console, the default of "vt220"
-	is correct.  If you are installing from a serial console
-	you should choose the terminal type from amongst those listed.
-	(If your terminal type is xterm, just use vt220.)
-
-OpenBSDInstallPart3
+OpenBSDInstallPart3(,"sd0")
 
 OpenBSDInstallPart4
 
-OpenBSDInstallPart5(sd0)
+OpenBSDInstallPart5
 
-OpenBSDInstallNet({:-CD-ROM, NFS, -:})
+OpenBSDInstallPart6({:-CD-ROM, tape, NFS, -:})
 
-OpenBSDFTPInstall
-
-OpenBSDHTTPInstall
-
-OpenBSDTAPEInstall(3)
+OpenBSDURLInstall
 
 OpenBSDCDROMInstall
 		
@@ -268,9 +267,11 @@ OpenBSDNFSInstall
 
 OpenBSDDISKInstall(,{:-only -:})
 
-OpenBSDCommonFS(NFS)
-		
-OpenBSDCommonURL
+OpenBSDTAPEInstall(3)
+
+OpenBSDCommonInstall
+
+OpenBSDInstallWrapup
 
 OpenBSDCongratulations
 

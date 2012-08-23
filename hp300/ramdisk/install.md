@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.45 2008/03/23 14:03:55 krw Exp $
+#	$OpenBSD: install.md,v 1.57 2012/07/10 14:25:00 halex Exp $
 #	$NetBSD: install.md,v 1.1.2.4 1996/08/26 15:45:14 gwr Exp $
 #
 # Copyright (c) 1996 The NetBSD Foundation, Inc.
@@ -15,13 +15,6 @@
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
 #    documentation and/or other materials provided with the distribution.
-# 3. All advertising materials mentioning features or use of this software
-#    must display the following acknowledgement:
-#        This product includes software developed by the NetBSD
-#        Foundation, Inc. and its contributors.
-# 4. Neither the name of The NetBSD Foundation nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
 # ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -39,22 +32,42 @@
 # machine dependent section of installation/upgrade script
 #
 
-ARCH=ARCH
 MDDKDEVS="/^[hs]d[0-9][0-9]* /s/ .*//p"
 
 md_installboot() {
-	# $1 is the root disk
-
-	echo -n "Installing boot block..."
 	disklabel -B ${1}
-	echo "done."
 }
 
 md_prep_disklabel() {
-	local _disk=$1
+	local _disk=$1 _f _op
 
-	disklabel -W $_disk >/dev/null 2>&1
-	disklabel -f /tmp/fstab.$_disk -E $_disk
+	md_installboot $_disk
+
+	_f=/tmp/fstab.$_disk
+	if [[ $_disk == $ROOTDISK ]]; then
+		while :; do
+			echo "The auto-allocated layout for $_disk is:"
+			disklabel -h -A $_disk | egrep "^#  |^  [a-p]:"
+			ask "Use (A)uto layout, (E)dit auto layout, or create (C)ustom layout?" a
+			case $resp in
+			a*|A*)	_op=-w ; AUTOROOT=y ;;
+			e*|E*)	_op=-E ;;
+			c*|C*)	break ;;
+			*)	continue ;;
+			esac
+			disklabel $FSTABFLAG $_f $_op -A $_disk
+			return
+		done
+	fi
+	cat <<__EOT
+You will now create a OpenBSD disklabel on the disk.  The disklabel defines
+how OpenBSD splits up the disk into OpenBSD partitions in which filesystems
+and swap space are created.  You must provide each filesystem's mountpoint
+in this program.
+
+__EOT
+
+	disklabel $FSTABFLAG $_f -E $_disk
 }
 
 md_congrats() {
