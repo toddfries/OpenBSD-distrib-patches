@@ -1,9 +1,5 @@
 ./.cshrc
 ./.profile
-./etc/afs/CellServDB
-./etc/afs/SuidCells
-./etc/afs/ThisCell
-./etc/afs/afsd.conf
 ./etc/amd/master.sample
 ./etc/authpf
 ./etc/bgpd.conf
@@ -167,6 +163,7 @@
 ./etc/rc.d/statd
 ./etc/rc.d/syslogd
 ./etc/rc.d/tftpd
+./etc/rc.d/tftpproxy
 ./etc/rc.d/watchdogd
 ./etc/rc.d/wsmoused
 ./etc/rc.d/xdm

@@ -47,8 +47,6 @@
 ./dev
 ./dev/MAKEDEV
 ./etc
-./etc/afs
-./etc/afs/README
 ./etc/amd
 ./etc/disklabels
 ./etc/firmware
@@ -142,7 +140,6 @@
 ./sbin/mount_mfs
 ./sbin/mount_msdos
 ./sbin/mount_nfs
-./sbin/mount_nnpfs
 ./sbin/mount_procfs
 ./sbin/mount_udf
 ./sbin/mount_vnd
@@ -822,9 +819,9 @@
 ./usr/libdata/perl5/LT/Mode/Compile.pm
 ./usr/libdata/perl5/LT/Mode/Install.pm
 ./usr/libdata/perl5/LT/Mode/Link
+./usr/libdata/perl5/LT/Mode/Link.pm
 ./usr/libdata/perl5/LT/Mode/Link/Library.pm
 ./usr/libdata/perl5/LT/Mode/Link/Program.pm
-./usr/libdata/perl5/LT/Mode/Link.pm
 ./usr/libdata/perl5/LT/Program.pm
 ./usr/libdata/perl5/LT/Trace.pm
 ./usr/libdata/perl5/LT/Util.pm
@@ -2423,7 +2420,6 @@
 ./usr/libdata/perl5/warnings.pm
 ./usr/libdata/perl5/warnings/register.pm
 ./usr/libexec
-./usr/libexec/afsd
 ./usr/libexec/auth
 ./usr/libexec/auth/login_activ
 ./usr/libexec/auth/login_chpass
@@ -2503,7 +2499,6 @@
 ./usr/libexec/ssh-keysign
 ./usr/libexec/ssh-pkcs11-helper
 ./usr/libexec/tcpd
-./usr/libexec/tftp-proxy
 ./usr/libexec/uucpd
 ./usr/libexec/vi.recover
 ./usr/lkm
@@ -2552,7 +2547,6 @@
 ./usr/sbin/authpf-noip
 ./usr/sbin/bgpctl
 ./usr/sbin/bgpd
-./usr/sbin/bos
 ./usr/sbin/chat
 ./usr/sbin/chgrp
 ./usr/sbin/chown
@@ -2573,7 +2567,6 @@
 ./usr/sbin/editmap
 ./usr/sbin/edquota
 ./usr/sbin/faithd
-./usr/sbin/fs
 ./usr/sbin/ftp-proxy
 ./usr/sbin/fw_update
 ./usr/sbin/group
@@ -2657,7 +2650,6 @@
 ./usr/sbin/praliases
 ./usr/sbin/procmap
 ./usr/sbin/pstat
-./usr/sbin/pts
 ./usr/sbin/pwd_mkdb
 ./usr/sbin/quot
 ./usr/sbin/quotaoff
@@ -2712,6 +2704,7 @@
 ./usr/sbin/tcpdmatch
 ./usr/sbin/tcpdrop
 ./usr/sbin/tcpdump
+./usr/sbin/tftp-proxy
 ./usr/sbin/tftpd
 ./usr/sbin/tokenadm
 ./usr/sbin/tokeninit
@@ -2726,7 +2719,6 @@
 ./usr/sbin/usermod
 ./usr/sbin/vipw
 ./usr/sbin/visudo
-./usr/sbin/vos
 ./usr/sbin/watchdogd
 ./usr/sbin/ypbind
 ./usr/sbin/ypinit
