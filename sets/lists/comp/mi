@@ -661,6 +661,9 @@
 ./usr/include/dev/pci/ubsecreg.h
 ./usr/include/dev/pci/ubsecvar.h
 ./usr/include/dev/pci/vga_pcivar.h
+./usr/include/dev/pci/vioblkreg.h
+./usr/include/dev/pci/virtioreg.h
+./usr/include/dev/pci/virtiovar.h
 ./usr/include/dev/pci/ydsreg.h
 ./usr/include/dev/pci/ydsvar.h
 ./usr/include/dev/pckbc
@@ -761,6 +764,7 @@
 ./usr/include/dev/usb/if_rumreg.h
 ./usr/include/dev/usb/if_rumvar.h
 ./usr/include/dev/usb/if_runvar.h
+./usr/include/dev/usb/if_smscreg.h
 ./usr/include/dev/usb/if_uathreg.h
 ./usr/include/dev/usb/if_uathvar.h
 ./usr/include/dev/usb/if_udavreg.h
@@ -792,6 +796,7 @@
 ./usr/include/dev/usb/umidi_quirks.h
 ./usr/include/dev/usb/umidireg.h
 ./usr/include/dev/usb/umidivar.h
+./usr/include/dev/usb/uoak.h
 ./usr/include/dev/usb/uowreg.h
 ./usr/include/dev/usb/urio.h
 ./usr/include/dev/usb/usb.h
@@ -1391,7 +1396,6 @@
 ./usr/include/sys/exec_aout.h
 ./usr/include/sys/exec_ecoff.h
 ./usr/include/sys/exec_elf.h
-./usr/include/sys/exec_olf.h
 ./usr/include/sys/exec_script.h
 ./usr/include/sys/extent.h
 ./usr/include/sys/fcntl.h
@@ -5303,6 +5307,7 @@
 ./usr/share/man/man3/pem.3
 ./usr/share/man/man3/perror.3
 ./usr/share/man/man3/pidfile.3
+./usr/share/man/man3/pkcs5_pbkdf2.3
 ./usr/share/man/man3/pmap_getmaps.3
 ./usr/share/man/man3/pmap_getport.3
 ./usr/share/man/man3/pmap_rmtcall.3
@@ -6630,7 +6635,6 @@
 ./usr/share/man/man9/m_tag_init.9
 ./usr/share/man/man9/m_tag_next.9
 ./usr/share/man/man9/m_tag_prepend.9
-./usr/share/man/man9/m_zero.9
 ./usr/share/man/man9/malloc.9
 ./usr/share/man/man9/max.9
 ./usr/share/man/man9/mbuf.9
@@ -6914,6 +6918,7 @@
 ./usr/share/man/man9/vclean.9
 ./usr/share/man/man9/vcount.9
 ./usr/share/man/man9/vdevgone.9
+./usr/share/man/man9/vdrop.9
 ./usr/share/man/man9/vfinddev.9
 ./usr/share/man/man9/vflush.9
 ./usr/share/man/man9/vflushbuf.9

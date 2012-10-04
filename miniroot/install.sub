@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.665 2012/09/03 07:34:37 deraadt Exp $
+#	$OpenBSD: install.sub,v 1.668 2012/10/01 18:49:13 rpe Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -155,12 +155,12 @@ mount_mnt2() {
 
 	_parts=$(sed -e 's/^  \(.\): .*/\1/' $_file)
 	set -- $_parts
-	[[ $# == 0 ]] && { echo "No filesystems found on $_dev." ; return 1 ; }
+	(($# == 0)) && { echo "No filesystems found on $_dev." ; return 1 ; }
 
 	if isin "c" $_parts; then
 		# Don't ask questions if 'c' contains a filesystem.
 		resp=c
-	elif [[ $# == 1 ]]; then
+	elif (($# == 1)); then
 		# Don't ask questions if there's only one choice.
 		resp=$1
 	else
@@ -446,7 +446,7 @@ rmel() {
 bsort() {
 	local _l _a=$1 _b
 
-	[[ $# -gt 0 ]] || return
+	(($# > 0)) || return
 
 	shift
 	for _b; do
@@ -567,7 +567,7 @@ configure_ifs() {
 		_vd=$(ifconfig vlan$_vl 2>&1)
 		[[ $_vd == @(*no such interface*) ]] && break
 		[[ $_vd == @(vlan$_vl: flags=0<>*) ]] && break
-		: $(( _vl++ ))
+		((_vl++))
 	done
 	_vd=
 
@@ -596,7 +596,7 @@ configure_ifs() {
 			[[ -n $_tags ]] && _tags=$(rmel "$_vi" $_tags)
 			if [[ -z $_vi ]]; then
 				_vi=0
-				while (( (_vi += 1) < 4096 )); do
+				while ((++_vi < 4096)); do
 					! isin "$_vi" $_tags && break
 				done
 			fi
@@ -633,7 +633,7 @@ configure_ifs() {
 			ifconfig $_ifs vlan $_vi vlandev $_vd
 			echo "vlan $_vi vlandev $_vd" >>$_hn
 			# Create a new vlan if we just configured the highest.
-			[[ ${_ifs##vlan} == $_vl ]] && (( _vl += 1 ))
+			[[ ${_ifs##vlan} == $_vl ]] && ((_vl++))
 		fi
 
 		# Test if it is an 802.11 interface
@@ -652,7 +652,7 @@ configure_ifs() {
 
 		if [[ -f $_hn ]]; then
 			chmod 640 $_hn
-			(( nifs += 1 ))
+			((nifs++))
 			: ${_first:=$_ifs}
 			_p=done
 		fi
@@ -781,7 +781,7 @@ ieee80211_config() {
 		quote nwid "$_nwid" >>$_hn
 
 		_prompt="Security protocol? (O)pen, (W)EP"
-		[[ $_haswpa == 1 ]] && _prompt="$_prompt, WPA-(P)SK"
+		((_haswpa == 1)) && _prompt="$_prompt, WPA-(P)SK"
 		while :; do
 			ask_until "$_prompt" "O"
 			case "$_haswpa-$resp" in
@@ -965,7 +965,7 @@ enable_network() {
 	# configure all of the non-loopback interfaces which we know about.
 	# refer to hostname.if(5)
 	for hn in /mnt/etc/hostname.*; do
-		(( nifs += 1 ))
+		((nifs++))
 
 		# Strip off /mnt/etc/hostname. prefix
 		if=${hn#/mnt/etc/hostname.}
@@ -980,7 +980,7 @@ enable_network() {
 				set -- $cmd2
 				af=$1 name=$2 mask=$3 bcaddr=$4 ext1=$5 cmd2=
 				# make sure and get any remaining args in ext2, like the read below
-				i=1; while [ i -lt 6 -a -n "$1" ]; do shift; let i=i+1; done
+				i=1; while [ i -lt 6 -a -n "$1" ]; do shift; let i++; done
 				ext2="$@"
 			else
 				# read the next line or exit the while loop
@@ -1145,7 +1145,7 @@ install_files() {
 				$shacmd > "/mnt/$_f"
 			;;
 		esac
-		if [ $? -ne 0 ]; then
+		if (($? != 0)); then
 			echo "'$_f' did not install correctly."
 		elif [ -f /tmp/h -a -f "/var/hash/$_f" ]; then
 			if [ "$(</tmp/h)" != "$(</var/hash/$_f)" ]; then
@@ -1318,7 +1318,7 @@ install_url() {
 			# as a line number in $SERVERLIST.
 			[[ -s $SERVERLIST ]] || continue
 			set -- $(sed -n "${resp}p" $SERVERLIST)
-			[[ $# -lt 1 ]] && { echo "There is no line $resp." ; continue ; }
+			(($# < 1)) && { echo "There is no line $resp." ; continue ; }
 			_server_ip=${1%%/*}
 			# Repeat loop to get user to confirm server address.
 			;;
@@ -1485,7 +1485,6 @@ install_tape() {
 		ask_until "Skip how many files? (or 'done')" 0
 		[[ $resp == done ]] && return
 		[[ $resp == +([0-9]) ]] || continue
-		(($resp < 0)) && continue
 
 		if (($resp > 0)); then
 			echo -n "Skipping $resp file(s)..."
@@ -1748,7 +1747,7 @@ check_fs() {
 		[ -f "/sbin/fsck_$_fstype" ] || continue
 		# Make sure device exists before fsck'ing it.
 		makedev "$(getdevname "$_dev")" || continue
-		[[ $_passno > 0 ]] || continue
+		((_passno > 0)) || continue
 		echo -n "fsck -${_f}p $_dev..."
 		if ! fsck -${_f}p $_dev >/dev/null 2>&1; then
 			echo "FAILED. You must fsck $_dev manually."
@@ -2062,7 +2061,7 @@ SANESETS="${SANESETS:-bsd} base${VERSION}.tgz etc${VERSION}.tgz"
 
 # prepare COLUMNS sanely
 COLUMNS=$(stty -a | sed -n '/columns/{s/^.* \([0-9]*\) columns.*$/\1/;p;}')
-[ COLUMNS -eq 0 ] && COLUMNS=80
+((COLUMNS == 0)) && COLUMNS=80
 
 # decide upon an editor
 : ${EDITOR:=ed}

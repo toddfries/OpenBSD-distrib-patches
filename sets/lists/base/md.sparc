@@ -71,7 +71,7 @@
 ./usr/lib/libtermcap.so.12.1
 ./usr/lib/libtermlib.so.12.1
 ./usr/lib/libusbhid.so.5.0
-./usr/lib/libutil.so.11.3
+./usr/lib/libutil.so.11.4
 ./usr/lib/libwrap.so.4.0
 ./usr/lib/libz.so.4.1
 ./usr/libdata/perl5/site_perl/sparc-openbsd
@@ -714,6 +714,9 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/ubsecreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/ubsecvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/vga_pcivar.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/vioblkreg.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/virtioreg.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/virtiovar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/ydsreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pci/ydsvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/pckbc
@@ -814,6 +817,7 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_rumreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_rumvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_runvar.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_smscreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_uathreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_uathvar.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/if_udavreg.ph
@@ -845,6 +849,7 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/umidi_quirks.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/umidireg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/umidivar.ph
+./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/uoak.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/uowreg.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/urio.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/dev/usb/usb.ph
@@ -1629,7 +1634,6 @@
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/exec_aout.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/exec_ecoff.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/exec_elf.ph
-./usr/libdata/perl5/site_perl/sparc-openbsd/sys/exec_olf.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/exec_script.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/extent.ph
 ./usr/libdata/perl5/site_perl/sparc-openbsd/sys/fcntl.ph
