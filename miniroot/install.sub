@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.668 2012/10/01 18:49:13 rpe Exp $
+#	$OpenBSD: install.sub,v 1.670 2012/10/21 06:41:14 deraadt Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -1128,11 +1128,6 @@ install_files() {
 	shacmd="cat"
 	[[ -x /bin/sha256 ]] && shacmd="sha256 /tmp/h"
 
-	# XXX Fix xkb mistake in 5.0
-	# XXX Remove this chunk after 5.2 release
-	local _bad_dir=/mnt/usr/X11R6/share/X11/xkb/symbols/srvr_ctrl
-	isin xshare${VERSION}.tgz $_get_sets && [[ -d $_bad_dir ]] && rm -rf $_bad_dir
-
 	for _f in $THESETS ; do
 		isin $_f $_get_sets || continue
 		echo -n "Getting $_f ..."
@@ -1257,17 +1252,8 @@ startftplist() {
 }
 
 # Wait for the ftp process to finish, or be killed after the timeout
-# XXX contains a bit of debug code for now
 waitftplist() {
-	local _dot						# XXX
-
-	[[ -z $ftppid ]] && return
-	while [[ -n $(jobs $ftppid 2>/dev/null) ]]; do
-		echo -n .					# XXX
-		_dot=.						# XXX
-		sleep 0.2					# XXX
-	done
-	[[ -n $_dot ]] && echo					# XXX
+	wait "$ftppid" 2>/dev/null
 }
 
 # If possible, print the timestamp received from the ftplist.cgi output,

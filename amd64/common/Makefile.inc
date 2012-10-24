@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile.inc,v 1.18 2011/07/09 00:42:48 drahn Exp $
+#	$OpenBSD: Makefile.inc,v 1.20 2012/10/15 06:31:14 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -20,7 +20,7 @@ VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
 PID!=		echo $$$$
 REALIMAGE!=	echo /var/tmp/image.${PID}
-BOOT=		${DESTDIR}/usr/mdec/boot
+BOOT?=		${DESTDIR}/usr/mdec/boot
 FLOPPYSIZE?=	2880
 FLOPPYTYPE?=	floppy3
 
@@ -128,8 +128,8 @@ do_files:
 
 clean cleandir:
 	/bin/rm -f core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}*.cache \
-	    *.o *.lo *.c bsd bsd.rd bsd.gz bsd.strip floppy*.fs rdsetroot \
-	    ${CRUNCHCONF}
+	    *.o *.lo *.c bsd bsd.rd bsd.gz bsd.strip floppy*.fs \
+	    rdsetroot boot ${CRUNCHCONF} ${FS}
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>
