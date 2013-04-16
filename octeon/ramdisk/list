@@ -1,4 +1,4 @@
-#	$OpenBSD: list,v 1.5 2012/10/30 18:39:44 krw Exp $
+#	$OpenBSD: list,v 1.1 2013/03/26 18:03:53 jasper Exp $
 
 SRCDIRS distrib/special
 SRCDIRS bin sbin usr.bin usr.sbin
@@ -33,14 +33,13 @@ LINK	instbin					sbin/disklabel
 LINK	instbin					sbin/dmesg
 LINK	instbin					sbin/fdisk
 LINK	instbin					sbin/fsck
-LINK	instbin					sbin/fsck_ext2fs
 LINK	instbin					sbin/fsck_ffs
 LINK	instbin					sbin/ifconfig
 LINK	instbin					sbin/init
 LINK	instbin					sbin/mknod
 LINK	instbin					sbin/mount
 LINK	instbin					sbin/mount_cd9660
-LINK	instbin					sbin/mount_ext2fs
+LINK	instbin					sbin/mount_udf
 LINK	instbin					sbin/mount_ffs
 LINK	instbin					sbin/mount_msdos
 LINK	instbin					sbin/mount_nfs
@@ -58,7 +57,6 @@ LINK	instbin					usr/bin/gzip usr/bin/gunzip usr/bin/gzcat
 LINK	instbin					usr/bin/less usr/bin/more
 LINK	instbin					usr/bin/sed
 LINK	instbin					sbin/sysctl
-LINK	instbin					sbin/bioctl
 
 # copy the MAKEDEV script and make some devices
 SCRIPT	${DESTDIR}/dev/MAKEDEV			dev/MAKEDEV
@@ -74,6 +72,9 @@ SYMLINK	/tmp/fstab.shadow			etc/fstab
 SYMLINK	/tmp/resolv.conf.shadow			etc/resolv.conf
 SYMLINK	/tmp/hosts				etc/hosts
 TERMCAP	vt100,vt220,dumb			usr/share/misc/termcap
+
+# firmware we might need
+# ...none yet untill USB works.
 
 # and the installation tools
 SCRIPT	${CURDIR}/../../miniroot/dot.profile	.profile

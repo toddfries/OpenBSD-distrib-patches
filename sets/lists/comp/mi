@@ -429,7 +429,6 @@
 ./usr/include/dev/isa/isavar.h
 ./usr/include/dev/isa/itvar.h
 ./usr/include/dev/isa/madreg.h
-./usr/include/dev/isa/opti.h
 ./usr/include/dev/isa/pasreg.h
 ./usr/include/dev/isa/pcdisplayvar.h
 ./usr/include/dev/isa/pcppireg.h
@@ -519,11 +518,18 @@
 ./usr/include/dev/pci/drm/drm.h
 ./usr/include/dev/pci/drm/drmP.h
 ./usr/include/dev/pci/drm/drm_atomic.h
+./usr/include/dev/pci/drm/drm_crtc.h
+./usr/include/dev/pci/drm/drm_crtc_helper.h
+./usr/include/dev/pci/drm/drm_dp_helper.h
+./usr/include/dev/pci/drm/drm_edid.h
+./usr/include/dev/pci/drm/drm_edid_modes.h
+./usr/include/dev/pci/drm/drm_fb_helper.h
+./usr/include/dev/pci/drm/drm_fourcc.h
+./usr/include/dev/pci/drm/drm_linux_list.h
+./usr/include/dev/pci/drm/drm_mm.h
 ./usr/include/dev/pci/drm/drm_mode.h
 ./usr/include/dev/pci/drm/drm_sarea.h
 ./usr/include/dev/pci/drm/i915_drm.h
-./usr/include/dev/pci/drm/i915_drv.h
-./usr/include/dev/pci/drm/i915_reg.h
 ./usr/include/dev/pci/drm/r300_reg.h
 ./usr/include/dev/pci/drm/r600_blit_shaders.h
 ./usr/include/dev/pci/drm/r600_microcode.h
@@ -724,7 +730,6 @@
 ./usr/include/dev/sdmmc/sdmmcdevs.h
 ./usr/include/dev/sdmmc/sdmmcreg.h
 ./usr/include/dev/sdmmc/sdmmcvar.h
-./usr/include/dev/sequencervar.h
 ./usr/include/dev/softraidvar.h
 ./usr/include/dev/spdmemvar.h
 ./usr/include/dev/sun
@@ -1430,7 +1435,6 @@
 ./usr/include/sys/malloc.h
 ./usr/include/sys/mbuf.h
 ./usr/include/sys/memrange.h
-./usr/include/sys/midiio.h
 ./usr/include/sys/mman.h
 ./usr/include/sys/mount.h
 ./usr/include/sys/mplock.h
@@ -1854,6 +1858,7 @@
 ./usr/share/man/man2/fchown.2
 ./usr/share/man/man2/fchownat.2
 ./usr/share/man/man2/fcntl.2
+./usr/share/man/man2/fdatasync.2
 ./usr/share/man/man2/fhopen.2
 ./usr/share/man/man2/fhstat.2
 ./usr/share/man/man2/fhstatfs.2
@@ -2773,6 +2778,15 @@
 ./usr/share/man/man3/SHA1_Final.3
 ./usr/share/man/man3/SHA1_Init.3
 ./usr/share/man/man3/SHA1_Update.3
+./usr/share/man/man3/SHA224Data.3
+./usr/share/man/man3/SHA224End.3
+./usr/share/man/man3/SHA224File.3
+./usr/share/man/man3/SHA224FileChunk.3
+./usr/share/man/man3/SHA224Final.3
+./usr/share/man/man3/SHA224Init.3
+./usr/share/man/man3/SHA224Pad.3
+./usr/share/man/man3/SHA224Transform.3
+./usr/share/man/man3/SHA224Update.3
 ./usr/share/man/man3/SHA256Data.3
 ./usr/share/man/man3/SHA256End.3
 ./usr/share/man/man3/SHA256File.3
@@ -3823,6 +3837,7 @@
 ./usr/share/man/man3/fmax.3
 ./usr/share/man/man3/fmaxf.3
 ./usr/share/man/man3/fmaxl.3
+./usr/share/man/man3/fmemopen.3
 ./usr/share/man/man3/fmin.3
 ./usr/share/man/man3/fminf.3
 ./usr/share/man/man3/fminl.3
@@ -5232,6 +5247,8 @@
 ./usr/share/man/man3/ohash_qlookup.3
 ./usr/share/man/man3/ohash_qlookupi.3
 ./usr/share/man/man3/ohash_remove.3
+./usr/share/man/man3/open_memstream.3
+./usr/share/man/man3/open_wmemstream.3
 ./usr/share/man/man3/opendev.3
 ./usr/share/man/man3/opendir.3
 ./usr/share/man/man3/opendisk.3

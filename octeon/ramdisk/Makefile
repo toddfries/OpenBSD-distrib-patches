@@ -1,6 +1,6 @@
-#	$OpenBSD: Makefile,v 1.6 2011/07/09 00:42:49 drahn Exp $
+#	$OpenBSD: Makefile,v 1.1 2013/03/26 18:03:53 jasper Exp $
 
-REV=	${OSrev}
+REV=		${OSrev}
 
 TOP=		${.CURDIR}/..
 
@@ -19,19 +19,12 @@ VND?=		vnd0
 VND_DEV=	/dev/${VND}a
 VND_RDEV=	/dev/r${VND}a
 VND_CRDEV=	/dev/r${VND}c
-PID!=		echo $$$$
 
 
-DISKTYPE=       rdroot2.5M
-NBLKS=		5120
+DISKTYPE=       rdroot
+NBLKS=          10240
 # minfree, opt, b/i  trks, sects, cpg
 NEWFSARGS= -m 0 -o space -i 4096
-
-.ifndef DESTDIR
-all ${IMAGE}:
-	@echo setenv DESTDIR before making a ramdisk!
-	@false
-.else
 
 # mix config is not needed.
 all:	${BSD_RD}
@@ -42,13 +35,11 @@ ${BSD_RD}: ${CBIN} ${IMAGE} bsd rdsetroot
 
 ${IMAGE}: rd_setup do_files rd_teardown
 
-.endif
-
 bsd:
-	cd ${TOP}/../../sys/arch/palm/conf && config RAMDISK
-	cd ${TOP}/../../sys/arch/palm/compile/RAMDISK && \
+	cd ${TOP}/../../sys/arch/octeon/conf && config RAMDISK
+	cd ${TOP}/../../sys/arch/octeon/compile/RAMDISK && \
 	    ${MAKE} clean && exec ${MAKE}
-	cp ${TOP}/../../sys/arch/palm/compile/RAMDISK/bsd bsd
+	cp ${TOP}/../../sys/arch/octeon/compile/RAMDISK/bsd bsd
 
 rd_setup:
 	dd if=/dev/zero of=${IMAGE} bs=512 count=${NBLKS}
@@ -75,7 +66,7 @@ unconfig:
 .PRECIOUS:	${IMAGE}
 
 ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CRUNCHCONF}
-	crunchgen -E -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${.ALLSRC}
+	crunchgen -M -E -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${.ALLSRC}
 
 ${CBIN}: ${CBIN}.mk ${CBIN}.cache ${CBIN}.c
 	${MAKE} -f ${CBIN}.mk all
@@ -84,7 +75,7 @@ ${CRUNCHCONF}: ${LISTS}
 	awk -f ${UTILS}/makeconf.awk CBIN=${CBIN} ${LISTS} > ${CBIN}.conf
 
 do_files:
-	cat ${MTREE} | mtree -de -p ${MOUNT_POINT}/ -u
+	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
 	TOPDIR=${TOP} CURDIR=${.CURDIR} OBJDIR=${.OBJDIR} \
 	    REV=${REV} TARGDIR=${MOUNT_POINT} UTILS=${UTILS} \
 	    RELEASEDIR=${RELEASEDIR} sh ${UTILS}/runlist.sh ${LISTS}
@@ -93,13 +84,12 @@ do_files:
 clean cleandir:
 	/bin/rm -f core ${IMAGE} ${CBIN} ${CBIN}.mk ${CBIN}.cache \
 	    *.o *.lo *.c bsd ${BSD_RD} rdsetroot
-	rm -f instbin.conf
 	rm -rf cd-dir
 
 .ifdef RELEASEDIR
 install:
 	cp ${BSD_RD} ${RELEASEDIR}
-.endif	# RELEASEDIR
+.endif
 
 .include <bsd.obj.mk>
 .include <bsd.subdir.mk>
