@@ -1825,10 +1825,8 @@
 ./usr/share/man/man2/alpha/writew.2
 ./usr/share/man/man2/amd64
 ./usr/share/man/man2/amd64/amd64_get_fsbase.2
-./usr/share/man/man2/amd64/amd64_get_ioperm.2
 ./usr/share/man/man2/amd64/amd64_iopl.2
 ./usr/share/man/man2/amd64/amd64_set_fsbase.2
-./usr/share/man/man2/amd64/amd64_set_ioperm.2
 ./usr/share/man/man2/armish
 ./usr/share/man/man2/armish/arm_drain_writebuf.2
 ./usr/share/man/man2/armish/arm_sync_icache.2
@@ -1954,9 +1952,11 @@
 ./usr/share/man/man2/pipe.2
 ./usr/share/man/man2/poll.2
 ./usr/share/man/man2/posix_madvise.2
+./usr/share/man/man2/ppoll.2
 ./usr/share/man/man2/pread.2
 ./usr/share/man/man2/preadv.2
 ./usr/share/man/man2/profil.2
+./usr/share/man/man2/pselect.2
 ./usr/share/man/man2/ptrace.2
 ./usr/share/man/man2/pwrite.2
 ./usr/share/man/man2/pwritev.2
@@ -6887,6 +6887,7 @@
 ./usr/share/man/man9/timeout_triggered.9
 ./usr/share/man/man9/timingsafe_bcmp.9
 ./usr/share/man/man9/tsleep.9
+./usr/share/man/man9/tstohz.9
 ./usr/share/man/man9/ttyprintf.9
 ./usr/share/man/man9/tvtohz.9
 ./usr/share/man/man9/uao_create.9
