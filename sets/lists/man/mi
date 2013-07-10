@@ -270,7 +270,6 @@
 ./usr/share/info/gccint.info
 ./usr/share/info/gdb.info
 ./usr/share/info/gdbint.info
-./usr/share/info/heimdal.info
 ./usr/share/info/history.info
 ./usr/share/info/info-stnd.info
 ./usr/share/info/info.info
@@ -281,7 +280,6 @@
 ./usr/share/man/man1/Mail.1
 ./usr/share/man/man1/[.1
 ./usr/share/man/man1/a2p.1
-./usr/share/man/man1/afslog.1
 ./usr/share/man/man1/amd64
 ./usr/share/man/man1/amd64/fdformat.1
 ./usr/share/man/man1/apply.1
@@ -324,7 +322,6 @@
 ./usr/share/man/man1/colrm.1
 ./usr/share/man/man1/column.1
 ./usr/share/man/man1/comm.1
-./usr/share/man/man1/compile_et.1
 ./usr/share/man/man1/compress.1
 ./usr/share/man/man1/config_data.1
 ./usr/share/man/man1/corelist.1
@@ -419,13 +416,15 @@
 ./usr/share/man/man1/ipcs.1
 ./usr/share/man/man1/join.1
 ./usr/share/man/man1/jot.1
-./usr/share/man/man1/kauth.1
 ./usr/share/man/man1/kdestroy.1
 ./usr/share/man/man1/kdump.1
 ./usr/share/man/man1/keynote.1
+./usr/share/man/man1/kf.1
+./usr/share/man/man1/kgetcred.1
 ./usr/share/man/man1/kill.1
 ./usr/share/man/man1/kinit.1
 ./usr/share/man/man1/klist.1
+./usr/share/man/man1/krb5-config.1
 ./usr/share/man/man1/ksh.1
 ./usr/share/man/man1/ktrace.1
 ./usr/share/man/man1/lam.1
@@ -440,6 +439,7 @@
 ./usr/share/man/man1/libtool.1
 ./usr/share/man/man1/ln.1
 ./usr/share/man/man1/lndir.1
+./usr/share/man/man1/locale.1
 ./usr/share/man/man1/locate.1
 ./usr/share/man/man1/lock.1
 ./usr/share/man/man1/lockspool.1
@@ -452,6 +452,7 @@
 ./usr/share/man/man1/lprm.1
 ./usr/share/man/man1/lptest.1
 ./usr/share/man/man1/ls.1
+./usr/share/man/man1/ltrace.1
 ./usr/share/man/man1/lynx.1
 ./usr/share/man/man1/m4.1
 ./usr/share/man/man1/machine.1
@@ -494,7 +495,6 @@
 ./usr/share/man/man1/otp-sha1.1
 ./usr/share/man/man1/page.1
 ./usr/share/man/man1/pagesize.1
-./usr/share/man/man1/pagsh.1
 ./usr/share/man/man1/passwd.1
 ./usr/share/man/man1/paste.1
 ./usr/share/man/man1/patch.1
@@ -1578,6 +1578,8 @@
 ./usr/share/man/man4/az.4
 ./usr/share/man/man4/azalia.4
 ./usr/share/man/man4/bce.4
+./usr/share/man/man4/beagle
+./usr/share/man/man4/beagle/cpsw.4
 ./usr/share/man/man4/berkwdt.4
 ./usr/share/man/man4/bge.4
 ./usr/share/man/man4/bha.4
@@ -1656,6 +1658,7 @@
 ./usr/share/man/man4/fms.4
 ./usr/share/man/man4/fpa.4
 ./usr/share/man/man4/fta.4
+./usr/share/man/man4/fuse.4
 ./usr/share/man/man4/fxp.4
 ./usr/share/man/man4/gcu.4
 ./usr/share/man/man4/gdt.4
@@ -1895,7 +1898,6 @@
 ./usr/share/man/man4/macppc/smu.4
 ./usr/share/man/man4/macppc/snapper.4
 ./usr/share/man/man4/macppc/sysbutton.4
-./usr/share/man/man4/macppc/tpms.4
 ./usr/share/man/man4/macppc/tumbler.4
 ./usr/share/man/man4/macppc/xlights.4
 ./usr/share/man/man4/macppc/zs.4
@@ -1950,12 +1952,14 @@
 ./usr/share/man/man4/mvme88k/bussw.4
 ./usr/share/man/man4/mvme88k/cl.4
 ./usr/share/man/man4/mvme88k/dart.4
+./usr/share/man/man4/mvme88k/dsrtc.4
 ./usr/share/man/man4/mvme88k/ie.4
 ./usr/share/man/man4/mvme88k/intro.4
 ./usr/share/man/man4/mvme88k/kmem.4
 ./usr/share/man/man4/mvme88k/le.4
 ./usr/share/man/man4/mvme88k/mem.4
 ./usr/share/man/man4/mvme88k/memc.4
+./usr/share/man/man4/mvme88k/nvram.4
 ./usr/share/man/man4/mvme88k/pcctwo.4
 ./usr/share/man/man4/mvme88k/syscon.4
 ./usr/share/man/man4/mvme88k/vme.4
@@ -2364,6 +2368,7 @@
 ./usr/share/man/man4/usps.4
 ./usr/share/man/man4/uthum.4
 ./usr/share/man/man4/uticom.4
+./usr/share/man/man4/utpms.4
 ./usr/share/man/man4/utrh.4
 ./usr/share/man/man4/uts.4
 ./usr/share/man/man4/utwitch.4
@@ -2422,6 +2427,7 @@
 ./usr/share/man/man4/virtio.4
 ./usr/share/man/man4/vlan.4
 ./usr/share/man/man4/vmt.4
+./usr/share/man/man4/vmx.4
 ./usr/share/man/man4/vnd.4
 ./usr/share/man/man4/vr.4
 ./usr/share/man/man4/vscsi.4
@@ -2554,6 +2560,7 @@
 ./usr/share/man/man5/malloc.conf.5
 ./usr/share/man/man5/man.conf.5
 ./usr/share/man/man5/master.passwd.5
+./usr/share/man/man5/mech.5
 ./usr/share/man/man5/mixerctl.conf.5
 ./usr/share/man/man5/mk.conf.5
 ./usr/share/man/man5/moduli.5
@@ -2802,9 +2809,8 @@
 ./usr/share/man/man8/intro.8
 ./usr/share/man/man8/iopctl.8
 ./usr/share/man/man8/iostat.8
+./usr/share/man/man8/iprop-log.8
 ./usr/share/man/man8/iprop.8
-./usr/share/man/man8/ipropd-master.8
-./usr/share/man/man8/ipropd-slave.8
 ./usr/share/man/man8/ipsecctl.8
 ./usr/share/man/man8/isakmpd.8
 ./usr/share/man/man8/iscsictl.8
@@ -2813,7 +2819,9 @@
 ./usr/share/man/man8/kadmind.8
 ./usr/share/man/man8/kdc.8
 ./usr/share/man/man8/kerberos.8
+./usr/share/man/man8/kfd.8
 ./usr/share/man/man8/kgmon.8
+./usr/share/man/man8/kimpersonate.8
 ./usr/share/man/man8/kpasswdd.8
 ./usr/share/man/man8/kstash.8
 ./usr/share/man/man8/ktutil.8
@@ -2884,6 +2892,7 @@
 ./usr/share/man/man8/mkhybrid.8
 ./usr/share/man/man8/mknetid.8
 ./usr/share/man/man8/mknod.8
+./usr/share/man/man8/mkuboot.8
 ./usr/share/man/man8/modload.8
 ./usr/share/man/man8/modstat.8
 ./usr/share/man/man8/modunload.8
@@ -3037,6 +3046,7 @@
 ./usr/share/man/man8/slattach.8
 ./usr/share/man/man8/slip.8
 ./usr/share/man/man8/sliplogin.8
+./usr/share/man/man8/slowcgi.8
 ./usr/share/man/man8/slstats.8
 ./usr/share/man/man8/smrsh.8
 ./usr/share/man/man8/smtpctl.8
