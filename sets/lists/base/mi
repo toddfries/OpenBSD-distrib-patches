@@ -68,7 +68,6 @@
 ./etc/isakmpd/pubkeys/ipv6
 ./etc/isakmpd/pubkeys/ufqdn
 ./etc/kerberosV
-./etc/kerberosV/README
 ./etc/kerberosV/krb5.conf.example
 ./etc/ldap
 ./etc/ldap/certs
@@ -2619,6 +2618,9 @@
 ./usr/libexec/smrsh
 ./usr/libexec/smtpd
 ./usr/libexec/smtpd/makemap
+./usr/libexec/smtpd/table-ldap
+./usr/libexec/smtpd/table-passwd
+./usr/libexec/smtpd/table-sqlite
 ./usr/libexec/spamd
 ./usr/libexec/spamd-setup
 ./usr/libexec/spamlogd
@@ -5143,6 +5145,7 @@
 ./var/games/hackdir/save
 ./var/games/phantasia
 ./var/games/save
+./var/kerberosV
 ./var/log
 ./var/log/rdist
 ./var/mail
