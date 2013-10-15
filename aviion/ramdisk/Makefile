@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.20 2013/10/15 22:46:52 deraadt Exp $
+#	$OpenBSD: Makefile,v 1.2 2013/10/15 22:46:49 deraadt Exp $
 
 TOP=		${.CURDIR}/..
 
@@ -34,11 +34,11 @@ ${IMAGE}: rd_setup do_files rd_teardown
 
 bsd:
 .ifndef(NOBUILD)
-	cd ${.CURDIR}/../../../sys/arch/mvme88k/conf && config RAMDISK
-	cd ${.CURDIR}/../../../sys/arch/mvme88k/compile/RAMDISK && \
+	cd ${.CURDIR}/../../../sys/arch/aviion/conf && config RAMDISK
+	cd ${.CURDIR}/../../../sys/arch/aviion/compile/RAMDISK && \
 	    ${MAKE} clean && exec ${MAKE}
 .endif
-	cp ${.CURDIR}/../../../sys/arch/mvme88k/compile/RAMDISK/bsd bsd
+	cp ${.CURDIR}/../../../sys/arch/aviion/compile/RAMDISK/bsd bsd
 
 rd_test: rd_setup rd_teardown
 
@@ -69,6 +69,7 @@ unconfig:
 .ifdef RELEASEDIR
 install:
 	cp ${BSD_RD} ${RELEASEDIR}
+	/usr/mdec/a2coff ${BSD_RD} ${RELEASEDIR}/${BSD_RD}.xcf
 .endif
 
 ${CBIN}.conf: ${LISTS}
@@ -78,7 +79,7 @@ ${CBIN}.mk ${CBIN}.cache ${CBIN}.c: ${CBIN}.conf
 	crunchgen -E -D ${.CURDIR}/../../.. -L ${DESTDIR}/usr/lib ${CBIN}.conf
 
 ${CBIN}: ${CBIN}.mk ${CBIN}.cache ${CBIN}.c
-	${MAKE} -f ${CBIN}.mk SRCLIBDIR=${.CURDIR}/../../../lib all
+	${MAKE} -f ${CBIN}.mk all
 
 do_files:
 	mtree -def ${MTREE} -p ${MOUNT_POINT}/ -u
@@ -89,7 +90,6 @@ do_files:
 
 clean cleandir:
 	/bin/rm -f *.core ${IMAGE} ${CBIN} ${CBIN}.conf ${CBIN}.mk ${CBIN}.cache \
-	    lib*.a lib*.olist ${CBIN}.map \
 	    *.o *.lo *.c bsd ${BSD_RD} rdsetroot
 
 .include <bsd.obj.mk>

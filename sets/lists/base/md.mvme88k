@@ -1273,6 +1273,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_athn_usb.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_atureg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_auereg.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_axenreg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_axereg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_cdcereg.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/dev/usb/if_cuereg.ph
@@ -1748,6 +1749,7 @@
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/bpf.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/bpfdesc.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/ethertypes.ph
+./usr/libdata/perl5/site_perl/m88k-openbsd/net/hfsc.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/if.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/if_aoe.ph
 ./usr/libdata/perl5/site_perl/m88k-openbsd/net/if_arp.ph
