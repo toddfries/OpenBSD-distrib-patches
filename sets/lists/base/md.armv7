@@ -25,7 +25,7 @@
 ./usr/lib/gcc-lib/arm-unknown-openbsd5.4/4.2.1/collect2
 ./usr/lib/gcc-lib/arm-unknown-openbsd5.4/4.2.1/specs
 ./usr/lib/libasn1.so.20.0
-./usr/lib/libc.so.70.0
+./usr/lib/libc.so.71.0
 ./usr/lib/libcom_err.so.20.0
 ./usr/lib/libcrypto.so.23.0
 ./usr/lib/libcurses.so.13.0
@@ -43,7 +43,7 @@
 ./usr/lib/libkafs.so.20.0
 ./usr/lib/libkdc.so.1.0
 ./usr/lib/libkrb5.so.20.0
-./usr/lib/libkvm.so.14.0
+./usr/lib/libkvm.so.15.0
 ./usr/lib/libm.so.9.0
 ./usr/lib/libmenu.so.6.0
 ./usr/lib/libmenuw.so.6.0
@@ -687,7 +687,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dbm.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/ddb
 ./usr/libdata/perl5/site_perl/arm-openbsd/ddb/db_access.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/ddb/db_aout.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/ddb/db_break.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/ddb/db_command.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/ddb/db_extern.ph
@@ -781,6 +780,8 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/adwlib.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/ahcireg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/ahcivar.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/aic6250reg.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/aic6250var.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/aic6360reg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/aic6360var.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/ic/aic6915.ph
@@ -1238,8 +1239,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/musyccreg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/musyccvar.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/neoreg.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/noctreg.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/noctvar.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/nofnreg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/nofnvar.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/pci/pccbbreg.ph
@@ -1453,6 +1452,7 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/ascii.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/unicode.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/wscons_callbacks.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/wscons_features.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/wsconsio.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/wsdisplay_usl_io.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/dev/wscons/wsdisplayvar.ph
@@ -1778,7 +1778,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/libmilter/milter.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/limits.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/link.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/link_aout.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/link_elf.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/locale.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/login_cap.ph
@@ -1836,6 +1835,7 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/if_tun.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/if_types.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/if_vlan_var.ph
+./usr/libdata/perl5/site_perl/arm-openbsd/net/if_vxlan.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/netisr.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/pfkeyv2.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/net/pfvar.ph
@@ -2136,7 +2136,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/sqlite3.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sqlite3ext.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/ssl
-./usr/libdata/perl5/site_perl/arm-openbsd/stab.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/stdarg.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/stdbool.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/stddef.ph
@@ -2174,8 +2173,6 @@
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/event.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/eventvar.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/exec.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/sys/exec_aout.ph
-./usr/libdata/perl5/site_perl/arm-openbsd/sys/exec_ecoff.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/exec_elf.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/exec_script.ph
 ./usr/libdata/perl5/site_perl/arm-openbsd/sys/extent.ph

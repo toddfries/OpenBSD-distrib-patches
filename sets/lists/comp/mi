@@ -79,7 +79,6 @@
 ./usr/include/dbm.h
 ./usr/include/ddb
 ./usr/include/ddb/db_access.h
-./usr/include/ddb/db_aout.h
 ./usr/include/ddb/db_break.h
 ./usr/include/ddb/db_command.h
 ./usr/include/ddb/db_extern.h
@@ -173,6 +172,8 @@
 ./usr/include/dev/ic/adwlib.h
 ./usr/include/dev/ic/ahcireg.h
 ./usr/include/dev/ic/ahcivar.h
+./usr/include/dev/ic/aic6250reg.h
+./usr/include/dev/ic/aic6250var.h
 ./usr/include/dev/ic/aic6360reg.h
 ./usr/include/dev/ic/aic6360var.h
 ./usr/include/dev/ic/aic6915.h
@@ -630,8 +631,6 @@
 ./usr/include/dev/pci/musyccreg.h
 ./usr/include/dev/pci/musyccvar.h
 ./usr/include/dev/pci/neoreg.h
-./usr/include/dev/pci/noctreg.h
-./usr/include/dev/pci/noctvar.h
 ./usr/include/dev/pci/nofnreg.h
 ./usr/include/dev/pci/nofnvar.h
 ./usr/include/dev/pci/pccbbreg.h
@@ -845,6 +844,7 @@
 ./usr/include/dev/wscons/ascii.h
 ./usr/include/dev/wscons/unicode.h
 ./usr/include/dev/wscons/wscons_callbacks.h
+./usr/include/dev/wscons/wscons_features.h
 ./usr/include/dev/wscons/wsconsio.h
 ./usr/include/dev/wscons/wsdisplay_usl_io.h
 ./usr/include/dev/wscons/wsdisplayvar.h
@@ -1030,7 +1030,6 @@
 ./usr/include/libmilter/milter.h
 ./usr/include/limits.h
 ./usr/include/link.h
-./usr/include/link_aout.h
 ./usr/include/link_elf.h
 ./usr/include/locale.h
 ./usr/include/login_cap.h
@@ -1087,6 +1086,7 @@
 ./usr/include/net/if_tun.h
 ./usr/include/net/if_types.h
 ./usr/include/net/if_vlan_var.h
+./usr/include/net/if_vxlan.h
 ./usr/include/net/netisr.h
 ./usr/include/net/pfkeyv2.h
 ./usr/include/net/pfvar.h
@@ -1400,7 +1400,6 @@
 ./usr/include/sqlite3.h
 ./usr/include/sqlite3ext.h
 ./usr/include/ssl
-./usr/include/stab.h
 ./usr/include/stdarg.h
 ./usr/include/stdbool.h
 ./usr/include/stddef.h
@@ -1438,8 +1437,6 @@
 ./usr/include/sys/event.h
 ./usr/include/sys/eventvar.h
 ./usr/include/sys/exec.h
-./usr/include/sys/exec_aout.h
-./usr/include/sys/exec_ecoff.h
 ./usr/include/sys/exec_elf.h
 ./usr/include/sys/exec_script.h
 ./usr/include/sys/extent.h
@@ -3206,9 +3203,7 @@
 ./usr/share/man/man3/alloca.3
 ./usr/share/man/man3/alphasort.3
 ./usr/share/man/man3/arc4random.3
-./usr/share/man/man3/arc4random_addrandom.3
 ./usr/share/man/man3/arc4random_buf.3
-./usr/share/man/man3/arc4random_stir.3
 ./usr/share/man/man3/arc4random_uniform.3
 ./usr/share/man/man3/asctime.3
 ./usr/share/man/man3/asctime_r.3
@@ -4971,7 +4966,6 @@
 ./usr/share/man/man3/kvm_getargv.3
 ./usr/share/man/man3/kvm_getenvv.3
 ./usr/share/man/man3/kvm_geterr.3
-./usr/share/man/man3/kvm_getfile2.3
 ./usr/share/man/man3/kvm_getfiles.3
 ./usr/share/man/man3/kvm_getloadavg.3
 ./usr/share/man/man3/kvm_getprocs.3

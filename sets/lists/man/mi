@@ -1556,6 +1556,7 @@
 ./usr/share/man/man4/armish/mem.4
 ./usr/share/man/man4/armv7
 ./usr/share/man/man4/armv7/cpsw.4
+./usr/share/man/man4/armv7/ommmc.4
 ./usr/share/man/man4/arp.4
 ./usr/share/man/man4/art.4
 ./usr/share/man/man4/asbtm.4
@@ -1576,10 +1577,15 @@
 ./usr/share/man/man4/auvia.4
 ./usr/share/man/man4/aviion
 ./usr/share/man/man4/aviion/autoconf.4
+./usr/share/man/man4/aviion/dart.4
 ./usr/share/man/man4/aviion/intro.4
 ./usr/share/man/man4/aviion/kmem.4
 ./usr/share/man/man4/aviion/le.4
 ./usr/share/man/man4/aviion/mem.4
+./usr/share/man/man4/aviion/nvram.4
+./usr/share/man/man4/aviion/oaic.4
+./usr/share/man/man4/aviion/syscon.4
+./usr/share/man/man4/aviion/vme.4
 ./usr/share/man/man4/axe.4
 ./usr/share/man/man4/axen.4
 ./usr/share/man/man4/az.4
@@ -1978,7 +1984,6 @@
 ./usr/share/man/man4/nfe.4
 ./usr/share/man/man4/nge.4
 ./usr/share/man/man4/nmea.4
-./usr/share/man/man4/noct.4
 ./usr/share/man/man4/nofn.4
 ./usr/share/man/man4/nsclpcsio.4
 ./usr/share/man/man4/nsgphy.4
@@ -2435,6 +2440,7 @@
 ./usr/share/man/man4/vr.4
 ./usr/share/man/man4/vscsi.4
 ./usr/share/man/man4/vte.4
+./usr/share/man/man4/vxlan.4
 ./usr/share/man/man4/watchdog.4
 ./usr/share/man/man4/wb.4
 ./usr/share/man/man4/wbenv.4
@@ -2484,7 +2490,6 @@
 ./usr/share/man/man4/zyd.4
 ./usr/share/man/man5
 ./usr/share/man/man5/.rhosts.5
-./usr/share/man/man5/a.out.5
 ./usr/share/man/man5/acct.5
 ./usr/share/man/man5/aliases.5
 ./usr/share/man/man5/amd64
@@ -2557,6 +2562,7 @@
 ./usr/share/man/man5/ldapd.conf.5
 ./usr/share/man/man5/ldpd.conf.5
 ./usr/share/man/man5/login.conf.5
+./usr/share/man/man5/macppc
 ./usr/share/man/man5/magic.5
 ./usr/share/man/man5/mailer.conf.5
 ./usr/share/man/man5/malloc.conf.5
@@ -2614,7 +2620,6 @@
 ./usr/share/man/man5/spamd.conf.5
 ./usr/share/man/man5/ssh_config.5
 ./usr/share/man/man5/sshd_config.5
-./usr/share/man/man5/stab.5
 ./usr/share/man/man5/sudoers.5
 ./usr/share/man/man5/sysctl.conf.5
 ./usr/share/man/man5/syslog.conf.5
