@@ -99,7 +99,8 @@
 ./usr/lib/libexpat.so.11.0
 ./usr/lib/libform.so.6.0
 ./usr/lib/libformw.so.6.0
-./usr/lib/libgssapi.so.7.0
+./usr/lib/libfuse.so.1.1
+./usr/lib/libgssapi.so.7.1
 ./usr/lib/libhdb.so.1.0
 ./usr/lib/libheimbase.so.1.0
 ./usr/lib/libiberty.so.11.0
@@ -108,7 +109,7 @@
 ./usr/lib/libkafs.so.20.0
 ./usr/lib/libkdc.so.1.0
 ./usr/lib/libkrb5.so.20.0
-./usr/lib/libkvm.so.15.0
+./usr/lib/libkvm.so.16.0
 ./usr/lib/libm.so.9.0
 ./usr/lib/libmenu.so.6.0
 ./usr/lib/libmenuw.so.6.0
@@ -128,16 +129,16 @@
 ./usr/lib/libroken.so.1.0
 ./usr/lib/librpcsvc.so.2.0
 ./usr/lib/libskey.so.6.0
-./usr/lib/libsndio.so.5.0
+./usr/lib/libsndio.so.6.0
 ./usr/lib/libsqlite3.so.26.0
 ./usr/lib/libssl.so.20.0
-./usr/lib/libstdc++.so.56.0
+./usr/lib/libstdc++.so.57.0
 ./usr/lib/libtermcap.so.13.0
 ./usr/lib/libtermlib.so.13.0
 ./usr/lib/libusbhid.so.6.0
 ./usr/lib/libutil.so.12.0
 ./usr/lib/libwind.so.1.0
-./usr/lib/libwrap.so.5.0
+./usr/lib/libwrap.so.6.0
 ./usr/lib/libz.so.5.0
 ./usr/libdata/perl5/hppa-openbsd
 ./usr/libdata/perl5/hppa-openbsd/5.16.3
@@ -628,6 +629,7 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/blf.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/cast.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/castsb.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/chacha_private.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/cmac.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/cryptodev.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/crypto/cryptosoft.ph
@@ -724,13 +726,6 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2c/i2c_io.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2c/i2cvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2c/wm8750reg.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/i2o.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/iopio.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/ioprbsvar.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/iopreg.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/iopspvar.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/i2o/iopvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/aac_tables.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/aacreg.ph
@@ -910,8 +905,6 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pcdisplayvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pcf8584var.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pckbcvar.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pdqreg.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pdqvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pgtreg.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pgtvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/ic/pt2254a.ph
@@ -1369,9 +1362,9 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/udl.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/udlio.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/uftdireg.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/ugraphire_rdesc.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/uhcireg.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/uhcivar.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/uhid_rdesc.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/uhidev.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/ukbdvar.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/dev/usb/umass_quirks.ph
@@ -1467,6 +1460,8 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/fstab.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/fts.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/ftw.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/fuse.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/fuse_opt.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/g++
 ./usr/libdata/perl5/site_perl/hppa-openbsd/g++/FlexLexer.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/g++/backward
@@ -1744,6 +1739,7 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/gssapi/gssapi.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/gssapi/gssapi_krb5.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/gssapi/gssapi_oid.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/gssapi/gssapi_spnego.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/hdb-protos.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/hdb.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/kerberosV/hdb_asn1.ph
@@ -1837,7 +1833,6 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_bridge.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_dl.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_enc.ph
-./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_fddi.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_gif.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_gre.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/net/if_llc.ph
@@ -2271,6 +2266,7 @@
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/syslimits.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/syslog.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/systm.ph
+./usr/libdata/perl5/site_perl/hppa-openbsd/sys/task.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/termios.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/time.ph
 ./usr/libdata/perl5/site_perl/hppa-openbsd/sys/timeb.ph

@@ -429,6 +429,7 @@
 ./usr/share/man/man1/klist.1
 ./usr/share/man/man1/krb5-config.1
 ./usr/share/man/man1/ksh.1
+./usr/share/man/man1/kswitch.1
 ./usr/share/man/man1/ktrace.1
 ./usr/share/man/man1/lam.1
 ./usr/share/man/man1/last.1
@@ -806,10 +807,6 @@
 ./usr/share/man/man1/znew.1
 ./usr/share/man/man2
 ./usr/share/man/man3
-./usr/share/man/man3/loongson
-./usr/share/man/man3/pcap-filter.3
-./usr/share/man/man3/sgi
-./usr/share/man/man3/vax
 ./usr/share/man/man3p
 ./usr/share/man/man3p/AnyDBM_File.3p
 ./usr/share/man/man3p/App::Cpan.3p
@@ -1663,12 +1660,9 @@
 ./usr/share/man/man4/exphy.4
 ./usr/share/man/man4/fd.4
 ./usr/share/man/man4/fdc.4
-./usr/share/man/man4/fea.4
 ./usr/share/man/man4/fins.4
 ./usr/share/man/man4/fintek.4
 ./usr/share/man/man4/fms.4
-./usr/share/man/man4/fpa.4
-./usr/share/man/man4/fta.4
 ./usr/share/man/man4/fuse.4
 ./usr/share/man/man4/fxp.4
 ./usr/share/man/man4/gcu.4
@@ -1798,10 +1792,7 @@
 ./usr/share/man/man4/inet6.4
 ./usr/share/man/man4/inphy.4
 ./usr/share/man/man4/inteldrm.4
-./usr/share/man/man4/iop.4
 ./usr/share/man/man4/iophy.4
-./usr/share/man/man4/ioprbs.4
-./usr/share/man/man4/iopsp.4
 ./usr/share/man/man4/ip.4
 ./usr/share/man/man4/ip6.4
 ./usr/share/man/man4/ipcomp.4
@@ -2335,6 +2326,7 @@
 ./usr/share/man/man4/udsbr.4
 ./usr/share/man/man4/uftdi.4
 ./usr/share/man/man4/ugen.4
+./usr/share/man/man4/ugl.4
 ./usr/share/man/man4/ugold.4
 ./usr/share/man/man4/uguru.4
 ./usr/share/man/man4/uhci.4
@@ -2563,6 +2555,7 @@
 ./usr/share/man/man5/ldpd.conf.5
 ./usr/share/man/man5/login.conf.5
 ./usr/share/man/man5/macppc
+./usr/share/man/man5/macppc/boot.conf.5
 ./usr/share/man/man5/magic.5
 ./usr/share/man/man5/mailer.conf.5
 ./usr/share/man/man5/malloc.conf.5
@@ -2580,6 +2573,7 @@
 ./usr/share/man/man5/netid.5
 ./usr/share/man/man5/networks.5
 ./usr/share/man/man5/newsyslog.conf.5
+./usr/share/man/man5/nginx.conf.5
 ./usr/share/man/man5/npppd-users.5
 ./usr/share/man/man5/npppd.conf.5
 ./usr/share/man/man5/nsd.conf.5
@@ -2623,6 +2617,7 @@
 ./usr/share/man/man5/sudoers.5
 ./usr/share/man/man5/sysctl.conf.5
 ./usr/share/man/man5/syslog.conf.5
+./usr/share/man/man5/table.5
 ./usr/share/man/man5/term.5
 ./usr/share/man/man5/termcap.5
 ./usr/share/man/man5/terminfo.5
@@ -2706,6 +2701,7 @@
 ./usr/share/man/man8/armish/boot.8
 ./usr/share/man/man8/armv7
 ./usr/share/man/man8/armv7/MAKEDEV.8
+./usr/share/man/man8/armv7/gpioctl.8
 ./usr/share/man/man8/arp.8
 ./usr/share/man/man8/atactl.8
 ./usr/share/man/man8/authpf-noip.8
@@ -2815,10 +2811,11 @@
 ./usr/share/man/man8/inetd.8
 ./usr/share/man/man8/init.8
 ./usr/share/man/man8/intro.8
-./usr/share/man/man8/iopctl.8
 ./usr/share/man/man8/iostat.8
 ./usr/share/man/man8/iprop-log.8
 ./usr/share/man/man8/iprop.8
+./usr/share/man/man8/ipropd-master.8
+./usr/share/man/man8/ipropd-slave.8
 ./usr/share/man/man8/ipsecctl.8
 ./usr/share/man/man8/isakmpd.8
 ./usr/share/man/man8/iscsictl.8
@@ -2880,6 +2877,7 @@
 ./usr/share/man/man8/macppc/ZZZ.8
 ./usr/share/man/man8/macppc/apm.8
 ./usr/share/man/man8/macppc/apmd.8
+./usr/share/man/man8/macppc/boot.8
 ./usr/share/man/man8/macppc/boot_macppc.8
 ./usr/share/man/man8/macppc/eeprom.8
 ./usr/share/man/man8/macppc/gpioctl.8
@@ -3175,6 +3173,3 @@
 ./usr/share/man/man8/zaurus/zzz.8
 ./usr/share/man/man8/zdump.8
 ./usr/share/man/man8/zic.8
-./usr/share/man/man9
-./usr/share/man/man9/usbd_setup_xfer.9
-./usr/share/man/man9/usbd_transfer.9
