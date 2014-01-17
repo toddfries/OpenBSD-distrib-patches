@@ -5,6 +5,7 @@
 ./usr/bin/c++
 ./usr/bin/c++filt
 ./usr/bin/cc
+./usr/bin/cpp
 ./usr/bin/flex
 ./usr/bin/flex++
 ./usr/bin/fpr
@@ -115,7 +116,6 @@
 ./usr/include/dev/ata/wdvar.h
 ./usr/include/dev/auconv.h
 ./usr/include/dev/audio_if.h
-./usr/include/dev/audiovar.h
 ./usr/include/dev/biovar.h
 ./usr/include/dev/bluetooth
 ./usr/include/dev/bluetooth/btdev.h
@@ -668,6 +668,7 @@
 ./usr/include/dev/pci/ubsecvar.h
 ./usr/include/dev/pci/vga_pcivar.h
 ./usr/include/dev/pci/vioblkreg.h
+./usr/include/dev/pci/vioscsireg.h
 ./usr/include/dev/pci/virtioreg.h
 ./usr/include/dev/pci/virtiovar.h
 ./usr/include/dev/pci/ydsreg.h
@@ -1079,6 +1080,7 @@
 ./usr/include/net/if_trunk.h
 ./usr/include/net/if_tun.h
 ./usr/include/net/if_types.h
+./usr/include/net/if_var.h
 ./usr/include/net/if_vlan_var.h
 ./usr/include/net/if_vxlan.h
 ./usr/include/net/netisr.h
@@ -1302,7 +1304,6 @@
 ./usr/include/pthread_np.h
 ./usr/include/pwd.h
 ./usr/include/ranlib.h
-./usr/include/re_comp.h
 ./usr/include/readline
 ./usr/include/readline/chardefs.h
 ./usr/include/readline/history.h
@@ -1314,7 +1315,6 @@
 ./usr/include/readline/tilde.h
 ./usr/include/readpassphrase.h
 ./usr/include/regex.h
-./usr/include/regexp.h
 ./usr/include/resolv.h
 ./usr/include/rmd160.h
 ./usr/include/rpc
@@ -1383,7 +1383,6 @@
 ./usr/include/search.h
 ./usr/include/semaphore.h
 ./usr/include/setjmp.h
-./usr/include/sgtty.h
 ./usr/include/sha1.h
 ./usr/include/sha2.h
 ./usr/include/signal.h
@@ -1513,17 +1512,14 @@
 ./usr/include/sys/task.h
 ./usr/include/sys/termios.h
 ./usr/include/sys/time.h
-./usr/include/sys/timeb.h
 ./usr/include/sys/timeout.h
 ./usr/include/sys/times.h
 ./usr/include/sys/timetc.h
 ./usr/include/sys/tprintf.h
 ./usr/include/sys/tree.h
 ./usr/include/sys/tty.h
-./usr/include/sys/ttychars.h
 ./usr/include/sys/ttycom.h
 ./usr/include/sys/ttydefaults.h
-./usr/include/sys/ttydev.h
 ./usr/include/sys/types.h
 ./usr/include/sys/ucred.h
 ./usr/include/sys/uio.h
@@ -1664,8 +1660,6 @@
 ./usr/lib/libc_p.a
 ./usr/lib/libcom_err.a
 ./usr/lib/libcom_err_p.a
-./usr/lib/libcompat.a
-./usr/lib/libcompat_p.a
 ./usr/lib/libcrypto.a
 ./usr/lib/libcrypto_p.a
 ./usr/lib/libcurses.a
@@ -1768,6 +1762,7 @@
 ./usr/lib/liby_p.a
 ./usr/lib/libz.a
 ./usr/lib/libz_p.a
+./usr/libexec/cpp
 ./usr/sbin/kgmon
 ./usr/share/lkm/README
 ./usr/share/lkm/misc/Makefile
@@ -2500,7 +2495,13 @@
 ./usr/share/man/man3/EVP_DecryptUpdate.3
 ./usr/share/man/man3/EVP_DigestFinal.3
 ./usr/share/man/man3/EVP_DigestInit.3
+./usr/share/man/man3/EVP_DigestSignFinal.3
+./usr/share/man/man3/EVP_DigestSignInit.3
+./usr/share/man/man3/EVP_DigestSignUpdate.3
 ./usr/share/man/man3/EVP_DigestUpdate.3
+./usr/share/man/man3/EVP_DigestVerifyFinal.3
+./usr/share/man/man3/EVP_DigestVerifyInit.3
+./usr/share/man/man3/EVP_DigestVerifyUpdate.3
 ./usr/share/man/man3/EVP_EncryptFinal.3
 ./usr/share/man/man3/EVP_EncryptInit.3
 ./usr/share/man/man3/EVP_EncryptUpdate.3
@@ -2967,6 +2968,8 @@
 ./usr/share/man/man3/SSL_CTX_set_msg_callback.3
 ./usr/share/man/man3/SSL_CTX_set_msg_callback_arg.3
 ./usr/share/man/man3/SSL_CTX_set_options.3
+./usr/share/man/man3/SSL_CTX_set_psk_client_callback.3
+./usr/share/man/man3/SSL_CTX_set_psk_server_callback.3
 ./usr/share/man/man3/SSL_CTX_set_quiet_shutdown.3
 ./usr/share/man/man3/SSL_CTX_set_session_cache_mode.3
 ./usr/share/man/man3/SSL_CTX_set_session_id_context.3
@@ -2988,6 +2991,7 @@
 ./usr/share/man/man3/SSL_CTX_use_certificate_ASN1.3
 ./usr/share/man/man3/SSL_CTX_use_certificate_chain_file.3
 ./usr/share/man/man3/SSL_CTX_use_certificate_file.3
+./usr/share/man/man3/SSL_CTX_use_psk_identity_hint.3
 ./usr/share/man/man3/SSL_SESSION_free.3
 ./usr/share/man/man3/SSL_SESSION_get_ex_data.3
 ./usr/share/man/man3/SSL_SESSION_get_ex_new_index.3
@@ -3033,6 +3037,8 @@
 ./usr/share/man/man3/SSL_get_options.3
 ./usr/share/man/man3/SSL_get_peer_cert_chain.3
 ./usr/share/man/man3/SSL_get_peer_certificate.3
+./usr/share/man/man3/SSL_get_psk_identity.3
+./usr/share/man/man3/SSL_get_psk_identity_hint.3
 ./usr/share/man/man3/SSL_get_quiet_shutdown.3
 ./usr/share/man/man3/SSL_get_rbio.3
 ./usr/share/man/man3/SSL_get_rfd.3
@@ -3071,6 +3077,8 @@
 ./usr/share/man/man3/SSL_set_msg_callback.3
 ./usr/share/man/man3/SSL_set_msg_callback_arg.3
 ./usr/share/man/man3/SSL_set_options.3
+./usr/share/man/man3/SSL_set_psk_client_callback.3
+./usr/share/man/man3/SSL_set_psk_server_callback.3
 ./usr/share/man/man3/SSL_set_quiet_shutdown.3
 ./usr/share/man/man3/SSL_set_rfd.3
 ./usr/share/man/man3/SSL_set_session.3
@@ -3099,6 +3107,7 @@
 ./usr/share/man/man3/SSL_use_certificate.3
 ./usr/share/man/man3/SSL_use_certificate_ASN1.3
 ./usr/share/man/man3/SSL_use_certificate_file.3
+./usr/share/man/man3/SSL_use_psk_identity_hint.3
 ./usr/share/man/man3/SSL_want.3
 ./usr/share/man/man3/SSL_want_nothing.3
 ./usr/share/man/man3/SSL_want_read.3
@@ -3166,8 +3175,42 @@
 ./usr/share/man/man3/X509_NAME_delete_entry.3
 ./usr/share/man/man3/X509_NAME_get_index_by_NID.3
 ./usr/share/man/man3/X509_NAME_print_ex.3
+./usr/share/man/man3/X509_STORE_CTX_cleanup.3
+./usr/share/man/man3/X509_STORE_CTX_free.3
+./usr/share/man/man3/X509_STORE_CTX_get0_param.3
+./usr/share/man/man3/X509_STORE_CTX_get1_chain.3
+./usr/share/man/man3/X509_STORE_CTX_get_current_cert.3
+./usr/share/man/man3/X509_STORE_CTX_get_error.3
+./usr/share/man/man3/X509_STORE_CTX_get_error_depth.3
+./usr/share/man/man3/X509_STORE_CTX_get_ex_data.3
+./usr/share/man/man3/X509_STORE_CTX_get_ex_new_index.3
+./usr/share/man/man3/X509_STORE_CTX_init.3
+./usr/share/man/man3/X509_STORE_CTX_new.3
+./usr/share/man/man3/X509_STORE_CTX_set0_crls.3
+./usr/share/man/man3/X509_STORE_CTX_set0_param.3
+./usr/share/man/man3/X509_STORE_CTX_set_cert.3
+./usr/share/man/man3/X509_STORE_CTX_set_chain.3
+./usr/share/man/man3/X509_STORE_CTX_set_default.3
+./usr/share/man/man3/X509_STORE_CTX_set_error.3
+./usr/share/man/man3/X509_STORE_CTX_set_ex_data.3
+./usr/share/man/man3/X509_STORE_CTX_set_verify_cb.3
+./usr/share/man/man3/X509_STORE_CTX_trusted_stack.3
+./usr/share/man/man3/X509_STORE_set_verify_cb.3
+./usr/share/man/man3/X509_STORE_set_verify_cb_func.3
+./usr/share/man/man3/X509_VERIFY_PARAM_add0_policy.3
+./usr/share/man/man3/X509_VERIFY_PARAM_clear_flags.3
+./usr/share/man/man3/X509_VERIFY_PARAM_get_depth.3
+./usr/share/man/man3/X509_VERIFY_PARAM_get_flags.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set1_policies.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set_depth.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set_flags.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set_purpose.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set_time.3
+./usr/share/man/man3/X509_VERIFY_PARAM_set_trust.3
 ./usr/share/man/man3/X509_free.3
 ./usr/share/man/man3/X509_new.3
+./usr/share/man/man3/X509_verify_cert.3
+./usr/share/man/man3/X509_verify_cert_error_string.3
 ./usr/share/man/man3/__tfork_thread.3
 ./usr/share/man/man3/_longjmp.3
 ./usr/share/man/man3/_setjmp.3
@@ -3575,7 +3618,6 @@
 ./usr/share/man/man3/curs_window.3
 ./usr/share/man/man3/curses.3
 ./usr/share/man/man3/curses_version.3
-./usr/share/man/man3/cuserid.3
 ./usr/share/man/man3/d2i_ASN1_OBJECT.3
 ./usr/share/man/man3/d2i_DHparams.3
 ./usr/share/man/man3/d2i_DSAPrivateKey.3
@@ -3951,7 +3993,6 @@
 ./usr/share/man/man3/fstatvfs.3
 ./usr/share/man/man3/ftell.3
 ./usr/share/man/man3/ftello.3
-./usr/share/man/man3/ftime.3
 ./usr/share/man/man3/ftok.3
 ./usr/share/man/man3/ftrylockfile.3
 ./usr/share/man/man3/fts.3
@@ -4145,7 +4186,6 @@
 ./usr/share/man/man3/gssapi.3
 ./usr/share/man/man3/gsskrb5_extract_authz_data_from_sec_context.3
 ./usr/share/man/man3/gsskrb5_register_acceptor_identity.3
-./usr/share/man/man3/gtty.3
 ./usr/share/man/man3/gzclearerr.3
 ./usr/share/man/man3/gzclose.3
 ./usr/share/man/man3/gzdirect.3
@@ -5431,8 +5471,6 @@
 ./usr/share/man/man3/rcmd.3
 ./usr/share/man/man3/rcmd_af.3
 ./usr/share/man/man3/rcmdsh.3
-./usr/share/man/man3/re_comp.3
-./usr/share/man/man3/re_exec.3
 ./usr/share/man/man3/readdir.3
 ./usr/share/man/man3/readdir_r.3
 ./usr/share/man/man3/readlabelfs.3
@@ -5449,7 +5487,6 @@
 ./usr/share/man/man3/regerror.3
 ./usr/share/man/man3/regex.3
 ./usr/share/man/man3/regexec.3
-./usr/share/man/man3/regexp.3
 ./usr/share/man/man3/regfree.3
 ./usr/share/man/man3/registerrpc.3
 ./usr/share/man/man3/remainder.3
@@ -5477,7 +5514,6 @@
 ./usr/share/man/man3/restartterm.3
 ./usr/share/man/man3/rewind.3
 ./usr/share/man/man3/rewinddir.3
-./usr/share/man/man3/rexec.3
 ./usr/share/man/man3/rfc1413.3
 ./usr/share/man/man3/rindex.3
 ./usr/share/man/man3/rint.3
@@ -5611,9 +5647,7 @@
 ./usr/share/man/man3/setprotoent.3
 ./usr/share/man/man3/setprotoent_r.3
 ./usr/share/man/man3/setpwent.3
-./usr/share/man/man3/setrgid.3
 ./usr/share/man/man3/setrpcent.3
-./usr/share/man/man3/setruid.3
 ./usr/share/man/man3/setscrreg.3
 ./usr/share/man/man3/setservent.3
 ./usr/share/man/man3/setservent_r.3
@@ -5787,7 +5821,6 @@
 ./usr/share/man/man3/strvis.3
 ./usr/share/man/man3/strvisx.3
 ./usr/share/man/man3/strxfrm.3
-./usr/share/man/man3/stty.3
 ./usr/share/man/man3/subpad.3
 ./usr/share/man/man3/subwin.3
 ./usr/share/man/man3/svc_destroy.3
@@ -5845,6 +5878,7 @@
 ./usr/share/man/man3/tcflush.3
 ./usr/share/man/man3/tcgetattr.3
 ./usr/share/man/man3/tcgetpgrp.3
+./usr/share/man/man3/tcgetsid.3
 ./usr/share/man/man3/tcsendbreak.3
 ./usr/share/man/man3/tcsetattr.3
 ./usr/share/man/man3/tcsetpgrp.3
@@ -6202,6 +6236,7 @@
 ./usr/share/man/man9/MH_ALIGN.9
 ./usr/share/man/man9/MUTEX_ASSERT_LOCKED.9
 ./usr/share/man/man9/MUTEX_ASSERT_UNLOCKED.9
+./usr/share/man/man9/MUTEX_INITIALIZER.9
 ./usr/share/man/man9/M_ALIGN.9
 ./usr/share/man/man9/M_LEADINGSPACE.9
 ./usr/share/man/man9/M_PREPEND.9
@@ -6209,6 +6244,8 @@
 ./usr/share/man/man9/M_TRAILINGSPACE.9
 ./usr/share/man/man9/NDINIT.9
 ./usr/share/man/man9/NDINITAT.9
+./usr/share/man/man9/RWLOCK_INITIALIZER.9
+./usr/share/man/man9/TASK_INITIALIZER.9
 ./usr/share/man/man9/UVM_MAPFLAG.9
 ./usr/share/man/man9/VOP_ABORTOP.9
 ./usr/share/man/man9/VOP_ACCESS.9
@@ -6405,6 +6442,7 @@
 ./usr/share/man/man9/crypto_unregister.9
 ./usr/share/man/man9/ctlname.9
 ./usr/share/man/man9/db_printf.9
+./usr/share/man/man9/db_vprintf.9
 ./usr/share/man/man9/delay.9
 ./usr/share/man/man9/disk.9
 ./usr/share/man/man9/disk_attach.9
@@ -6432,6 +6470,7 @@
 ./usr/share/man/man9/extent_free.9
 ./usr/share/man/man9/extent_print.9
 ./usr/share/man/man9/falloc.9
+./usr/share/man/man9/fb_delete.9
 ./usr/share/man/man9/fb_queue.9
 ./usr/share/man/man9/fb_setup.9
 ./usr/share/man/man9/fd_getfile.9

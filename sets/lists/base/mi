@@ -37,6 +37,7 @@
 ./bin/sh
 ./bin/sha1
 ./bin/sha256
+./bin/sha512
 ./bin/sleep
 ./bin/stty
 ./bin/sum
@@ -87,6 +88,13 @@
 ./etc/ppp/ppp.linkup.sample
 ./etc/ppp/ppp.secret.sample
 ./etc/rc.d
+./etc/signify
+./etc/signify/54base.pub
+./etc/signify/54fw.pub
+./etc/signify/54pkg.pub
+./etc/signify/55base.pub
+./etc/signify/55fw.pub
+./etc/signify/55pkg.pub
 ./etc/skel
 ./etc/skel/.ssh
 ./etc/sliphome
@@ -140,6 +148,7 @@
 ./sbin/mount_msdos
 ./sbin/mount_nfs
 ./sbin/mount_procfs
+./sbin/mount_tmpfs
 ./sbin/mount_udf
 ./sbin/mount_vnd
 ./sbin/mountd
@@ -173,7 +182,6 @@
 ./sbin/tunefs
 ./sbin/umount
 ./sbin/vnconfig
-./stand
 ./tmp
 ./usr
 ./usr/bin
@@ -224,7 +232,6 @@
 ./usr/bin/cpan2dist
 ./usr/bin/cpanp
 ./usr/bin/cpanp-run-perl
-./usr/bin/cpp
 ./usr/bin/crontab
 ./usr/bin/csplit
 ./usr/bin/ctags
@@ -420,6 +427,7 @@
 ./usr/bin/sftp
 ./usr/bin/shar
 ./usr/bin/showmount
+./usr/bin/signify
 ./usr/bin/size
 ./usr/bin/skey
 ./usr/bin/skeyaudit
@@ -1080,6 +1088,7 @@
 ./usr/libdata/perl5/OpenBSD/Ustar.pm
 ./usr/libdata/perl5/OpenBSD/Vstat.pm
 ./usr/libdata/perl5/OpenBSD/md5.pm
+./usr/libdata/perl5/OpenBSD/signify.pm
 ./usr/libdata/perl5/OpenBSD/x509.pm
 ./usr/libdata/perl5/Package
 ./usr/libdata/perl5/Package/Constants.pm
@@ -2563,7 +2572,6 @@
 ./usr/libexec/auth/login_token
 ./usr/libexec/auth/login_yubikey
 ./usr/libexec/comsat
-./usr/libexec/cpp
 ./usr/libexec/cvs
 ./usr/libexec/cvs/contrib
 ./usr/libexec/cvs/contrib/clmerge
@@ -2710,6 +2718,7 @@
 ./usr/sbin/ifstated
 ./usr/sbin/ikectl
 ./usr/sbin/inetd
+./usr/sbin/installboot
 ./usr/sbin/iostat
 ./usr/sbin/iprop-log
 ./usr/sbin/iscsictl
@@ -2754,11 +2763,8 @@
 ./usr/sbin/npppd
 ./usr/sbin/nsd
 ./usr/sbin/nsd-checkconf
-./usr/sbin/nsd-notify
-./usr/sbin/nsd-patch
-./usr/sbin/nsd-xfer
-./usr/sbin/nsd-zonec
-./usr/sbin/nsdc
+./usr/sbin/nsd-control
+./usr/sbin/nsd-control-setup
 ./usr/sbin/nslookup
 ./usr/sbin/nsupdate
 ./usr/sbin/ntpctl
@@ -2775,7 +2781,6 @@
 ./usr/sbin/pkg_delete
 ./usr/sbin/pkg_info
 ./usr/sbin/pkg_mklocatedb
-./usr/sbin/popa3d
 ./usr/sbin/portmap
 ./usr/sbin/ppp
 ./usr/sbin/pppctl
@@ -5160,7 +5165,9 @@
 ./var/nsd
 ./var/nsd/db
 ./var/nsd/dev
+./var/nsd/etc
 ./var/nsd/run
+./var/nsd/run/xfr
 ./var/nsd/zones
 ./var/quotas
 ./var/run

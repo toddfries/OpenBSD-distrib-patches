@@ -703,7 +703,9 @@
 ./usr/share/man/man1/sh.1
 ./usr/share/man/man1/sha1.1
 ./usr/share/man/man1/sha256.1
+./usr/share/man/man1/sha512.1
 ./usr/share/man/man1/shar.1
+./usr/share/man/man1/signify.1
 ./usr/share/man/man1/size.1
 ./usr/share/man/man1/skey.1
 ./usr/share/man/man1/skeyaudit.1
@@ -1553,6 +1555,7 @@
 ./usr/share/man/man4/armish/mem.4
 ./usr/share/man/man4/armv7
 ./usr/share/man/man4/armv7/cpsw.4
+./usr/share/man/man4/armv7/omgpio.4
 ./usr/share/man/man4/armv7/ommmc.4
 ./usr/share/man/man4/arp.4
 ./usr/share/man/man4/art.4
@@ -2423,6 +2426,7 @@
 ./usr/share/man/man4/vio.4
 ./usr/share/man/man4/vioblk.4
 ./usr/share/man/man4/viomb.4
+./usr/share/man/man4/vioscsi.4
 ./usr/share/man/man4/virtio.4
 ./usr/share/man/man4/vlan.4
 ./usr/share/man/man4/vmt.4
@@ -2706,6 +2710,7 @@
 ./usr/share/man/man8/atactl.8
 ./usr/share/man/man8/authpf-noip.8
 ./usr/share/man/man8/authpf.8
+./usr/share/man/man8/autoinstall.8
 ./usr/share/man/man8/aviion
 ./usr/share/man/man8/aviion/MAKEDEV.8
 ./usr/share/man/man8/aviion/a2coff.8
@@ -2810,6 +2815,7 @@
 ./usr/share/man/man8/iked.8
 ./usr/share/man/man8/inetd.8
 ./usr/share/man/man8/init.8
+./usr/share/man/man8/installboot.8
 ./usr/share/man/man8/intro.8
 ./usr/share/man/man8/iostat.8
 ./usr/share/man/man8/iprop-log.8
@@ -2913,6 +2919,7 @@
 ./usr/share/man/man8/mount_nfs.8
 ./usr/share/man/man8/mount_ntfs.8
 ./usr/share/man/man8/mount_procfs.8
+./usr/share/man/man8/mount_tmpfs.8
 ./usr/share/man/man8/mount_udf.8
 ./usr/share/man/man8/mount_vnd.8
 ./usr/share/man/man8/mountd.8
@@ -2947,12 +2954,8 @@
 ./usr/share/man/man8/npppctl.8
 ./usr/share/man/man8/npppd.8
 ./usr/share/man/man8/nsd-checkconf.8
-./usr/share/man/man8/nsd-notify.8
-./usr/share/man/man8/nsd-patch.8
-./usr/share/man/man8/nsd-xfer.8
-./usr/share/man/man8/nsd-zonec.8
+./usr/share/man/man8/nsd-control.8
 ./usr/share/man/man8/nsd.8
-./usr/share/man/man8/nsdc.8
 ./usr/share/man/man8/nsupdate.8
 ./usr/share/man/man8/ntalkd.8
 ./usr/share/man/man8/ntpctl.8
@@ -2970,7 +2973,6 @@
 ./usr/share/man/man8/ping.8
 ./usr/share/man/man8/ping6.8
 ./usr/share/man/man8/pkg_check.8
-./usr/share/man/man8/popa3d.8
 ./usr/share/man/man8/portmap.8
 ./usr/share/man/man8/ppp.8
 ./usr/share/man/man8/pppctl.8

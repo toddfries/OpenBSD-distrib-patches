@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.236 2013/11/19 22:20:06 halex Exp $
+#	$OpenBSD: install.sh,v 1.240 2014/01/05 01:56:52 deraadt Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -192,6 +192,8 @@ done >>/tmp/fstab
 munge_fstab
 mount_fs "-o async"
 
+feed_random
+
 install_sets
 
 # If we did not succeed at setting TZ yet, we try again
@@ -231,7 +233,7 @@ if [[ -s $SERVERLISTALL ]]; then
 fi
 
 # Ensure an enabled console has the correct speed in /etc/ttys.
-sed -e "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed)/" \
+sed -e "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed </dev/console)/" \
 	/mnt/etc/ttys >/tmp/ttys
 mv /tmp/ttys /mnt/etc/ttys
 
@@ -270,34 +272,30 @@ _f=dhclient.conf
 	[[ -f $_f && -s $_f ]] && mv $_f /mnt/etc/.
 done)
 
-# Feed the random pool some junk before we read from it
-(dmesg; cat $SERVERLISTALL /*.conf; sysctl; route -n show; df;
-    ifconfig -A; hostname) >/mnt/dev/arandom 2>&1
-
-echo -n "done.\nGenerating initial host.random file..."
-dd if=/mnt/dev/arandom of=/mnt/var/db/host.random \
-	bs=65536 count=1 >/dev/null 2>&1
-chmod 600 /mnt/var/db/host.random >/dev/null 2>&1
-echo "done."
-
 apply
 
 if [[ -n $user ]]; then
 	_encr=$(encr_pwd "$userpass")
-	uline="${user}:${_encr}:1000:1000:staff:0:0:${username}:/home/${user}:/bin/ksh"
+	_home=/home/$user
+	uline="${user}:${_encr}:1000:1000:staff:0:0:${username}:$_home:/bin/ksh"
 	echo "$uline" >> /mnt/etc/master.passwd
 	echo "${user}:*:1000:" >> /mnt/etc/group
 	echo ${user} > /mnt/root/.forward
 
-	mkdir -p /mnt/home/$user
-	(cd /mnt/etc/skel; cp -pR . /mnt/home/$user)
+	_home=/mnt$_home
+	mkdir -p $_home
+	(cd /mnt/etc/skel; cp -pR . $_home)
 	(umask 077 &&
 		sed "s,^To: root\$,To: ${username} <${user}>," \
 		/mnt/var/mail/root > /mnt/var/mail/$user )
-	chown -R 1000:1000 /mnt/home/$user /mnt/var/mail/$user
+	chown -R 1000:1000 $_home /mnt/var/mail/$user
 	echo "1,s@wheel:.:0:root\$@wheel:\*:0:root,${user}@
 w
 q" | ed /mnt/etc/group 2>/dev/null
+
+	# Add public ssh key to authorized_keys
+	[[ -n "$userkey" ]] &&
+		print -r -- "$userkey" >> $_home/.ssh/authorized_keys
 fi
 
 if [[ -n "$_rootpass" ]]; then
@@ -307,6 +305,13 @@ w
 q" | ed /mnt/etc/master.passwd 2>/dev/null
 fi
 /mnt/usr/sbin/pwd_mkdb -p -d /mnt/etc /etc/master.passwd
+
+# Add public ssh key to authorized_keys
+[[ -n "$rootkey" ]] && (
+	umask 077
+	mkdir /mnt/root/.ssh
+	print -r -- "$rootkey" >> /mnt/root/.ssh/authorized_keys
+)
 
 if grep -qs '^rtsol' /mnt/etc/hostname.*; then
 	sed -e "/^#\(net\.inet6\.ip6\.accept_rtadv\)/s//\1/" \

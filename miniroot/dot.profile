@@ -1,4 +1,4 @@
-#	$OpenBSD: dot.profile,v 1.19 2013/11/14 15:20:54 halex Exp $
+#	$OpenBSD: dot.profile,v 1.22 2013/12/16 16:58:22 halex Exp $
 #	$NetBSD: dot.profile,v 1.1 1995/12/18 22:54:43 pk Exp $
 #
 # Copyright (c) 2009 Kenneth R. Westerback
@@ -70,7 +70,7 @@ __EOT
 	timeout=false
 	timer_pid=
 	if [ ! -f /tmp/noai ] && ifconfig netboot >/dev/null 2>&1; then
-		echo "Starting non-interactive installation in 5 seconds..."
+		echo "Starting non-interactive mode in 5 seconds..."
 		>/tmp/noai
 
 		trap 'kill $timeout_pid 2>/dev/null' EXIT
@@ -90,7 +90,7 @@ __EOT
 	fi
 
 	while :; do
-		echo -n '(A)utoinstall, (I)nstall, (U)pgrade or (S)hell? '
+		echo -n '(I)nstall, (U)pgrade, (A)utoinstall or (S)hell? '
 		read REPLY
 
 		# If the timeout has expired, begin the installation.
@@ -105,7 +105,7 @@ __EOT
 		fi
 
 		case $REPLY in
-		a*|A*)	/install auto && break
+		a*|A*)	/install -a && break
 			;;
 		i*|I*)	/install && break
 			;;
