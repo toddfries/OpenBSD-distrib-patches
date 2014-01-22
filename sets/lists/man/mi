@@ -2436,6 +2436,7 @@
 ./usr/share/man/man4/vr.4
 ./usr/share/man/man4/vscsi.4
 ./usr/share/man/man4/vte.4
+./usr/share/man/man4/viornd.4
 ./usr/share/man/man4/vxlan.4
 ./usr/share/man/man4/watchdog.4
 ./usr/share/man/man4/wb.4
@@ -2691,7 +2692,6 @@
 ./usr/share/man/man8/amd64/boot_amd64.8
 ./usr/share/man/man8/amd64/cdboot.8
 ./usr/share/man/man8/amd64/gpioctl.8
-./usr/share/man/man8/amd64/installboot.8
 ./usr/share/man/man8/amd64/kbd.8
 ./usr/share/man/man8/amd64/memconfig.8
 ./usr/share/man/man8/amd64/pxeboot.8
@@ -2802,7 +2802,6 @@
 ./usr/share/man/man8/i386/boot_i386.8
 ./usr/share/man/man8/i386/cdboot.8
 ./usr/share/man/man8/i386/gpioctl.8
-./usr/share/man/man8/i386/installboot.8
 ./usr/share/man/man8/i386/kbd.8
 ./usr/share/man/man8/i386/memconfig.8
 ./usr/share/man/man8/i386/pxeboot.8
