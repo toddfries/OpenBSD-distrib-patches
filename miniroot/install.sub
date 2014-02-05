@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.729 2014/01/17 01:15:27 halex Exp $
+#	$OpenBSD: install.sub,v 1.742 2014/02/03 23:28:00 rpe Exp $
 #	$NetBSD: install.sub,v 1.5.2.8 1996/09/02 23:25:02 pk Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -103,9 +103,9 @@ set_term() {
 		while :; do
 			ask "Choose your keyboard layout ('?' or 'L' for list)" "default"
 			case $resp in
-			"?"|L|l) echo "Available layouts: $_layouts" ;;
-			default) return ;;
-			*)	kbd $resp && { echo $resp >/tmp/kbdtype ; return ; } ;;
+			"?"|L|l) echo "Available layouts: $_layouts";;
+			default) return;;
+			*)	kbd $resp && { echo $resp >/tmp/kbdtype; return; };;
 			esac
 		done
 	fi
@@ -145,12 +145,12 @@ tmpdir() {
 }
 
 scan_dmesg() {
-	bsort $(sed -ne "$1" /var/run/dmesg.boot)
+	bsort $(sed -n "$1" /var/run/dmesg.boot)
 }
 
 scan_disknames() {
 	local IFS=,
-	bsort $(for _n in $(sysctl -n hw.disknames); do echo "${_n%%:*} "; done | sed -ne "$1")
+	bsort $(for _n in $(sysctl -n hw.disknames); do echo "${_n%%:*} "; done | sed -n "$1")
 }
 
 get_dkdevs () {
@@ -164,7 +164,7 @@ get_cddevs () {
 get_ifdevs() {
 	ifconfig "$@" 2>/dev/null |
 		egrep -v '^[[:space:]]|(bridge|enc|gif|gre|lo|pflog|pfsync|ppp|sl|tun)[[:digit:]]+:' |
-		sed -ne 's/^\(.*\):.*/\1/p'
+		sed -n 's/^\(.*\):.*/\1/p'
 }
 
 get_drive() {
@@ -177,12 +177,12 @@ get_drive() {
 mount_mnt2() {
 	local _dev=$1 _opts _file=/tmp/parts.$1 _parts
 
-	disklabel $_dev 2>/dev/null | grep '^  [a-p]: '	|
-		egrep -v "swap|unused" >$_file
+	disklabel $_dev 2>/dev/null |
+		sed -En '/swap|unused/d;/^  [a-p]: /p' >$_file
 
-	_parts=$(sed -e 's/^  \(.\): .*/\1/' $_file)
+	_parts=$(sed 's/^  \(.\): .*/\1/' $_file)
 	set -- $_parts
-	(($# == 0)) && { echo "No filesystems found on $_dev." ; return 1 ; }
+	(($# == 0)) && { echo "No filesystems found on $_dev."; return 1; }
 
 	if isin "c" $_parts; then
 		# Don't ask questions if 'c' contains a filesystem.
@@ -192,11 +192,10 @@ mount_mnt2() {
 		resp=$1
 	else
 		# Display partitions with filesystems and ask which to use.
-		cat /tmp/parts.$_dev
+		cat $_file
 		ask_which "$_dev partition" "has the $MODE sets" \
-			'$(disklabel '$_dev' 2>/dev/null | grep "^  [a-p]: " |
-			egrep -v "swap|unused" |
-			sed '\''s/^  \(.\): .*/\1/'\'')'
+			'$(disklabel '$_dev' 2>/dev/null |
+			sed -En '\''/swap|unused/d;/^  ([a-p]): .*/s//\1/p'\'')'
 		[[ $resp == done ]] && return 1
 	fi
 
@@ -364,7 +363,8 @@ encr_pwd() {
 	local _p=$1
 	if [[ -z $_p ]]; then
 		echo '*'
-	elif [[ $_p == \$2?\$[0-9][0-9]\$* && ${#_p} > 40 ]]; then
+	elif [[ $_p == \$2?\$[0-9][0-9]\$* && ${#_p} > 40 ||
+		$_p == '*************' ]]; then
 		echo "$_p"
 	else
 		/mnt/usr/bin/encrypt -b 8 -- "$_p"
@@ -377,13 +377,13 @@ user_setup() {
 	while :; do
 		ask "$_q" no
 		case $resp in
-		n|no)	return ;;
+		n|no)	return;;
 		y|yes)	_q="No really, what is the lower-case loginname, or 'no'?"
-			continue ;;
+			continue;;
 		root|daemon|operator|bin|smmsp|popa3d) ;;
 		sshd|uucp|www|named|proxy|nobody|ftp) ;;
 		[a-z]*([a-z0-9_]))
-			((${#resp} <= 31)) && break ;;
+			((${#resp} <= 31)) && break;;
 		esac
 		echo "$resp is not a useable loginname."
 	done
@@ -392,10 +392,10 @@ user_setup() {
 		ask "Full name for user $user?" $user
 		case $resp in
 		*[:\&,]*)
-			echo "':', '&' or ',' are not allowed." ;;
+			echo "':', '&' or ',' are not allowed.";;
 		*)
 			((${#resp} <= 100)) && break
-			echo "Too long." ;;
+			echo "Too long.";;
 		esac
 	done
 	username=$resp
@@ -436,6 +436,7 @@ function ask_until {
 #    $2    = the default answer (assumed to be 'n' if empty).
 #
 # Return 'y' or 'n' in $resp.
+# Exit code: yes => 0, no => 1
 ask_yn() {
 	local _q=$1 _a=${2:-no}
 	typeset -l _resp
@@ -444,8 +445,8 @@ ask_yn() {
 		ask "$_q" "$_a"
 		_resp=$resp
 		case $_resp in
-		y|yes)	resp=y ; return ;;
-		n|no)	resp=n ; return ;;
+		y|yes)	resp=y; return 0;;
+		n|no)	resp=n; return 1;;
 		esac
 		echo "'$resp' is not a valid choice."
 		$auto && exit 1
@@ -535,8 +536,8 @@ bsort() {
 
 	shift
 	for _b; do
-		if [[ $_a != $_b ]] ; then
-			if [[ $_a > $_b ]] ; then
+		if [[ $_a != $_b ]]; then
+			if [[ $_a > $_b ]]; then
 				_l="$_a $_l"; _a=$_b
 			else
 				_l="$_b $_l"
@@ -616,10 +617,10 @@ __EOT
 		set -o noglob
 		for resp in $resp; do
 			case $resp in
-			abort)	_selected=; break 2 ;;
-			done)	break 2 ;;
-			-*)	_action=rmel ;;
-			*)	_action=addel ;;
+			abort)	_selected=; break 2;;
+			done)	break 2;;
+			-*)	_action=rmel;;
+			*)	_action=addel;;
 			esac
 			resp=${resp#[+-]}
 			[[ $resp = all ]] && resp=*
@@ -662,7 +663,7 @@ configure_ifs() {
 
 		ask_which "network interface" "do you wish to configure" \
 			'$(get_ifdevs)' \
-			${_p:-'$( (ifconfig netboot 2>/dev/null | sed -n '\''1s/:.*//p'\''; get_ifdevs) | sed q )'}
+			${_p:-'$( (get_ifdevs netboot; get_ifdevs) | sed q )'}
 		[[ $resp == done ]] && break
 
 		_ifs=$resp
@@ -859,7 +860,7 @@ ieee80211_config() {
 				sed -n 's/^\([^ ]*\) chan .* bssid \([^ ]*\) .*$/	\1 (\2)/p' |
 				less -XEN
 			;;
-		*)	_nwid=$resp ;;
+		*)	_nwid=$resp;;
 		esac
 	done
 
@@ -923,7 +924,7 @@ v4_config() {
 	none)	;;
 	dhcp)	if [[ ! -x /sbin/dhclient ]]; then
 			echo "DHCP not possible - no /sbin/dhclient."
-		elif dhcp_request $_ifs "$_name" || dhcp_request $_ifs ; then
+		elif dhcp_request $_ifs "$_name" || dhcp_request $_ifs; then
 			echo "dhcp" >>$_hn
 			# Create a new bpf in case we start another dhclient
 			makedev bpf$(ls /dev | grep -c "^bpf[0-9]")
@@ -932,7 +933,7 @@ v4_config() {
 	*)	_addr=$resp
 		ask_until "Netmask?" "${_mask:=255.255.255.0}"
 		ifconfig $_ifs -group dhcp >/dev/null 2>&1
-		if ifconfig $_ifs inet $_addr netmask $resp up ; then
+		if ifconfig $_ifs inet $_addr netmask $resp up; then
 			addhostent "$_addr" "$_name"
 			echo "inet $_addr $resp" >>$_hn
 		fi
@@ -955,7 +956,7 @@ v6_config() {
 	case $resp in
 	none)	return
 		;;
-	rtsol)	[[ ! -x /sbin/rtsol ]] && { echo "No /sbin/rtsol." ; return ; }
+	rtsol)	[[ ! -x /sbin/rtsol ]] && { echo "No /sbin/rtsol."; return; }
 		ifconfig $_ifs up
 		if rtsol -F $_ifs; then
 			echo "up\nrtsol" >>$_hn
@@ -977,7 +978,7 @@ v4_defroute() {
 	local _dr _prompt=" or 'none'"
 
 	# Get/Confirm an IPv4 default route if an IPv4 address was configured.
-	[[ -n $(ifconfig | sed -ne '/[ 	]inet .* broadcast /p') ]] || return
+	[[ -n $(ifconfig | sed -n '/[ 	]inet .* broadcast /p') ]] || return
 
 	# If only one interface, and it is running dhclient, ask nothing
 	[[ -f /tmp/dhclient.conf && $nifs == 1 ]] && return
@@ -985,14 +986,14 @@ v4_defroute() {
 	[[ -x /sbin/dhclient ]] && _prompt=", 'dhcp'$_prompt"
 	_prompt="Default IPv4 route? (IPv4 address$_prompt)"
 
-	_dr=$(route -n show -inet | sed -ne '/^default */{s///; s/ .*//; p;}')
+	_dr=$(route -n show -inet | sed -n '/^default */{s///; s/ .*//; p;}')
 	[[ -f /tmp/dhclient.conf ]] && _dr=dhcp
 
 	while :; do
 		ask_until "$_prompt" "$_dr"
 		[[ $resp == @(none|dhcp) ]] && break
 		route delete -inet default >/dev/null 2>&1
-		route -n add -inet -host default "$resp" && { echo "$resp" >/tmp/mygate ; break ; }
+		route -n add -inet -host default "$resp" && { echo "$resp" >/tmp/mygate; break; }
 		# Put the old default route back. The new one did not work.
 		route -n add -inet -host default $_dr >/dev/null 2>&1
 	done
@@ -1004,8 +1005,8 @@ v6_defroute() {
 	route -n show -inet6 | egrep -q '^default[[:space:]]' && return
 
 	_routers=$(bsort $(ping6 -n -c 2 ff02::2%$_if 2>/dev/null |
-		sed -ne '/bytes from/{s/^.*from //;s/,.*$//;p;}' |
-		sed -ne 'G;s/\n/&&/;/^\(.*\n\).*\n\1/d;h;P'))
+		sed -n '/bytes from/{s/^.*from //;s/,.*$//;p;}' |
+		sed -n 'G;s/\n/&&/;/^\(.*\n\).*\n\1/d;h;P'))
 
 	local PS3="IPv6 default router? (${_routers:+list #, }IPv6 address or 'none'): "
 	select _resp in $_routers; do
@@ -1158,7 +1159,7 @@ enable_network() {
 # user will know to try again.
 install_files() {
 	local _src=$1 _files=$2 _f _sets _get_sets _n _col=$COLUMNS \
-		_tmpsrc _cfile _fsrc _unver
+		_tmpfs _tmpsrc _cfile _fsrc _unver _t _issue _srclocal
 
 	# Initialize _sets to the list of sets found in _src, and initialize
 	# _get_sets to the intersection of _sets and DEFAULTSETS.
@@ -1180,7 +1181,7 @@ install_files() {
 	if [[ -z $_sets ]]; then
 		# Show $_src, but delete any ftp password.
 		echo -n "Looked at "
-		echo $_src | sed -e 's/\(^ftp:\/\/[^/]*\)\(:[^/]*\)\(@.*\)/\1\3/'
+		echo $_src | sed 's/\(^ftp:\/\/[^/]*\)\(:[^/]*\)\(@.*\)/\1\3/'
 		echo "and found no $OBSD sets.  The set names looked for were:"
 
 		let COLUMNS=_col-8
@@ -1192,10 +1193,9 @@ install_files() {
 		return
 	fi
 
-	resp=y
 	isin INSTALL.$ARCH $_files ||
-		ask_yn "INSTALL.$ARCH not found. Use sets found here anyway?"
-	[[ $resp = n ]] && return
+		ask_yn "INSTALL.$ARCH not found. Use sets found here anyway?" ||
+		return
 
 	select_sets "$_sets" "$_get_sets"
 
@@ -1209,68 +1209,111 @@ install_files() {
 	_unver=$_get_sets
 
 	# Try to prefetch and control checksum files
-	if df | grep -q ' /mnt/home$' && isin SHA256.sig $_files ||
-		( [[ $_src == file://* ]] && isin SHA256 $_files ) &&
-		_tmpsrc=$(tmpdir /mnt/home/sets); then
+	# use dummy for loop as combined assignment and do { ... } while(0)
+	for _issue in ''; do
+		! isin SHA256.sig $_files &&
+			_issue="Directory does not contain SHA256.sig" && break
 
-		# Fetch signed checksum file and check signature
-		echo "Fetching checksum file."
-		_cfile=$_tmpsrc/SHA256
-		if isin SHA256.sig $_files; then
-			ftp -Vo "$_cfile.sig" "$_src/SHA256.sig" >/dev/null &&
-			signify -Vep /etc/signify/${VERSION}base.pub \
- 				-x "$_cfile.sig" -m "$_cfile"
+		# Find the filesystem with the most available space,
+		# excluding filesystems that are populated by the
+		# sets, in order not to ruin the set extraction. If
+		# /tmp, /var/tmp or /home, in that order, is found
+		# to have more than 500M free space, that one is used.
+		_tmpfs=$( (
+			df -k /mnt/{{,var/}tmp,home} 2>/dev/null; df -k
+		) | (
+			amax=0 mmax=
+			while read a a a a m m; do
+				[[ $m == /mnt/@(@(|var/)tmp|home|usr/@(src,obj,xobj))@(|/*) ]] ||
+					continue
+				((a > 512000)) && echo $m && exit
+				((a > amax)) && amax=$a mmax=$m
+			done
+			echo $mmax
+		) )
+
+		if [[ -d $_tmpfs ]]; then
+			! _tmpsrc=$(tmpdir "$_tmpfs/sets") &&
+			_issue="Cannot create prefetch area" && break
 		else
-			ftp -Vo "$_cfile" "$_src/SHA256"
-		fi &&
-		echo "Prefetching and verifying sets." &&
+			_issue="Cannot determine prefetch area" && break	
+		fi
+
+		_cfile=$_tmpsrc/SHA256
+		_srclocal=false
+		_t=Get/Verify
+		[[ $_src == file://* ]] && _srclocal=true _t=Verifying
+
+		# Fetch signature file
+		! ftp -D $_t -Vmo "$_cfile.sig" "$_src/SHA256.sig" &&
+			_issue="Cannot fetch SHA256.sig" && break
+
+		# Verify signature file with public keys
+		! signify -Vep /etc/signify/${VERSION}base.pub \
+			-x "$_cfile.sig" -m "$_cfile" &&
+			_issue="Signature check of SHA256.sig failed" && break
+
 		for _f in $_get_sets; do
-			if [[ $_src == file://* ]]; then
-				ln -s "${_src#file://}/$_f" "$_tmpsrc/$_f"
-			else
-				ftp -Vmo "$_tmpsrc/$_f" "$_src/$_f"
-			fi || {
-				echo "Fetching of $_f failed."
+			rm -f "$_tmpsrc/h" "$_tmpsrc/fail"
+
+			# Fetch set and create checksum by pipe through sha256
+			# Create a flag file in case ftp failed. Sets from net
+			# are written to prefetch area, the output of local sets
+			# is discarded.
+			( ftp -D $_t -Vmo - "$_src/$_f" || >"$_tmpsrc/fail" ) |
+			( $_srclocal && sha256 >$_tmpsrc/h ||
+				sha256 -ph "$_tmpsrc/h" >"$_tmpsrc/$_f" )
+
+			# Handle failed transfer.
+			if [[ -f $_tmpsrc/fail ]]; then
 				rm -f "$_tmpsrc/$_f"
-				$auto && rm -rf "$_tmpsrc" && exit 1
+				if ! ask_yn "Fetching of $_f failed. Continue anyway?"; then
+					[[ -d $_tmpsrc ]] && rm -rf "$_tmpsrc"
+					$auto && exit 1
+					return
+				fi
 				continue
-			}
-			if sha256 "$_tmpsrc/$_f" | sed 's,/.*/,,' |
-				fgrep -qxf /dev/stdin "$_cfile"; then
+			fi
+
+			# Verify sets by comparing its checksum with SHA256.
+			if fgrep -qx "SHA256 ($_f) = $(<$_tmpsrc/h)" "$_cfile"; then
 				_unver=$(rmel $_f $_unver)
 			else
-				echo "Checksum for $_f failed!"
-				#rm -rf "$_tmpsrc/$_f"
-				#return
+				if ! ask_yn "Checksum test for $_f failed. Continue anyway?"; then
+					[[ -d $_tmpsrc ]] && rm -rf "$_tmpsrc"
+					$auto && exit 1
+					return
+				fi
 			fi
 		done
+	done
+
+	[[ -n $_unver ]] && : ${_issue:="Unverified sets:" ${_unver% }}
+	if [[ -n $_issue ]] &&
+		! ask_yn "$_issue. Continue without verification?"; then
+		[[ -d $_tmpsrc ]] && rm -rf "$_tmpsrc"
+		$auto && exit 1
+		return
 	fi
 
-	resp=y
-	[[ -n $_unver ]] && echo "Unverified sets:" ${_unver% }. && \
-		ask_yn "Install sets anyway?" no
-	[[ $resp == y ]] &&
-	echo "Installing sets." &&
 	for _f in $_get_sets; do
 		_fsrc="$_src/$_f"
 		[[ -f $_tmpsrc/$_f ]] && _fsrc="file://$_tmpsrc/$_f"
 		case $_fsrc in
-		file://*.tgz)	tar -zxphf "${_fsrc##file://}" -C /mnt;;
-		file://*)	cp "${_fsrc##file://}" /mnt;;
-		*.tgz)		ftp -Vmo - "$_fsrc" | tar -zxphf - -C /mnt;;
-		*)		ftp -Vmo "/mnt/$_f" "$_fsrc";;
+		*.tgz)	ftp -D Installing -Vmo - "$_fsrc" | tar -zxphf - -C /mnt;;
+		*)	ftp -D Installing -Vmo "/mnt/$_f" "$_fsrc";;
 		esac
 		if (($?)); then
-			echo "'$_f' did not install correctly."
-			if $auto; then
+			if ! ask_yn "Installation of $_f failed. Continue anyway?"; then
 				[[ -d $_tmpsrc ]] && rm -rf "$_tmpsrc"
-				exit 1
+				$auto && exit 1
+				return
 			fi
 		else
 			DEFAULTSETS=$(rmel $_f $DEFAULTSETS)
 			GOTSETS="$GOTSETS $_f"
 		fi
-		rm -f "$_tmpsrc/$_f"
+		[[ -d $_tmpsrc ]] && rm -f "$_tmpsrc/$_f"
 	done
 	[[ -d $_tmpsrc ]] && rm -rf "$_tmpsrc"
 }
@@ -1286,7 +1329,7 @@ install_files() {
 #	   embedded blanks in usercodes and passwords.
 #	2) substitute '%' FIRST so it doesn't eliminate '%' chars we insert.
 encode_for_url() {
-	echo "$1" | sed -e "
+	echo "$1" | sed "
 s/%/%25/g
 s/ /%20/g
 s/!/%21/g
@@ -1403,7 +1446,7 @@ install_url() {
 	while :; do
 		ask_until "$_prompt" "$_server_ip"
 		case $resp in
-		done)	return ;;
+		done)	return;;
 		"?")	[[ -s $SERVERLIST ]] || continue
 			less -XEN < $SERVERLIST
 			;;
@@ -1412,7 +1455,7 @@ install_url() {
 			# as a line number in $SERVERLIST.
 			[[ -s $SERVERLIST ]] || continue
 			set -- $(sed -n "${resp}p" $SERVERLIST)
-			(($# < 1)) && { echo "There is no line $resp." ; continue ; }
+			(($# < 1)) && { echo "There is no line $resp."; continue; }
 			_server_ip=${1%%/*}
 			# Repeat loop to get user to confirm server address.
 			;;
@@ -1454,7 +1497,7 @@ install_url() {
 			_passwd=root@`hostname`
 		else
 			resp=
-			while [[ -z $resp ]] ; do
+			while [[ -z $resp ]]; do
 				askpass "Password? (will not echo)"
 			done
 			_passwd=$resp
@@ -1469,7 +1512,7 @@ install_url() {
 	_url_base=$_url_base$_server_ip/$_server_dir
 
 	# Get list of files from the server.
-	if [[ $_url_type == ftp && -z $ftp_proxy ]] ; then
+	if [[ $_url_type == ftp && -z $ftp_proxy ]]; then
 		_file_list=$(ftp -V "$_url_base/")
 		ftp_error "Login failed." "$_file_list" && return
 		ftp_error "No such file or directory." "$_file_list" && return
@@ -1477,7 +1520,7 @@ install_url() {
 		# Assumes index file is "index.txt" for http (or proxy)
 		# We can't use index.html since the format is server-dependent
 		_file_list=$(ftp -Vo - "$_url_base/index.txt" |
-			sed -e 's/^.* //' | sed -e 's///')
+			sed 's/^.* //' | sed 's///')
 	fi
 
 	install_files "$_url_base" "$_file_list"
@@ -1502,10 +1545,10 @@ install_mounted_fs() {
 		ask_until "Pathname to the sets? (or 'done')" "$SETDIR"
 		[[ $resp == done ]] && return
 		# Accept a valid /mnt2 or /mnt relative path.
-		[[ -d /mnt2/$resp ]] && { _dir=/mnt2/$resp ; break ; }
-		[[ -d /mnt/$resp ]] && { _dir=/mnt/$resp ; break ; }
+		[[ -d /mnt2/$resp ]] && { _dir=/mnt2/$resp; break; }
+		[[ -d /mnt/$resp ]] && { _dir=/mnt/$resp; break; }
 		# Accept a valid absolute path.
-		[[ -d /$resp ]] && { _dir=/$resp ; break ; }
+		[[ -d /$resp ]] && { _dir=/$resp; break; }
 		echo "The directory '$resp' does not exist."
 	done
 
@@ -1579,7 +1622,7 @@ install_tape() {
 			echo "done."
 		elif [[ -n $_bs ]]; then
 			# Dance to start of next file.
-			mt bsf ; mt fsf
+			mt bsf; mt fsf
 		fi
 
 		unset _z
@@ -1615,7 +1658,7 @@ set_timezone() {
 
 	waitftplist
 	if [[ -s $SERVERLISTALL ]]; then
-		_tz=$(sed -ne '/^TZ=/s/TZ=//p' <$SERVERLISTALL)
+		_tz=$(sed -n '/^TZ=/s/TZ=//p' <$SERVERLISTALL)
 		[[ -n $_tz ]] && isin "$_tz" `cat $_zonefile` && TZ=$_tz
 	fi
 
@@ -1627,9 +1670,9 @@ set_timezone() {
 		ask "What timezone are you in? ('?' for list)" "$TZ"
 		_zonepath=${resp%%*(/)}
 		case $_zonepath in
-		"")	continue ;;
+		"")	continue;;
 		"?")	grep -v /. $_zonefile | showcols
-			continue ;;
+			continue;;
 		esac
 
 		while isin "$_zonepath/" $(cat $_zonefile); do
@@ -1638,8 +1681,8 @@ set_timezone() {
 			resp=${resp%%*(/)}
 			case $resp in
 			"")	;;
-			"?")	sed -n "/^$_zsed/{s/$_zsed//;/\/./!p;}" $_zonefile | showcols ;;
-			*)	_zonepath=$_zonepath/$resp ;;
+			"?")	sed -n "/^$_zsed/{s/$_zsed//;/\/./!p;}" $_zonefile | showcols;;
+			*)	_zonepath=$_zonepath/$resp;;
 			esac
 		done
 
@@ -1654,19 +1697,17 @@ set_timezone() {
 }
 
 # Check that missing required sets were deliberately skipped.
+# Care is taken to make sure the return value is correct.
 sane_install() {
-	local _q=$1 _s _m
+	local _q=$1 _s
 
 	for _s in $SANESETS; do
 		isin $_s $DEFAULTSETS || continue
 		# If sane_install has no argument, harass the user.
-		resp=n
-		[[ -z $_q ]] && ask_yn "Are you *SURE* your $MODE is complete without '$_s'?"
-		[[ $resp == n ]] && _m="$_m $_s"
+		[[ -z $_q ]] &&
+			ask_yn "Are you *SURE* your $MODE is complete without '$_s'?" ||
+			return
 	done
-
-	[[ -n $_m ]] && return 1
-	return 0
 }
 
 # Ask the user for locations of sets, and then install whatever sets the
@@ -1678,10 +1719,10 @@ install_sets() {
 	echo
 
 	[[ -s $SERVERLISTALL ]] &&
-		_d=$(sed -ne '/^method=/s/method=//p' $SERVERLISTALL)
+		_d=$(sed -n '/^method=/s/method=//p' $SERVERLISTALL)
 
 	ifconfig netboot >/dev/null 2>&1 && : ${_d:=http}
-	[[ -n $(get_cddevs) ]] && { _locs="cd $_locs" ; : ${_d:=cd} ; }
+	[[ -n $(get_cddevs) ]] && { _locs="cd $_locs"; : ${_d:=cd}; }
 	[[ -x /sbin/mount_nfs ]] && _locs="$_locs nfs"
 	[[ -n $MTDEVS && -x /bin/mt ]] && _locs="$_locs tape"
 	: ${_d:=http}
@@ -1700,13 +1741,13 @@ install_sets() {
 
 		ask "Location of sets? ($_locs or 'done')" "$_d"
 		case $resp in
-		done)	sane_install && return ;;
-		c*|C*)	isin cd $_locs && install_cdrom && method=cd ;;
-		d*|D*)	install_disk && method=disk ;;
-		f*|F*)	isin ftp $_locs && install_url ftp && method=ftp ;;
-		h*|H*)	isin http $_locs && install_url http && method=http ;;
-		n*|N*)	isin nfs $_locs && install_nfs && method=nfs ;;
-		t*|T*)	isin tape $_locs && install_tape && method=tape ;;
+		done)	sane_install && return;;
+		c*|C*)	isin cd $_locs && install_cdrom && method=cd;;
+		d*|D*)	install_disk && method=disk;;
+		f*|F*)	isin ftp $_locs && install_url ftp && method=ftp;;
+		h*|H*)	isin http $_locs && install_url http && method=http;;
+		n*|N*)	isin nfs $_locs && install_nfs && method=nfs;;
+		t*|T*)	isin tape $_locs && install_tape && method=tape;;
 		esac
 
 		# Install sets only once, in non-interactive installations.
@@ -1748,14 +1789,14 @@ munge_fstab() {
 
 		# Remove any softdep options, as soft updates are not
 		# available in the ramdisk kernels.
-		_opt=$(echo $_opt | sed -e 's/softdep//')
+		_opt=$(echo $_opt | sed 's/softdep//')
 
 		# Change read-only ffs to read-write since we'll potentially
 		# write to these filesystems.
-		[[ $_fstype == ffs ]] && _opt=$(echo $_opt | sed -e 's/ro/rw/')
+		[[ $_fstype == ffs ]] && _opt=$(echo $_opt | sed 's/ro/rw/')
 
 		# Mount non-ffs filesystems read only.
-		[[ $_fstype == ffs ]] || _opt=$(echo $_opt | sed -e 's/rw/ro/')
+		[[ $_fstype == ffs ]] || _opt=$(echo $_opt | sed 's/rw/ro/')
 
 		# Write fs entry in fstab.
 		# 1) prepend '/mnt' to the mount point.
@@ -1784,7 +1825,7 @@ mount_fs() {
 		# Mount the filesystem. Remember any failure.
 		_msg=$(mount -v -t $_fstype $_async -o $_opt $_dev $_mp) ||
 			_fail="$_fail\n$_mp ($_dev)"
-		echo $_msg | sed -e 's/, ctime=[^,)]*//'
+		echo $_msg | sed 's/, ctime=[^,)]*//'
 	done </etc/fstab
 
 	if [[ -n $_fail ]]; then
@@ -1921,7 +1962,7 @@ apply()
 			>>/mnt/etc/rc.conf.local
 	fi
 	if [[ $sshd_disableroot == y ]]; then
-		sed -e "/^#\(PermitRootLogin\) yes/s//\1 no/" \
+		sed "/^#\(PermitRootLogin\) yes/s//\1 no/" \
 			< /mnt/etc/ssh/sshd_config > /tmp/sshd_config
 		cp /tmp/sshd_config /mnt/etc/ssh/sshd_config
 	fi
@@ -1933,7 +1974,7 @@ apply()
 			# 'servers' line with the first token in $resp as the
 			# server.
 			set -- $ntpd_server
-			sed -e "s/^servers /#&/;/#server /a\\
+			sed "s/^servers /#&/;/#server /a\\
 servers $1
 " /mnt/etc/ntpd.conf >/tmp/ntpd.conf
 			cp /tmp/ntpd.conf /mnt/etc/ntpd.conf
@@ -1941,7 +1982,7 @@ servers $1
 	fi
 
 	if [[ $x11 == y ]]; then
-		sed -e "/^#\(machdep\.allowaperture=${MDXAPERTURE}\)/s//\1	/" \
+		sed "/^#\(machdep\.allowaperture=${MDXAPERTURE}\)/s//\1	/" \
 			/mnt/etc/sysctl.conf >/tmp/sysctl.conf
 		cp /tmp/sysctl.conf /mnt/etc/sysctl.conf
 	fi
@@ -1998,8 +2039,8 @@ questions() {
 			ask_which "speed" "should $_d use" \
 				"9600 19200 38400 57600 115200" $CSPEED
 			case $resp in
-			done)	defcons=n ;;
-			*)	CSPEED=$resp ;;
+			done)	defcons=n;;
+			*)	CSPEED=$resp;;
 			esac
 		fi
 	fi
@@ -2058,7 +2099,7 @@ finish_up() {
 	(cd /mnt/dev; sh MAKEDEV all
 		# Make sure any devices we found during probe are created in the
 		# installed system.
-		for _dev in $(get_dkdevs) $(get_cddevs) $MTDEVS ; do
+		for _dev in $(get_dkdevs) $(get_cddevs) $MTDEVS; do
 			sh MAKEDEV $_dev
 		done
 	)
@@ -2137,7 +2178,7 @@ for _opt in d f l m n p s; do
 done
 
 # Extract and save one boot's worth of dmesg
-dmesg | sed -ne '/^OpenBSD /h;/^OpenBSD /!H;${g;p;}' >/var/run/dmesg.boot
+dmesg | sed -n '/^OpenBSD /h;/^OpenBSD /!H;${g;p;}' >/var/run/dmesg.boot
 
 # Are we in a real release, or a snapshot?  If this is a snapshot
 # install media, default us to a snapshot directory.
@@ -2164,7 +2205,7 @@ md_consoleinfo
 # the contents of the other sets, not the other way around.
 THESETS="bsd bsd.rd bsd.mp $MDSETS"
 : ${DEFAULTSETS:="bsd bsd.rd"}
-for _set in base etc comp man game xbase xetc xshare xfont xserv site ; do
+for _set in base etc comp man game xbase xetc xshare xfont xserv site; do
 	[[ $MODE == upgrade && ( $_set == etc || $_set == xetc ) ]] && continue
 	THESETS="$THESETS ${_set}${VERSION}.tgz"
 	isin $_set site && continue

@@ -1,5 +1,5 @@
 #!/bin/ksh
-#	$OpenBSD: install.sh,v 1.240 2014/01/05 01:56:52 deraadt Exp $
+#	$OpenBSD: install.sh,v 1.242 2014/02/04 00:47:27 rpe Exp $
 #	$NetBSD: install.sh,v 1.5.2.8 1996/08/27 18:15:05 gwr Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
@@ -69,7 +69,7 @@ _DKDEVS=$(get_dkdevs)
 _fsent=
 
 # Remove traces of previous install attempt.
-rm -f /tmp/fstab.shadow /tmp/fstab /tmp/fstab.*
+rm -f /tmp/fstab*
 
 ask_yn "Use DUIDs rather than device names in fstab?" yes
 [[ $resp == y ]] && FSTABFLAG=-F
@@ -233,7 +233,7 @@ if [[ -s $SERVERLISTALL ]]; then
 fi
 
 # Ensure an enabled console has the correct speed in /etc/ttys.
-sed -e "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed </dev/console)/" \
+sed "/^console.*on.*secure.*$/s/std\.[0-9]*/std.$(stty speed </dev/console)/" \
 	/mnt/etc/ttys >/tmp/ttys
 mv /tmp/ttys /mnt/etc/ttys
 

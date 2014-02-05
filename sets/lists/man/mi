@@ -649,6 +649,7 @@
 ./usr/share/man/man1/pkg_delete.1
 ./usr/share/man/man1/pkg_info.1
 ./usr/share/man/man1/pkg_mklocatedb.1
+./usr/share/man/man1/pkg_sign.1
 ./usr/share/man/man1/pkill.1
 ./usr/share/man/man1/pl2pm.1
 ./usr/share/man/man1/pod2html.1
@@ -2314,6 +2315,7 @@
 ./usr/share/man/man4/uark.4
 ./usr/share/man/man4/uath.4
 ./usr/share/man/man4/uaudio.4
+./usr/share/man/man4/ubcmtp.4
 ./usr/share/man/man4/uberry.4
 ./usr/share/man/man4/ubsa.4
 ./usr/share/man/man4/ubsec.4
@@ -2426,6 +2428,7 @@
 ./usr/share/man/man4/vio.4
 ./usr/share/man/man4/vioblk.4
 ./usr/share/man/man4/viomb.4
+./usr/share/man/man4/viornd.4
 ./usr/share/man/man4/vioscsi.4
 ./usr/share/man/man4/virtio.4
 ./usr/share/man/man4/vlan.4
@@ -2436,7 +2439,6 @@
 ./usr/share/man/man4/vr.4
 ./usr/share/man/man4/vscsi.4
 ./usr/share/man/man4/vte.4
-./usr/share/man/man4/viornd.4
 ./usr/share/man/man4/vxlan.4
 ./usr/share/man/man4/watchdog.4
 ./usr/share/man/man4/wb.4

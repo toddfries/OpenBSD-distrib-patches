@@ -51,7 +51,7 @@
 ./usr/lib/apache/modules/mod_usertrack.so
 ./usr/lib/apache/modules/mod_vhost_alias.so
 ./usr/lib/libasn1.so.20.0
-./usr/lib/libc.so.73.0
+./usr/lib/libc.so.73.1
 ./usr/lib/libcom_err.so.20.0
 ./usr/lib/libcrypto.so.23.0
 ./usr/lib/libcurses.so.14.0
@@ -2173,6 +2173,7 @@
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/acct.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/agpio.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/ataio.ph
+./usr/libdata/perl5/site_perl/sh-openbsd/sys/atomic.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/audioio.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/buf.ph
 ./usr/libdata/perl5/site_perl/sh-openbsd/sys/cdefs.ph
