@@ -580,6 +580,7 @@
 ./usr/share/man/man1/perlhacktut.1
 ./usr/share/man/man1/perlhist.1
 ./usr/share/man/man1/perlintern.1
+./usr/share/man/man1/perlinterp.1
 ./usr/share/man/man1/perlintro.1
 ./usr/share/man/man1/perliol.1
 ./usr/share/man/man1/perlipc.1
@@ -1465,6 +1466,7 @@
 ./usr/share/man/man4/acpiec.4
 ./usr/share/man/man4/acpihpet.4
 ./usr/share/man/man4/acpimadt.4
+./usr/share/man/man4/acpimcfg.4
 ./usr/share/man/man4/acpiprt.4
 ./usr/share/man/man4/acpipwrres.4
 ./usr/share/man/man4/acpisony.4
@@ -2033,6 +2035,8 @@
 ./usr/share/man/man4/pty.4
 ./usr/share/man/man4/puc.4
 ./usr/share/man/man4/pwdog.4
+./usr/share/man/man4/qla.4
+./usr/share/man/man4/qle.4
 ./usr/share/man/man4/qsphy.4
 ./usr/share/man/man4/radeondrm.4
 ./usr/share/man/man4/radio.4
@@ -2625,6 +2629,7 @@
 ./usr/share/man/man5/sysctl.conf.5
 ./usr/share/man/man5/syslog.conf.5
 ./usr/share/man/man5/table.5
+./usr/share/man/man5/table_passwd.5
 ./usr/share/man/man5/term.5
 ./usr/share/man/man5/termcap.5
 ./usr/share/man/man5/terminfo.5
