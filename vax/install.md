@@ -1,4 +1,4 @@
-#	$OpenBSD: install.md,v 1.40 2013/11/16 18:37:27 rpe Exp $
+#	$OpenBSD: install.md,v 1.42 2014/03/22 02:24:43 krw Exp $
 #	$NetBSD: install.md,v 1.3.2.5 1996/08/26 15:45:28 gwr Exp $
 #
 #
