@@ -1,4 +1,4 @@
-#	$OpenBSD: install.sub,v 1.768 2014/04/25 19:34:24 halex Exp $
+#	$OpenBSD: install.sub,v 1.774 2014/05/11 08:23:46 rpe Exp $
 #
 # Copyright (c) 1997-2009 Todd Miller, Theo de Raadt, Ken Westerback
 # All rights reserved.
@@ -656,6 +656,9 @@ configure_ifs() {
 	# Always need lo0 configured.
 	ifconfig lo0 inet 127.0.0.1/8
 
+	# In case of restart, delete previous default gateway config.
+	rm -f /tmp/mygate
+
 	while :; do
 		# Create new vlan if possible.
 		ifconfig vlan$_vl create >/dev/null 2>&1
@@ -983,14 +986,14 @@ v4_defroute() {
 		ask_until "$_prompt" "$_dr"
 		[[ $resp == @(none|dhcp) ]] && break
 		route delete -inet default >/dev/null 2>&1
-		route -n add -inet -host default "$resp" && { echo "$resp" >/tmp/mygate; break; }
+		route -n add -inet -host default "$resp" && { echo "$resp" >>/tmp/mygate; break; }
 		# Put the old default route back. The new one did not work.
 		route -n add -inet -host default $_dr >/dev/null 2>&1
 	done
 }
 
 v6_defroute() {
-	local _if=$1 _resp _routers
+	local _if=$1 _prompt _resp _routers
 
 	route -n show -inet6 | egrep -q '^default[[:space:]]' && return
 
@@ -998,11 +1001,17 @@ v6_defroute() {
 		sed -n '/bytes from/{s/^.*from //;s/,.*$//;p;}' |
 		sed -n 'G;s/\n/&&/;/^\(.*\n\).*\n\1/d;h;P'))
 
-	local PS3="IPv6 default router? (${_routers:+list #, }IPv6 address or 'none'): "
-	select _resp in $_routers; do
-		[[ ${_resp:=$REPLY} == *:* ]] && break
-		[[ $_resp == none ]] && return
-	done
+	_prompt="IPv6 default router?"
+
+	if $auto; then
+		_autorespond "$_prompt" && _resp=$resp && echo "$_prompt $_resp"
+	else
+		local PS3="$_prompt (${_routers:+list #, }IPv6 address or 'none'): "
+		select _resp in $_routers; do
+			[[ ${_resp:=$REPLY} == *:* ]] && break
+			[[ $_resp == none ]] && return
+		done
+	fi
 
 	route -n add -inet6 -host default "$_resp" &&
 		echo "$_resp" >>/tmp/mygate
@@ -1365,10 +1374,10 @@ install_http() {
 	[[ $resp == none ]] || export http_proxy=$resp
 
 	if [[ -s $HTTP_LIST ]]; then
-		_prompt="Server? (hostname, list#, 'done' or '?')"
+		_prompt="HTTP Server? (hostname, list#, 'done' or '?')"
 	else
 		echo "(Unable to get list from ftp.openbsd.org, but that is OK)"
-		_prompt="Server? (hostname or 'done')"
+		_prompt="HTTP Server? (hostname or 'done')"
 	fi
 
 	# Get server IP address or hostname
@@ -1894,19 +1903,19 @@ upgrade_to64time_t() {
 
 # Feed the random pool some entropy before we read from it
 feed_random() {
-	{
-	    (dmesg; cat $CGI_INFO /*.conf; sysctl; route -n show; df;
+	(dmesg; cat $CGI_INFO /*.conf; sysctl; route -n show; df;
 	    ifconfig -A; hostname) >/dev/random 2>&1
-	    dd if=/mnt/var/db/host.random of=/dev/random bs=65536 count=1
-	} >/dev/null 2>&1
+	if [[ -e /mnt/var/db/host.random ]]; then
+		dd if=/mnt/var/db/host.random of=/dev/random bs=65536 count=1 \
+		    status=none
+	fi
 }
 
 store_random() {
-	{
-	    dd if=/dev/random of=/mnt/var/db/host.random bs=65536 count=1
-	    dd if=/dev/random of=/mnt/etc/random.seed bs=512 count=1
-	    chmod 600 /mnt/var/db/host.random /mnt/etc/random.seed
-	} >/dev/null 2>&1
+	dd if=/dev/random of=/mnt/var/db/host.random bs=65536 count=1 \
+	    status=none
+	dd if=/dev/random of=/mnt/etc/random.seed bs=512 count=1 status=none
+	chmod 600 /mnt/var/db/host.random /mnt/etc/random.seed
 }
 
 finish_up() {

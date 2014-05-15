@@ -67,8 +67,8 @@
 ./usr/lib/gcc-lib/alpha-unknown-openbsd5.5/4.2.1/cc1
 ./usr/lib/gcc-lib/alpha-unknown-openbsd5.5/4.2.1/collect2
 ./usr/lib/gcc-lib/alpha-unknown-openbsd5.5/4.2.1/specs
-./usr/lib/libc.so.74.2
-./usr/lib/libcrypto.so.26.0
+./usr/lib/libc.so.75.0
+./usr/lib/libcrypto.so.27.0
 ./usr/lib/libcurses.so.14.0
 ./usr/lib/libedit.so.5.0
 ./usr/lib/libevent.so.4.1
@@ -98,12 +98,12 @@
 ./usr/lib/libskey.so.6.0
 ./usr/lib/libsndio.so.6.0
 ./usr/lib/libsqlite3.so.27.0
-./usr/lib/libssl.so.24.0
+./usr/lib/libssl.so.24.1
 ./usr/lib/libstdc++.so.57.0
 ./usr/lib/libtermcap.so.14.0
 ./usr/lib/libtermlib.so.14.0
-./usr/lib/libusbhid.so.6.0
-./usr/lib/libutil.so.12.0
+./usr/lib/libusbhid.so.7.0
+./usr/lib/libutil.so.12.1
 ./usr/lib/libz.so.5.0
 ./usr/libdata/perl5/alpha-openbsd
 ./usr/libdata/perl5/alpha-openbsd/5.18.2
@@ -1898,6 +1898,7 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/buffer.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/camellia.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/cast.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/chacha.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/cmac.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/cms.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/comp.ph
@@ -1935,6 +1936,7 @@
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/pem2.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/pkcs12.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/pkcs7.ph
+./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/poly1305.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/pqueue.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/rand.ph
 ./usr/libdata/perl5/site_perl/alpha-openbsd/openssl/rc2.ph
